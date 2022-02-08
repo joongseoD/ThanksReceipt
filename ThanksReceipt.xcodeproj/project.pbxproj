@@ -8,12 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		25935A0227B24B0B00BD6A98 /* ThanksReceiptApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */; };
-		25935A0427B24B0B00BD6A98 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A0327B24B0B00BD6A98 /* ContentView.swift */; };
 		25935A0627B24B0D00BD6A98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25935A0527B24B0D00BD6A98 /* Assets.xcassets */; };
 		25935A0927B24B0D00BD6A98 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25935A0827B24B0D00BD6A98 /* Preview Assets.xcassets */; };
 		25935A1327B24B0D00BD6A98 /* ThanksReceiptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A1227B24B0D00BD6A98 /* ThanksReceiptTests.swift */; };
 		25935A1D27B24B0D00BD6A98 /* ThanksReceiptUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A1C27B24B0D00BD6A98 /* ThanksReceiptUITests.swift */; };
 		25935A1F27B24B0D00BD6A98 /* ThanksReceiptUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A1E27B24B0D00BD6A98 /* ThanksReceiptUITestsLaunchTests.swift */; };
+		25935A2D27B24D7100BD6A98 /* ReceiptItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A2C27B24D7100BD6A98 /* ReceiptItem.swift */; };
+		25935A3027B25A8500BD6A98 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A2F27B25A8500BD6A98 /* DataProvider.swift */; };
+		25935A3327B25A9900BD6A98 /* DataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3227B25A9900BD6A98 /* DataProviding.swift */; };
+		25935A3627B25DF600BD6A98 /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3527B25DF600BD6A98 /* ReceiptView.swift */; };
+		25935A3927B25E0900BD6A98 /* ReceiptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3827B25E0900BD6A98 /* ReceiptModel.swift */; };
+		25935A3B27B25EC200BD6A98 /* ReceiptInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3A27B25EC200BD6A98 /* ReceiptInputView.swift */; };
+		25935A3D27B25ECE00BD6A98 /* ReceiptInputModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3C27B25ECE00BD6A98 /* ReceiptInputModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +42,6 @@
 /* Begin PBXFileReference section */
 		259359FE27B24B0B00BD6A98 /* ThanksReceipt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThanksReceipt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksReceiptApp.swift; sourceTree = "<group>"; };
-		25935A0327B24B0B00BD6A98 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		25935A0527B24B0D00BD6A98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25935A0827B24B0D00BD6A98 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		25935A0E27B24B0D00BD6A98 /* ThanksReceiptTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThanksReceiptTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +49,13 @@
 		25935A1827B24B0D00BD6A98 /* ThanksReceiptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThanksReceiptUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25935A1C27B24B0D00BD6A98 /* ThanksReceiptUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksReceiptUITests.swift; sourceTree = "<group>"; };
 		25935A1E27B24B0D00BD6A98 /* ThanksReceiptUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksReceiptUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		25935A2C27B24D7100BD6A98 /* ReceiptItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptItem.swift; sourceTree = "<group>"; };
+		25935A2F27B25A8500BD6A98 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
+		25935A3227B25A9900BD6A98 /* DataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProviding.swift; sourceTree = "<group>"; };
+		25935A3527B25DF600BD6A98 /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
+		25935A3827B25E0900BD6A98 /* ReceiptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptModel.swift; sourceTree = "<group>"; };
+		25935A3A27B25EC200BD6A98 /* ReceiptInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptInputView.swift; sourceTree = "<group>"; };
+		25935A3C27B25ECE00BD6A98 /* ReceiptInputModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptInputModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +106,10 @@
 		25935A0027B24B0B00BD6A98 /* ThanksReceipt */ = {
 			isa = PBXGroup;
 			children = (
+				25935A2E27B25A7400BD6A98 /* Service */,
+				25935A2B27B24BB100BD6A98 /* Models */,
+				25935A3427B25DD900BD6A98 /* Scene */,
 				25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */,
-				25935A0327B24B0B00BD6A98 /* ContentView.swift */,
 				25935A0527B24B0D00BD6A98 /* Assets.xcassets */,
 				25935A0727B24B0D00BD6A98 /* Preview Content */,
 			);
@@ -125,6 +139,58 @@
 				25935A1E27B24B0D00BD6A98 /* ThanksReceiptUITestsLaunchTests.swift */,
 			);
 			path = ThanksReceiptUITests;
+			sourceTree = "<group>";
+		};
+		25935A2B27B24BB100BD6A98 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				25935A2C27B24D7100BD6A98 /* ReceiptItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		25935A2E27B25A7400BD6A98 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				25935A3127B25A8C00BD6A98 /* Protocols */,
+				25935A2F27B25A8500BD6A98 /* DataProvider.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		25935A3127B25A8C00BD6A98 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				25935A3227B25A9900BD6A98 /* DataProviding.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		25935A3427B25DD900BD6A98 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				25935A3E27B25F4800BD6A98 /* Views */,
+				25935A3727B25DFF00BD6A98 /* Models */,
+				25935A3527B25DF600BD6A98 /* ReceiptView.swift */,
+				25935A3A27B25EC200BD6A98 /* ReceiptInputView.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		25935A3727B25DFF00BD6A98 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				25935A3827B25E0900BD6A98 /* ReceiptModel.swift */,
+				25935A3C27B25ECE00BD6A98 /* ReceiptInputModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		25935A3E27B25F4800BD6A98 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +323,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25935A0427B24B0B00BD6A98 /* ContentView.swift in Sources */,
+				25935A3327B25A9900BD6A98 /* DataProviding.swift in Sources */,
+				25935A2D27B24D7100BD6A98 /* ReceiptItem.swift in Sources */,
+				25935A3627B25DF600BD6A98 /* ReceiptView.swift in Sources */,
+				25935A3927B25E0900BD6A98 /* ReceiptModel.swift in Sources */,
+				25935A3027B25A8500BD6A98 /* DataProvider.swift in Sources */,
+				25935A3B27B25EC200BD6A98 /* ReceiptInputView.swift in Sources */,
 				25935A0227B24B0B00BD6A98 /* ThanksReceiptApp.swift in Sources */,
+				25935A3D27B25ECE00BD6A98 /* ReceiptInputModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +499,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -456,6 +529,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
