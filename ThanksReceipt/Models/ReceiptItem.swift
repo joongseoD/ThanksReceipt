@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ReceiptItem: Codable {
+struct ReceiptItem: Identifiable, Codable {
     var id: UUID
     var text: String
     var date: Date
