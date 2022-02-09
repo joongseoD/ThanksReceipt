@@ -8,45 +8,30 @@
 import SwiftUI
 
 struct ReceiptView: View {
-    
-    private var mockData: [ReceiptItem] = [
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-//        .init(id: .init(), text: "0", date: Date()),
-        .init(id: .init(), text: "0", date: Date()),
-        .init(id: .init(), text: "0", date: Date())
-    ]
+    @StateObject var model = ReceiptModel()
     
     var body: some View {
         VStack {
             HStack {
-                Button(action: {}) {
+                Button(action: model.saveAsImage) {
                     Text("저장")
+                        .customFont(.DungGeunMo, size: 15)
                 }
                 
                 Spacer()
                 
-                Button(action: {}) {
+                Button(action: model.addItem) {
                     Text("추가")
+                        .customFont(.DungGeunMo, size: 15)
                 }
             }
             .padding(.horizontal, 15)
             
             VStack {
-                Text("* Tanks Receipt *")
+                Text("* Thanks Receipt *")
+                    .font(.custom("DungGeunMo", size: 30))
                 Text("*****************")
+                    .customFont(.DungGeunMo, size: 30)
             }
             .padding(.vertical, 20)
             .padding(.horizontal, 15)
@@ -54,6 +39,7 @@ struct ReceiptView: View {
             VStack {
                 Text("--------------------------------------------")
                     .lineLimit(0)
+                    .customFont(.DungGeunMo, size: 20)
                     
                 HStack {
                     Text("DATE")
@@ -65,19 +51,22 @@ struct ReceiptView: View {
                 
                 Text("--------------------------------------------")
                     .lineLimit(0)
+                    .customFont(.DungGeunMo, size: 20)
             }
             .padding(.horizontal, 7.5)
             .padding(.horizontal, 15)
             
             List {
-                ForEach(mockData, id: \.id) { item in
+                ForEach(model.receiptItems, id: \.date) { item in
                     HStack {
-                        Text("date")
+                        Text(item.date)
                         Spacer()
-                        Text("itemitemitem")
+                        Text(item.text)
                         Spacer()
-                        Text("1.00")
+                        Spacer()
+                        Text(item.count)
                     }
+                    .customFont(.DungGeunMo, size: 15)
                     .padding(.horizontal, 15)
                 }
             }
@@ -86,6 +75,7 @@ struct ReceiptView: View {
             VStack {
                 Text("--------------------------------------------")
                     .lineLimit(0)
+                    .customFont(.DungGeunMo, size: 20)
                 
                 HStack {
                     Spacer()
@@ -95,6 +85,7 @@ struct ReceiptView: View {
                     
                     Text("0.00")
                 }
+                .customFont(.DungGeunMo, size: 20)
             }
             .padding(.horizontal, 15)
         }

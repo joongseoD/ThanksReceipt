@@ -8,7 +8,13 @@
 import Foundation
 
 struct ReceiptItem: Identifiable, Codable {
-    var id: UUID
+    var id: String
     var text: String
     var date: Date
+    
+    init(text: String, date: Date) {
+        self.id = UUID().uuidString
+        self.text = text
+        self.date = date
+    }
 }

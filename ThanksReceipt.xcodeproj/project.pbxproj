@@ -20,6 +20,8 @@
 		25935A3927B25E0900BD6A98 /* ReceiptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3827B25E0900BD6A98 /* ReceiptModel.swift */; };
 		25935A3B27B25EC200BD6A98 /* ReceiptInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3A27B25EC200BD6A98 /* ReceiptInputView.swift */; };
 		25935A3D27B25ECE00BD6A98 /* ReceiptInputModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3C27B25ECE00BD6A98 /* ReceiptInputModel.swift */; };
+		25BC488927B354210031E0D2 /* DungGeunMo.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25BC488827B354210031E0D2 /* DungGeunMo.otf */; };
+		25BC488D27B3552B0031E0D2 /* CustomFontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,9 @@
 		25935A3827B25E0900BD6A98 /* ReceiptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptModel.swift; sourceTree = "<group>"; };
 		25935A3A27B25EC200BD6A98 /* ReceiptInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptInputView.swift; sourceTree = "<group>"; };
 		25935A3C27B25ECE00BD6A98 /* ReceiptInputModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptInputModel.swift; sourceTree = "<group>"; };
+		25BC488827B354210031E0D2 /* DungGeunMo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DungGeunMo.otf; sourceTree = "<group>"; };
+		25BC488A27B3547F0031E0D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFontModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +111,8 @@
 		25935A0027B24B0B00BD6A98 /* ThanksReceipt */ = {
 			isa = PBXGroup;
 			children = (
+				25BC488A27B3547F0031E0D2 /* Info.plist */,
+				25BC488727B354070031E0D2 /* Font */,
 				25935A2E27B25A7400BD6A98 /* Service */,
 				25935A2B27B24BB100BD6A98 /* Models */,
 				25935A3427B25DD900BD6A98 /* Scene */,
@@ -169,6 +176,7 @@
 		25935A3427B25DD900BD6A98 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				25BC488B27B355000031E0D2 /* Modifiers */,
 				25935A3E27B25F4800BD6A98 /* Views */,
 				25935A3727B25DFF00BD6A98 /* Models */,
 				25935A3527B25DF600BD6A98 /* ReceiptView.swift */,
@@ -191,6 +199,22 @@
 			children = (
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		25BC488727B354070031E0D2 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				25BC488827B354210031E0D2 /* DungGeunMo.otf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		25BC488B27B355000031E0D2 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */,
+			);
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25935A0927B24B0D00BD6A98 /* Preview Assets.xcassets in Resources */,
+				25BC488927B354210031E0D2 /* DungGeunMo.otf in Resources */,
 				25935A0627B24B0D00BD6A98 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +353,7 @@
 				25935A3627B25DF600BD6A98 /* ReceiptView.swift in Sources */,
 				25935A3927B25E0900BD6A98 /* ReceiptModel.swift in Sources */,
 				25935A3027B25A8500BD6A98 /* DataProvider.swift in Sources */,
+				25BC488D27B3552B0031E0D2 /* CustomFontModifier.swift in Sources */,
 				25935A3B27B25EC200BD6A98 /* ReceiptInputView.swift in Sources */,
 				25935A0227B24B0B00BD6A98 /* ThanksReceiptApp.swift in Sources */,
 				25935A3D27B25ECE00BD6A98 /* ReceiptInputModel.swift in Sources */,
@@ -494,6 +520,7 @@
 				DEVELOPMENT_TEAM = 3TH3PN3T66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ThanksReceipt/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -524,6 +551,7 @@
 				DEVELOPMENT_TEAM = 3TH3PN3T66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ThanksReceipt/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

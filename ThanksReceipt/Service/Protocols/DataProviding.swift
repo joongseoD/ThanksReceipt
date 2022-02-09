@@ -10,7 +10,7 @@ import Foundation
 protocol DataProviding {
     func create(receiptItem: ReceiptItem) async throws -> Bool
     
-    func receiptItemList() async throws -> [ReceiptItem]
+    func receiptItemList(page: Int, pageCount: Int) async throws -> [ReceiptItem]
     
     func update(id: String, _ item: ReceiptItem) async throws -> Bool
     

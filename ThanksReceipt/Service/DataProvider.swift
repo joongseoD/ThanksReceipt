@@ -13,7 +13,7 @@ final class DataProvider: DataProviding {
         return true
     }
     
-    func receiptItemList() async throws -> [ReceiptItem] {
+    func receiptItemList(page: Int, pageCount: Int = 10) async throws -> [ReceiptItem] {
         return []
     }
     
