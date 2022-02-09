@@ -18,6 +18,7 @@ struct ReceiptModelComponents: ReceiptModelDependency {
 
 final class ReceiptModel: ObservableObject {
     @Published var receiptItems: [ReceiptItemModel] = []
+    @Published var totalCount: String = "0.00"
     
     private var provider: DataProviding
     
@@ -28,9 +29,13 @@ final class ReceiptModel: ObservableObject {
     }
     
     private func setup() {
-        receiptItems = [.init(text: "0", date: Date()),
-                        .init(text: "0", date: Date())]
+        let items = [ReceiptItem(text: "0", date: Date()),
+                     ReceiptItem(text: "0", date: Date())]
+        
+        receiptItems = items
             .map { ReceiptItemModel(model: $0)}
+        
+        totalCount = "\(items.count).00"
     }
 }
 
@@ -44,6 +49,7 @@ extension ReceiptModel {
     }
 }
 
+// TODO: - add section model
 struct ReceiptItemModel {
     var date: String
     var text: String

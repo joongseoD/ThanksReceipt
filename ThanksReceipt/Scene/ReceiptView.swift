@@ -83,7 +83,7 @@ struct ReceiptView: View {
                     Text("TOTAL")
                         .padding(.trailing, 15)
                     
-                    Text("0.00")
+                    Text(model.totalCount)
                 }
                 .customFont(.DungGeunMo, size: 20)
             }
