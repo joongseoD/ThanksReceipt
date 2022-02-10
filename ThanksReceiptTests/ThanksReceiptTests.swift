@@ -6,12 +6,15 @@
 //
 
 import XCTest
+import Combine
+
 @testable import ThanksReceipt
 
 class ThanksReceiptTests: XCTestCase {
-
+    
+    var cancellables: Set<AnyCancellable>!
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        self.cancellables = .init()
     }
 
     override func tearDownWithError() throws {
@@ -19,11 +22,32 @@ class ThanksReceiptTests: XCTestCase {
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+        let items = CurrentValueSubject<[ReceiptItem], Never>([
+            .init(text: "1", date: Date()),
+            .init(text: "2", date: Date()),
+            .init(text: "3", date: Date()),
+            .init(text: "4", date: Date()),
+            .init(text: "5", date: Date()),
+            .init(text: "6", date: Date()),
+            .init(text: "7", date: Date()),
+            .init(text: "8", date: Date()),
+            .init(text: "9", date: Date()),
+            .init(text: "10", date: Date()),
+            .init(text: "11", date: Date()),
+        ])
+        
+        var pageItems: [ReceiptItem] = []
+        let sut = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: 10)
+        sut.pageItems
+            .sink { items in
+                pageItems += items
+            }
+            .store(in: &cancellables)
+        
+        XCTAssertEqual(sut.pageCount, 2)
+        XCTAssertEqual(pageItems.count, 10)
+        sut.next()
+        XCTAssertEqual(pageItems.count, 11)
     }
 
     func testPerformanceExample() throws {

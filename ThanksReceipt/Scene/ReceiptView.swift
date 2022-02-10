@@ -57,7 +57,7 @@ struct ReceiptView: View {
             .padding(.horizontal, 15)
             
             List {
-                ForEach(model.receiptItems, id: \.date) { item in
+                ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
                     HStack {
                         Text(item.date)
                         Spacer()
@@ -68,6 +68,8 @@ struct ReceiptView: View {
                     }
                     .customFont(.DungGeunMo, size: 15)
                     .padding(.horizontal, 15)
+                    .padding(.top, item.topPadding)
+                    .onAppear { model.didAppearRow(offset) }
                 }
             }
             .listStyle(.plain)
@@ -89,6 +91,9 @@ struct ReceiptView: View {
             }
             .padding(.horizontal, 15)
         }
+//        .alert(item: $model.errorMessage) { message in
+//            Alert(title: Text(message), message: nil, dismissButton: .default(Text("확인")))
+//        }
     }
 }
 

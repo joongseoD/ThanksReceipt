@@ -5,14 +5,14 @@
 //  Created by Damor on 2022/02/08.
 //
 
-import Foundation
+import Combine
 
 protocol DataProviding {
-    func create(receiptItem: ReceiptItem) async throws -> Bool
+    func create(receiptItem: ReceiptItem) throws
     
-    func receiptItemList(page: Int, pageCount: Int) async throws -> [ReceiptItem]
+    func receiptItemList() -> AnyPublisher<[ReceiptItem], Error>
     
-    func update(id: String, _ item: ReceiptItem) async throws -> Bool
+    func update(id: String, _ item: ReceiptItem) throws
     
-    func delete(id: String) async throws -> Bool
+    func delete(id: String) throws
 }

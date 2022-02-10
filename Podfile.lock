@@ -1,0 +1,26 @@
+PODS:
+  - CombineExt (1.5.1)
+  - Realm (10.22.0):
+    - Realm/Headers (= 10.22.0)
+  - Realm/Headers (10.22.0)
+  - RealmSwift (10.22.0):
+    - Realm (= 10.22.0)
+
+DEPENDENCIES:
+  - CombineExt
+  - RealmSwift
+
+SPEC REPOS:
+  trunk:
+    - CombineExt
+    - Realm
+    - RealmSwift
+
+SPEC CHECKSUMS:
+  CombineExt: e081b93f38f507660550e001531a049a6825f63e
+  Realm: d9e4e5877095a6722145811f56fe89a531c9659d
+  RealmSwift: e4191b4b957fcfcbed23751ec65eec98f8173ab5
+
+PODFILE CHECKSUM: 2e8c980de167829e29870a60200cebe215d746c3
+
+COCOAPODS: 1.11.2
