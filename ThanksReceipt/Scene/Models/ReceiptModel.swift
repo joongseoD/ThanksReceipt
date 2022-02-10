@@ -26,10 +26,9 @@ final class ReceiptModel: ObservableObject {
     
     private var provider: DataProviding
     private let items = PassthroughSubject<[ReceiptItem], Never>()
-    private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize)
-    private var cancellables = Set<AnyCancellable>()
-    
     private let reload = CurrentValueSubject<Void, Never>(())
+    private var cancellables = Set<AnyCancellable>()
+    private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize)
     
     init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
         self.provider = dependency.provider
@@ -56,7 +55,7 @@ final class ReceiptModel: ObservableObject {
             .map { $0.map { ReceiptItemModel(model: $0) } }
             .receive(on: RunLoop.main)
             .sink { [weak self] items in
-                self?.receiptItems += items
+                self?.receiptItems.append(contentsOf: items)
             }
             .store(in: &cancellables)
     }
@@ -80,8 +79,7 @@ extension ReceiptModel {
     
     func didAppearRow(_ offset: Int) {
         guard offset <= receiptItems.count else { return }
-        let margin = receiptItems.count - offset
-        guard margin <= 2 else { return }
+        guard receiptItems.count - 1 == offset else { return }
         pagingController.next()
     }
 }

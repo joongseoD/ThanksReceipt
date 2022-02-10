@@ -40,6 +40,15 @@ struct ReceiptView: View {
                 Text("--------------------------------------------")
                     .lineLimit(0)
                     .customFont(.DungGeunMo, size: 20)
+                    .overlay(
+                        GeometryReader { proxy in
+                            HStack {
+                                Color.white
+                                Spacer(minLength: proxy.frame(in: .global).width - 10)
+                                Color.white
+                            }
+                        }
+                    )
                     
                 HStack {
                     Text("DATE")
@@ -48,6 +57,7 @@ struct ReceiptView: View {
                     Spacer()
                     Text("COUNT")
                 }
+                .customFont(.DungGeunMo, size: 20)
                 
                 Text("--------------------------------------------")
                     .lineLimit(0)

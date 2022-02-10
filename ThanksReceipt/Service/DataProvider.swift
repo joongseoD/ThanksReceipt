@@ -39,7 +39,6 @@ final class DataProvider: DataProviding {
                 return AnyCancellable { }
             } catch {
                 subscriber.send(completion: .failure(DataError.realm))
-                
                 return AnyCancellable { }
             }
         }

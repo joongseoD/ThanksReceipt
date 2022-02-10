@@ -23,7 +23,7 @@
 		25BC488927B354210031E0D2 /* DungGeunMo.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25BC488827B354210031E0D2 /* DungGeunMo.otf */; };
 		25BC488D27B3552B0031E0D2 /* CustomFontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */; };
 		25BC489127B3EA900031E0D2 /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC489027B3EA900031E0D2 /* Receipt.swift */; };
-		25BC489327B3F60A0031E0D2 /* PagingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC489227B3F60A0031E0D2 /* PagingItem.swift */; };
+		25BC489327B3F60A0031E0D2 /* PagingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC489227B3F60A0031E0D2 /* PagingController.swift */; };
 		711AA35CFACCAE8042336750 /* Pods_ThanksReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB26A82CE44CC4D1D95902A8 /* Pods_ThanksReceipt.framework */; };
 		A50A90776502B4F8D58AD388 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30161CA9D1F807C6C5674087 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework */; };
 		D6A0CCE215229ED14CF4D4D5 /* Pods_ThanksReceiptTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E76E38ADD6D2A15681FD8C23 /* Pods_ThanksReceiptTests.framework */; };
@@ -67,7 +67,7 @@
 		25BC488A27B3547F0031E0D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFontModifier.swift; sourceTree = "<group>"; };
 		25BC489027B3EA900031E0D2 /* Receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
-		25BC489227B3F60A0031E0D2 /* PagingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingItem.swift; sourceTree = "<group>"; };
+		25BC489227B3F60A0031E0D2 /* PagingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingController.swift; sourceTree = "<group>"; };
 		2779DE4EF50BB24ABB0A6B72 /* Pods-ThanksReceipt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThanksReceipt.release.xcconfig"; path = "Target Support Files/Pods-ThanksReceipt/Pods-ThanksReceipt.release.xcconfig"; sourceTree = "<group>"; };
 		30161CA9D1F807C6C5674087 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ThanksReceipt_ThanksReceiptUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B9255E90E596ED5E92489A /* Pods-ThanksReceiptTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThanksReceiptTests.debug.xcconfig"; path = "Target Support Files/Pods-ThanksReceiptTests/Pods-ThanksReceiptTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -272,7 +272,7 @@
 		25BC489427B3FCAB0031E0D2 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				25BC489227B3F60A0031E0D2 /* PagingItem.swift */,
+				25BC489227B3F60A0031E0D2 /* PagingController.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -529,7 +529,7 @@
 				25BC489127B3EA900031E0D2 /* Receipt.swift in Sources */,
 				25935A3327B25A9900BD6A98 /* DataProviding.swift in Sources */,
 				25935A2D27B24D7100BD6A98 /* ReceiptItem.swift in Sources */,
-				25BC489327B3F60A0031E0D2 /* PagingItem.swift in Sources */,
+				25BC489327B3F60A0031E0D2 /* PagingController.swift in Sources */,
 				25935A3627B25DF600BD6A98 /* ReceiptView.swift in Sources */,
 				25935A3927B25E0900BD6A98 /* ReceiptModel.swift in Sources */,
 				25935A3027B25A8500BD6A98 /* DataProvider.swift in Sources */,

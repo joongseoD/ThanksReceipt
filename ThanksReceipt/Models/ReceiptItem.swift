@@ -8,13 +8,20 @@
 import Foundation
 
 struct ReceiptItem: Identifiable, Codable {
-    var id: String
+    var id: String?
     var text: String
     var date: Date
     
-    init(text: String, date: Date) {
-        self.id = UUID().uuidString
+    init(id: String? = nil, text: String, date: Date) {
+        self.id = id
         self.text = text
+        self.date = date
+    }
+    
+    init?(dataModel: Receipt) {
+        guard let id = dataModel.id, let date = dataModel.date else { return nil }
+        self.id = id
+        self.text = dataModel.text
         self.date = date
     }
 }
