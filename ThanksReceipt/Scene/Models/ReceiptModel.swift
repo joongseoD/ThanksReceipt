@@ -36,6 +36,10 @@ final class ReceiptModel: ObservableObject {
         setup()
     }
     
+    deinit {
+        print("\(String(describing: self)) deinit")
+    }
+    
     private func setup() {
         reload
             .flatMap { [weak self] _ -> AnyPublisher<[ReceiptItem], Never> in
@@ -59,9 +63,7 @@ final class ReceiptModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-}
 
-extension ReceiptModel {
     func saveAsImage() {
         
     }
@@ -74,6 +76,13 @@ extension ReceiptModel {
         guard offset <= receiptItems.count else { return }
         guard receiptItems.count - 1 == offset else { return }
         pagingController.next()
+    }
+}
+
+extension ReceiptModel: ReceiptInputModelListener {
+    func didSaveRecipt(_ item: ReceiptItem) {
+        // TODO: - 날짜 찾아서 날짜 중 가장 마지막에 추가 
+        receiptItems.insert(ReceiptItemModel(model: item), at: 0)
     }
 }
 

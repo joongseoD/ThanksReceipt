@@ -12,7 +12,6 @@ struct ThanksReceiptApp: App {
     var body: some Scene {
         WindowGroup {
             ReceiptView()
-//            ReceiptInputView()
         }
     }
 }

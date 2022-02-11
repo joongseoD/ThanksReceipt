@@ -9,26 +9,42 @@ import SwiftUI
 
 struct ReceiptView: View {
     @StateObject var model = ReceiptModel()
+    @State private var showInputView = false
     
-    // TODO: - Loading
+    // TODO: - Loading, Alert, Toast
     
     var body: some View {
-        VStack {
-            ReceiptHeader(model: model)
-            
-            List {
-                ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
-                    ReceiptItemRow(item: item)
-                        .onAppear { model.didAppearRow(offset) }
+        ZStack {
+            VStack {
+                ReceiptHeader(model: model, showInputView: $showInputView)
+                
+                List {
+                    ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
+                        ReceiptItemRow(item: item)
+                            .onAppear { model.didAppearRow(offset) }
+                    }
                 }
+                .listStyle(.plain)
+                
+                ReceiptFooter(model: model)
             }
-            .listStyle(.plain)
             
-            ReceiptFooter(model: model)
+            if showInputView {
+                ZStack {
+                    LinearGradient(colors: [.white.opacity(0.8), .gray.opacity(0.8)],
+                                   startPoint: .top,
+                                   endPoint: .bottom)
+                        .background(Blur(style: .systemUltraThinMaterial).opacity(0.8))
+                        .ignoresSafeArea()
+                        .onTapGesture { showInputView = false }
+                    
+                    ReceiptInputView(dependency: ReceiptInputModelComponents(),
+                                     listener: model,
+                                     showInputView: $showInputView)
+                }
+                .transition(.opacity.animation(.easeInOut))
+            }
         }
-//        .alert(item: $model.errorMessage) { message in
-//            Alert(title: Text(message), message: nil, dismissButton: .default(Text("확인")))
-//        }
     }
 }
 

@@ -8,12 +8,6 @@
 import SwiftUI
 import Combine
 
-struct Haptic {
-    static func trigger(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .light) {
-        UIImpactFeedbackGenerator(style: style).impactOccurred()
-    }
-}
-
 protocol ReceiptInputModelDependency {
     var provider: DataProviding { get }
 }
@@ -21,6 +15,10 @@ protocol ReceiptInputModelDependency {
 struct ReceiptInputModelComponents: ReceiptInputModelDependency {
     var provider: DataProviding = DataProvider()
     // TODO: - Scheduler
+}
+
+protocol ReceiptInputModelListener: AnyObject {
+    func didSaveRecipt(_ item: ReceiptItem)
 }
 
 final class ReceiptInputModel: ObservableObject {
@@ -58,20 +56,29 @@ final class ReceiptInputModel: ObservableObject {
         return formatter
     }()
     
-    init(dependency: ReceiptInputModelDependency = ReceiptInputModelComponents()) {
+    private weak var listener: ReceiptInputModelListener?
+    
+    init(dependency: ReceiptInputModelDependency = ReceiptInputModelComponents(), listener: ReceiptInputModelListener?) {
         self.provider = dependency.provider
+        self.listener = listener
         textCount = "\(text.count)/\(maxCount)"
         dateString = dateFormatter.string(from: date)
     }
     
-    func saveReceipt() {
-        guard text.isEmpty == false else { return }
+    deinit {
+        print("\(String(describing: self)) deinit")
+    }
+    
+    func saveReceipt() -> Bool {
+        guard text.isEmpty == false else { return false }
         let receiptItem = ReceiptItem(text: text, date: date)
         do {
             try provider.create(receiptItem: receiptItem)
+            listener?.didSaveRecipt(receiptItem)
         } catch {
             errorMessage = "생성 에러\n\(error.localizedDescription)"
         }
+        return true
     }
     
 }

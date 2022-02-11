@@ -8,15 +8,21 @@
 import SwiftUI
 
 struct ReceiptInputView: View {
-    @StateObject var model = ReceiptInputModel()
+    @StateObject private var model: ReceiptInputModel
     @State private var showDatePicker = false
+    @State private var scale: CGFloat = 0.5
+    @Binding var showInputView: Bool
+    
+    init(dependency: ReceiptInputModelDependency, listener: ReceiptInputModelListener?, showInputView: Binding<Bool>) {
+        _model = StateObject(wrappedValue: ReceiptInputModel(dependency: dependency, listener: listener))
+        _showInputView = showInputView
+    }
     
     var body: some View {
         GeometryReader { proxy in
             VStack {
                 if showDatePicker {
                     datePicker
-                        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
                 } else {
                     Group {
                         HStack(spacing: 3) {
@@ -36,7 +42,6 @@ struct ReceiptInputView: View {
                             .padding(.bottom, 15)
                         
                         TextField("", text: $model.text)
-                            .lineLimit(2)
                             .customFont(.DungGeunMo, size: 16)
                         
                         LineStroke()
@@ -49,7 +54,6 @@ struct ReceiptInputView: View {
                         }
                         .padding(.bottom, 0)
                     }
-                    .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.2)))
                 }
             }
             .padding(.top, 25)
@@ -59,13 +63,19 @@ struct ReceiptInputView: View {
             .cornerRadius(7)
             .padding(.horizontal, 25)
             .position(x: proxy.frame(in: .global).width / 2, y: proxy.frame(in: .global).height / 2)
+            .scaleEffect(scale)
+            .animation(.easeInOut(duration: 0.15))
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .overlay(
                 HStack {
                     Spacer()
                     VStack {
                         Spacer()
-                        Button(action: model.saveReceipt) {
+                        Button(action: {
+                            if model.saveReceipt() {
+                                showInputView = false
+                            }
+                        }) {
                             VStack(spacing: 2) {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 20, weight: .bold))
@@ -81,6 +91,16 @@ struct ReceiptInputView: View {
                     .padding(.bottom, 10)
                 }
             )
+            .onAppear {
+                withAnimation(Animation.easeInOut(duration: 0.1)) {
+                    scale = 1
+                }
+            }
+            .onDisappear {
+                withAnimation(Animation.easeInOut(duration: 0.1)) {
+                    scale = 0
+                }
+            }
         }
     }
     
@@ -91,7 +111,7 @@ struct ReceiptInputView: View {
             .labelsHidden()
             .accentColor(.black)
             .frame(maxHeight: 300)
-            .onChange(of: model.date, perform: { newValue in
+            .onChange(of: model.date, perform: { _ in
                 showDatePicker = false
             })
     }
@@ -99,6 +119,6 @@ struct ReceiptInputView: View {
 
 struct ReceiptInputView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptInputView()
+        ReceiptInputView(dependency: ReceiptInputModelComponents(), listener: nil, showInputView: .constant(true))
     }
 }

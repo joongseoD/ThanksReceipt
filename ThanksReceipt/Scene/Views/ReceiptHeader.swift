@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ReceiptHeader: View {
     @ObservedObject var model: ReceiptModel
+    @Binding var showInputView: Bool
     
     var body: some View {
         VStack {
@@ -20,7 +21,7 @@ struct ReceiptHeader: View {
                 
                 Spacer()
                 
-                Button(action: model.addItem) {
+                Button(action: { showInputView = true }) {
                     Text("추가")
                         .customFont(.DungGeunMo, size: 15)
                 }
@@ -54,6 +55,6 @@ struct ReceiptHeader: View {
 
 struct ReceiptHeader_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptHeader(model: ReceiptModel())
+        ReceiptHeader(model: ReceiptModel(), showInputView: .constant(false))
     }
 }
