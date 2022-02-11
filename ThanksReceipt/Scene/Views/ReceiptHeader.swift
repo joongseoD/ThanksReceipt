@@ -15,24 +15,23 @@ struct ReceiptHeader: View {
         VStack {
             HStack {
                 Button(action: model.saveAsImage) {
-                    Text("저장")
-                        .customFont(.DungGeunMo, size: 15)
+                    Image(systemName: "printer")
                 }
                 
                 Spacer()
                 
                 Button(action: { showInputView = true }) {
-                    Text("추가")
-                        .customFont(.DungGeunMo, size: 15)
+                    Image(systemName: "pencil")
                 }
             }
+            .font(.title2)
+            .foregroundColor(Color.text)
             
             VStack {
                 Text("* Thanks Receipt *")
-                    .font(.custom("DungGeunMo", size: 30))
                 Text("******************")
-                    .customFont(.DungGeunMo, size: 30)
             }
+            .customFont(.DungGeunMo, size: 30)
             .padding(.vertical, 20)
             
             LineStroke()
@@ -48,7 +47,6 @@ struct ReceiptHeader: View {
             
             LineStroke()
         }
-        .padding(.horizontal, 7.5)
         .padding(.horizontal, 15)
     }
 }

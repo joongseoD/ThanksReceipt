@@ -28,6 +28,8 @@ struct ReceiptView: View {
                 
                 ReceiptFooter(model: model)
             }
+            .padding(.vertical, 15)
+            .background(Color.background)
             
             if showInputView {
                 ZStack {
@@ -45,6 +47,7 @@ struct ReceiptView: View {
                 .transition(.opacity.animation(.easeInOut))
             }
         }
+        .clipShape(ZigZag())
     }
 }
 
