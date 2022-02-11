@@ -19,9 +19,9 @@ struct ReceiptModelComponents: ReceiptModelDependency {
 }
 
 final class ReceiptModel: ObservableObject {
-    @Published var receiptItems: [ReceiptItemModel] = []
-    @Published var totalCount: String = "0.00"
-    @Published var errorMessage: String?
+    @Published private(set) var receiptItems: [ReceiptItemModel] = []
+    @Published private(set) var totalCount: String = "0.00"
+    @Published private(set) var errorMessage: String?
     let pageSize = 10
     
     private var provider: DataProviding
@@ -67,14 +67,7 @@ extension ReceiptModel {
     }
     
     func addItem() {
-        // TODO: - 입력뷰 띄워서
-        do {
-            let item = ReceiptItem(text: "\(receiptItems.count)", date: Date())
-            try provider.create(receiptItem: item)
-            receiptItems.insert(ReceiptItemModel(model: item), at: 0)
-        } catch {
-            errorMessage = "생성 에러\n\(error.localizedDescription)"
-        }
+        
     }
     
     func didAppearRow(_ offset: Int) {
