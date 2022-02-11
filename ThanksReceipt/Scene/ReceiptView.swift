@@ -30,26 +30,15 @@ struct ReceiptView: View {
             VStack {
                 Text("* Thanks Receipt *")
                     .font(.custom("DungGeunMo", size: 30))
-                Text("*****************")
+                Text("******************")
                     .customFont(.DungGeunMo, size: 30)
             }
             .padding(.vertical, 20)
             .padding(.horizontal, 15)
             
             VStack {
-                Text("--------------------------------------------")
-                    .lineLimit(0)
-                    .customFont(.DungGeunMo, size: 20)
-                    .overlay(
-                        GeometryReader { proxy in
-                            HStack {
-                                Color.white
-                                Spacer(minLength: proxy.frame(in: .global).width - 10)
-                                Color.white
-                            }
-                        }
-                    )
-                    
+                LineStroke()
+                
                 HStack {
                     Text("DATE")
                     Spacer()
@@ -59,9 +48,7 @@ struct ReceiptView: View {
                 }
                 .customFont(.DungGeunMo, size: 20)
                 
-                Text("--------------------------------------------")
-                    .lineLimit(0)
-                    .customFont(.DungGeunMo, size: 20)
+                LineStroke()
             }
             .padding(.horizontal, 7.5)
             .padding(.horizontal, 15)
@@ -85,9 +72,7 @@ struct ReceiptView: View {
             .listStyle(.plain)
             
             VStack {
-                Text("--------------------------------------------")
-                    .lineLimit(0)
-                    .customFont(.DungGeunMo, size: 20)
+                LineStroke()
                 
                 HStack {
                     Spacer()
