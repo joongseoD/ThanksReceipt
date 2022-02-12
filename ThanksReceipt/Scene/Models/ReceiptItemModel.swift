@@ -16,7 +16,7 @@ struct ReceiptItemModel {
     
     private let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M/d (E)"
+        dateFormatter.dateFormat = "M/d(E)"
         dateFormatter.locale = Locale(identifier: "ko")
         return dateFormatter
     }()

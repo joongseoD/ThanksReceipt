@@ -21,14 +21,12 @@ struct ReceiptItemRow: View {
                 .lineLimit(2)
                 .customFont(.DungGeunMo, size: 15)
             
-            Spacer(minLength: 7)
             Spacer()
             
             Text(item.count)
+                .frame(minWidth: 50, alignment: .trailing)
                 .customFont(.DungGeunMo, size: 15)
         }
-        .padding(.horizontal, 15)
-        .padding(.top, item.topPadding)
     }
 }
 

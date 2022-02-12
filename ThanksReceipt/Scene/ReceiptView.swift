@@ -16,18 +16,23 @@ struct ReceiptView: View {
             ZStack {
                 VStack {
                     ReceiptHeader(model: model)
+                        .padding(.horizontal, 20)
                     
                     List {
                         ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
                             ReceiptItemRow(item: item)
+                                .padding(.top, item.topPadding)
+                                .padding(.horizontal, 5)
                                 .listRowBackground(Color.background)
                                 .onAppear { model.didAppearRow(offset) }
                                 .onTapGesture { model.didTapRow(item.id) }
                         }
+                        .listRowSeparatorTint(.clear)
                     }
-                    .listStyle(.sidebar)
+                    .listStyle(.plain)
                     
                     ReceiptFooter(model: model)
+                        .padding(.horizontal, 20)
                 }
                 .padding(.vertical, 15)
                 .background(Color.background)

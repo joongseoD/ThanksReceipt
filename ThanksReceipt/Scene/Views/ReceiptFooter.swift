@@ -24,7 +24,6 @@ struct ReceiptFooter: View {
             }
             .customFont(.DungGeunMo, size: 20)
         }
-        .padding(.horizontal, 15)
     }
 }
 

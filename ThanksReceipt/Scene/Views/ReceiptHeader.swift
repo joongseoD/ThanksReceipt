@@ -46,7 +46,6 @@ struct ReceiptHeader: View {
             
             LineStroke()
         }
-        .padding(.horizontal, 15)
     }
 }
 
