@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import CombineExt
 
-struct PagingItems<Item> {
+struct PagingItems<Item>: Hashable & Equatable where Item: Hashable & Equatable {
     let page: Int
     let pageCount: Int
     var items: [Item]
@@ -17,8 +17,6 @@ struct PagingItems<Item> {
     var isFirstPage: Bool { page == 0 }
     var isLastPage: Bool { page == pageCount }
 }
-
-extension PagingItems: Hashable & Equatable where Item: Hashable & Equatable { }
 
 final class PagingController<Item> {
     private let page = CurrentValueSubject<Int, Never>(0)
@@ -28,7 +26,7 @@ final class PagingController<Item> {
     
     var pageItems: AnyPublisher<[Item], Never> { _pageItems.eraseToAnyPublisher() }
     var pageCount: Int = 0
-    var size: Int
+    let size: Int
     
     init(items: AnyPublisher<[Item], Never>, size: Int) {
         self.size = size
