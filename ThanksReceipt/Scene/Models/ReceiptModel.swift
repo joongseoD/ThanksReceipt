@@ -27,9 +27,11 @@ final class ReceiptModel: ObservableObject {
     private let items = PassthroughSubject<[ReceiptItem], Never>()
     private let reload = CurrentValueSubject<Void, Never>(())
     private let selectedItemId = PassthroughSubject<String, Never>()
+    private let _captureListHeight = PassthroughSubject<CGFloat, Never>()
     private var cancellables = Set<AnyCancellable>()
     private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize)
     
+    var captureListHeight: AnyPublisher<CGFloat, Never> { _captureListHeight.eraseToAnyPublisher() }
     let pageSize = 10
     
     init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
@@ -58,6 +60,7 @@ final class ReceiptModel: ObservableObject {
             .store(in: &cancellables)
         
         pagingController.pageItems
+            .filter { !$0.isEmpty }
             .map { $0.map { ReceiptItemModel(model: $0) } }
             .receive(on: RunLoop.main)
             .sink { [weak self] items in
@@ -83,7 +86,7 @@ final class ReceiptModel: ObservableObject {
     }
     
     func saveAsImage() {
-        // https://www.hackingwithswift.com/quick-start/swiftui/how-to-convert-a-swiftui-view-to-an-image
+        _captureListHeight.send(CGFloat(receiptItems.count * 30))
     }
     
     func didAppearRow(_ offset: Int) {

@@ -163,7 +163,6 @@
 		25935A0027B24B0B00BD6A98 /* ThanksReceipt */ = {
 			isa = PBXGroup;
 			children = (
-				25BC488A27B3547F0031E0D2 /* Info.plist */,
 				25BC48A327B69EB20031E0D2 /* Extensions */,
 				25BC488727B354070031E0D2 /* Font */,
 				25BC489427B3FCAB0031E0D2 /* Util */,
@@ -172,6 +171,7 @@
 				25935A3427B25DD900BD6A98 /* Scene */,
 				25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */,
 				25935A0527B24B0D00BD6A98 /* Assets.xcassets */,
+				25BC488A27B3547F0031E0D2 /* Info.plist */,
 				25935A0727B24B0D00BD6A98 /* Preview Content */,
 			);
 			path = ThanksReceipt;
