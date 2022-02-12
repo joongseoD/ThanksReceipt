@@ -12,7 +12,7 @@ protocol DataProviding {
     
     func receiptItemList() -> AnyPublisher<[ReceiptItem], Error>
     
-    func update(id: String, _ item: ReceiptItem) throws
+    func update(_ item: ReceiptItem) throws
     
     func delete(id: String) throws
 }

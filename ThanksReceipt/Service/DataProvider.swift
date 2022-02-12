@@ -44,7 +44,7 @@ final class DataProvider: DataProviding {
         }
     }
     
-    func update(id: String, _ item: ReceiptItem) throws {
+    func update(_ item: ReceiptItem) throws {
         let realm = try Realm()
         let receipt = Receipt(model: item)
         try realm.write {

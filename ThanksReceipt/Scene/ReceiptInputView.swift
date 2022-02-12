@@ -11,11 +11,9 @@ struct ReceiptInputView: View {
     @StateObject private var model: ReceiptInputModel
     @State private var showDatePicker = false
     @State private var scale: CGFloat = 0.5
-    @Binding var showInputView: Bool
     
-    init(dependency: ReceiptInputModelDependency, listener: ReceiptInputModelListener?, showInputView: Binding<Bool>) {
+    init(dependency: ReceiptInputModelDependency, listener: ReceiptInputModelListener?) {
         _model = StateObject(wrappedValue: ReceiptInputModel(dependency: dependency, listener: listener))
-        _showInputView = showInputView
     }
     
     var body: some View {
@@ -72,11 +70,7 @@ struct ReceiptInputView: View {
                     Spacer()
                     VStack {
                         Spacer()
-                        Button(action: {
-                            if model.saveReceipt() {
-                                showInputView = false
-                            }
-                        }) {
+                        Button(action: model.saveReceipt) {
                             VStack(spacing: 2) {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 20, weight: .bold))
@@ -120,6 +114,6 @@ struct ReceiptInputView: View {
 
 struct ReceiptInputView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptInputView(dependency: ReceiptInputModelComponents(), listener: nil, showInputView: .constant(true))
+        ReceiptInputView(dependency: ReceiptInputModelComponents(mode: .create), listener: nil)
     }
 }

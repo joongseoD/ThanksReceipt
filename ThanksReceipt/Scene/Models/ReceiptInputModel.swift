@@ -10,21 +10,30 @@ import Combine
 
 protocol ReceiptInputModelDependency {
     var provider: DataProviding { get }
+    var mode: ReceiptInputModel.InputMode { get }
 }
 
 struct ReceiptInputModelComponents: ReceiptInputModelDependency {
     var provider: DataProviding = DataProvider()
+    var mode: ReceiptInputModel.InputMode
     // TODO: - Scheduler
 }
 
 protocol ReceiptInputModelListener: AnyObject {
     func didSaveRecipt(_ item: ReceiptItem)
+    func didUpdateReceipt(_ item: ReceiptItem)
 }
 
 final class ReceiptInputModel: ObservableObject {
+    enum InputMode {
+        case create
+        case edit(_ model: ReceiptItem)
+    }
+    
     @Published private(set) var errorMessage: String = ""
     @Published private(set) var textCount: String = ""
     @Published private(set) var dateString: String = ""
+    @Published var inputMode: InputMode?
     @Published var date: Date = Date() {
         didSet {
             dateString = dateFormatter.string(from: date)
@@ -58,27 +67,53 @@ final class ReceiptInputModel: ObservableObject {
     
     private weak var listener: ReceiptInputModelListener?
     
-    init(dependency: ReceiptInputModelDependency = ReceiptInputModelComponents(), listener: ReceiptInputModelListener?) {
+    init(
+        dependency: ReceiptInputModelDependency = ReceiptInputModelComponents(mode: .create),
+        listener: ReceiptInputModelListener?
+    ) {
         self.provider = dependency.provider
+        self.inputMode = dependency.mode
         self.listener = listener
         textCount = "\(text.count)/\(maxCount)"
         dateString = dateFormatter.string(from: date)
+        
+        $inputMode
+            .compactMap { mode -> ReceiptItem? in
+                switch mode {
+                case let .edit(item):
+                    return item
+                default:
+                    return nil
+                }
+            }
+            .sink { [weak self] item in
+                self?.text = item.text
+                self?.date = item.date
+            }
+            .store(in: &cancellables)
     }
     
     deinit {
         print("\(String(describing: self)) deinit")
     }
     
-    func saveReceipt() -> Bool {
-        guard text.isEmpty == false else { return false }
-        let receiptItem = ReceiptItem(text: text, date: date)
+    func saveReceipt() {
+        guard text.isEmpty == false else { return }
+        
         do {
-            try provider.create(receiptItem: receiptItem)
-            listener?.didSaveRecipt(receiptItem)
+            if case let .edit(item) = inputMode {
+                let editItem = ReceiptItem(id: item.id, text: text, date: date)
+                try provider.update(editItem)
+                listener?.didUpdateReceipt(editItem)
+            } else {
+                let receiptItem = ReceiptItem(text: text, date: date)
+                try provider.create(receiptItem: receiptItem)
+                listener?.didSaveRecipt(receiptItem)
+            }
+            
         } catch {
             errorMessage = "생성 에러\n\(error.localizedDescription)"
         }
-        return true
     }
     
 }

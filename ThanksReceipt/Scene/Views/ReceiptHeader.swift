@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ReceiptHeader: View {
     @ObservedObject var model: ReceiptModel
-    @Binding var showInputView: Bool
     
     var body: some View {
         VStack {
@@ -20,7 +19,7 @@ struct ReceiptHeader: View {
                 
                 Spacer()
                 
-                Button(action: { showInputView = true }) {
+                Button(action: model.addItem) {
                     Image(systemName: "pencil")
                 }
             }
@@ -53,6 +52,6 @@ struct ReceiptHeader: View {
 
 struct ReceiptHeader_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptHeader(model: ReceiptModel(), showInputView: .constant(false))
+        ReceiptHeader(model: ReceiptModel())
     }
 }

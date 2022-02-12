@@ -22,6 +22,8 @@ final class ReceiptModel: ObservableObject {
     @Published private(set) var receiptItems: [ReceiptItemModel] = []
     @Published private(set) var totalCount: String = "0.00"
     @Published private(set) var errorMessage: String?
+    @Published var inputMode: ReceiptInputModel.InputMode?
+    
     let pageSize = 10
     
     private var provider: DataProviding
@@ -69,7 +71,7 @@ final class ReceiptModel: ObservableObject {
     }
     
     func addItem() {
-        
+        inputMode = .create
     }
     
     func didAppearRow(_ offset: Int) {
@@ -77,12 +79,36 @@ final class ReceiptModel: ObservableObject {
         guard receiptItems.count - 1 == offset else { return }
         pagingController.next()
     }
+    
+    func didTapRow(_ offset: Int) {
+//        guard offset <= items.value.count else { return }
+//        guard receiptItems.indices.contains(offset) else { return }
+//        let item = receiptItems[offset]
+        
+        let item = ReceiptItem(id: "", text: "abcd", date: Date())
+        inputMode = .edit(item)
+    }
+    
+    func didTapBackgroundView() {
+        closeInputMode()
+    }
 }
 
 extension ReceiptModel: ReceiptInputModelListener {
     func didSaveRecipt(_ item: ReceiptItem) {
-        // TODO: - 날짜 찾아서 날짜 중 가장 마지막에 추가 
+        // TODO: - 날짜 찾아서 날짜 중 가장 마지막에 추가
         receiptItems.insert(ReceiptItemModel(model: item), at: 0)
+        closeInputMode()
+    }
+    
+    func didUpdateReceipt(_ item: ReceiptItem) {
+        // TODO: - Update
+        print("did update")
+        closeInputMode()
+    }
+    
+    private func closeInputMode() {
+        inputMode = nil
     }
 }
 
