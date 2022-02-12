@@ -19,7 +19,7 @@ struct PagingItems<Item>: Hashable & Equatable where Item: Hashable & Equatable 
 }
 
 final class PagingController<Item> {
-    private let page = CurrentValueSubject<Int, Never>(0)
+    private let page = CurrentValueSubject<Int, Never>(1)
     private let _pageItems = PassthroughSubject<[Item], Never>()
     private let nextPage = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -42,11 +42,7 @@ final class PagingController<Item> {
             .filter { $1.isEmpty == false }
             .map { [weak self] (page, items) -> [Item] in
                 guard let self = self else { return [] }
-                let lowerBound = page * self.size
-                guard page <= self.pageCount, lowerBound < items.count else { return [] }
-                
-                var upperBound = min(lowerBound + self.size, items.count)
-                upperBound = max(upperBound, lowerBound)
+                let upperBound = min(page * self.size, items.count)
                 return Array(items[0..<upperBound])
             }
             .sink { [weak self] in self?._pageItems.send($0) }
