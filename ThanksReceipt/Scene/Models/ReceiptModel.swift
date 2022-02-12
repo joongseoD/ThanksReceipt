@@ -61,7 +61,6 @@ final class ReceiptModel: ObservableObject {
             .map { $0.map { ReceiptItemModel(model: $0) } }
             .receive(on: RunLoop.main)
             .sink { [weak self] items in
-//                self?.receiptItems.append(contentsOf: items)
                 self?.receiptItems = items
             }
             .store(in: &cancellables)
