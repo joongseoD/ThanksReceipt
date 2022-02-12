@@ -29,8 +29,7 @@ final class DataProvider: DataProviding {
                 let realm = try Realm()
                 let items = Array(realm.objects(Receipt.self).sorted(by: \.date, ascending: false))
                     .compactMap { receipt -> ReceiptItem? in
-                        guard let date = receipt.date else { return nil }
-                        return ReceiptItem(text: receipt.text, date: date)
+                        return ReceiptItem(dataModel: receipt)
                     }
                 
                 subscriber.send(items)

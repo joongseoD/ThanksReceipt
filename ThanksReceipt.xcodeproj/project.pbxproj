@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2575F8A127B7CBF600ED3994 /* ReceiptItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A027B7CBF600ED3994 /* ReceiptItemModel.swift */; };
 		25935A0227B24B0B00BD6A98 /* ThanksReceiptApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */; };
 		25935A0627B24B0D00BD6A98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25935A0527B24B0D00BD6A98 /* Assets.xcassets */; };
 		25935A0927B24B0D00BD6A98 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25935A0827B24B0D00BD6A98 /* Preview Assets.xcassets */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2575F8A027B7CBF600ED3994 /* ReceiptItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptItemModel.swift; sourceTree = "<group>"; };
 		259359FE27B24B0B00BD6A98 /* ThanksReceipt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThanksReceipt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksReceiptApp.swift; sourceTree = "<group>"; };
 		25935A0527B24B0D00BD6A98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				25935A3827B25E0900BD6A98 /* ReceiptModel.swift */,
+				2575F8A027B7CBF600ED3994 /* ReceiptItemModel.swift */,
 				25935A3C27B25ECE00BD6A98 /* ReceiptInputModel.swift */,
 			);
 			path = Models;
@@ -575,6 +578,7 @@
 				25BC488D27B3552B0031E0D2 /* CustomFontModifier.swift in Sources */,
 				25935A3B27B25EC200BD6A98 /* ReceiptInputView.swift in Sources */,
 				25BC489827B5F1D60031E0D2 /* LineStroke.swift in Sources */,
+				2575F8A127B7CBF600ED3994 /* ReceiptItemModel.swift in Sources */,
 				25935A0227B24B0B00BD6A98 /* ThanksReceiptApp.swift in Sources */,
 				25935A3D27B25ECE00BD6A98 /* ReceiptInputModel.swift in Sources */,
 			);

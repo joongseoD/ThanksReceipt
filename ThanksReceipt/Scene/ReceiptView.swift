@@ -21,7 +21,7 @@ struct ReceiptView: View {
                         ReceiptItemRow(item: item)
                             .listRowBackground(Color.background)
                             .onAppear { model.didAppearRow(offset) }
-                            .onTapGesture { model.didTapRow(offset) }
+                            .onTapGesture { model.didTapRow(item.id) }
                     }
                 }
                 .listStyle(.sidebar)

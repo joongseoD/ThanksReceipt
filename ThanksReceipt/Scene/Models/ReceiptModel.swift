@@ -23,14 +23,14 @@ final class ReceiptModel: ObservableObject {
     @Published private(set) var totalCount: String = "0.00"
     @Published private(set) var errorMessage: String?
     @Published var inputMode: ReceiptInputModel.InputMode?
-    
-    let pageSize = 10
-    
     private var provider: DataProviding
     private let items = PassthroughSubject<[ReceiptItem], Never>()
     private let reload = CurrentValueSubject<Void, Never>(())
+    private let selectedItemId = PassthroughSubject<String, Never>()
     private var cancellables = Set<AnyCancellable>()
     private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize)
+    
+    let pageSize = 10
     
     init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
         self.provider = dependency.provider
@@ -61,32 +61,40 @@ final class ReceiptModel: ObservableObject {
             .map { $0.map { ReceiptItemModel(model: $0) } }
             .receive(on: RunLoop.main)
             .sink { [weak self] items in
-                self?.receiptItems.append(contentsOf: items)
+//                self?.receiptItems.append(contentsOf: items)
+                self?.receiptItems = items
             }
             .store(in: &cancellables)
-    }
-
-    func saveAsImage() {
         
+        selectedItemId
+            .withLatestFrom(items) { ($0, $1) }
+            .compactMap { id, items in
+                return items.first(where: { $0.id == id })
+            }
+            .sink { [weak self]  in self?.editItem($0) }
+            .store(in: &cancellables)
+    }
+    
+    func editItem(_ item: ReceiptItem) {
+        inputMode = .edit(item)
     }
     
     func addItem() {
         inputMode = .create
     }
     
+    func saveAsImage() {
+        // https://www.hackingwithswift.com/quick-start/swiftui/how-to-convert-a-swiftui-view-to-an-image
+    }
+    
     func didAppearRow(_ offset: Int) {
         guard offset <= receiptItems.count else { return }
         guard receiptItems.count - 1 == offset else { return }
-        pagingController.next()
+        pagingController.fetchNext()
     }
     
-    func didTapRow(_ offset: Int) {
-//        guard offset <= items.value.count else { return }
-//        guard receiptItems.indices.contains(offset) else { return }
-//        let item = receiptItems[offset]
-        
-        let item = ReceiptItem(id: "", text: "abcd", date: Date())
-        inputMode = .edit(item)
+    func didTapRow(_ id: String) {
+        selectedItemId.send(id)
     }
     
     func didTapBackgroundView() {
@@ -96,57 +104,16 @@ final class ReceiptModel: ObservableObject {
 
 extension ReceiptModel: ReceiptInputModelListener {
     func didSaveRecipt(_ item: ReceiptItem) {
-        // TODO: - 날짜 찾아서 날짜 중 가장 마지막에 추가
-        receiptItems.insert(ReceiptItemModel(model: item), at: 0)
+        reload.send(())
         closeInputMode()
     }
     
     func didUpdateReceipt(_ item: ReceiptItem) {
-        // TODO: - Update
-        print("did update")
+        reload.send(())
         closeInputMode()
     }
     
     private func closeInputMode() {
         inputMode = nil
-    }
-}
-
-struct ReceiptItemModel {
-    var date: String
-    var text: String
-    var count: String = ""
-    var isSubItem: Bool = false
-    
-    private let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M/d (E)"
-        dateFormatter.locale = Locale(identifier: "ko")
-        return dateFormatter
-    }()
-    
-    var topPadding: CGFloat {
-        isSubItem ? 0 : 10
-    }
-    
-    init(date: String, text: String, count: String, isSubItem: Bool = false) {
-        self.date = date
-        self.text = text
-        self.count = count
-        self.isSubItem = isSubItem
-        setup()
-    }
-    
-    init(model: ReceiptItem, isSubItem: Bool = false) {
-        self.text = model.text
-        self.count = ""
-        self.date = dateFormatter.string(from: model.date)
-        self.isSubItem = isSubItem
-        
-        setup()
-    }
-    
-    private func setup() {
-        
     }
 }

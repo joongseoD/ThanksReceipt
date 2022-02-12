@@ -49,13 +49,13 @@ final class PagingController<Item> {
                 
                 var upperBound = min(lowerBound + self.size, items.count)
                 upperBound = max(upperBound, lowerBound)
-                return Array(items[lowerBound..<upperBound])
+                return Array(items[0..<upperBound])
             }
             .sink { [weak self] in self?._pageItems.send($0) }
             .store(in: &cancellables)
     }
     
-    func next() {
+    func fetchNext() {
         let nextPage = page.value + 1
         guard nextPage <= pageCount else { return }
         page.send(nextPage)

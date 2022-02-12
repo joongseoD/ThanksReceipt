@@ -34,6 +34,6 @@ struct ReceiptItemRow: View {
 
 struct ReceiptItemRow_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptItemRow(item: ReceiptItemModel(date: "", text: "", count: ""))
+        ReceiptItemRow(item: ReceiptItemModel(id: "", date: "", text: "", count: ""))
     }
 }
