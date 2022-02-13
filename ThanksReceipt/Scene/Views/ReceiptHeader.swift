@@ -12,20 +12,6 @@ struct ReceiptHeader: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button(action: model.saveAsImage) {
-                    Image(systemName: "printer")
-                }
-                
-                Spacer()
-                
-                Button(action: model.addItem) {
-                    Image(systemName: "pencil")
-                }
-            }
-            .font(.title2)
-            .foregroundColor(Color.text)
-            
             VStack {
                 Text("* Thanks Receipt *")
                 Text("******************")

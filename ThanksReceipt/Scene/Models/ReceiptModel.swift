@@ -50,8 +50,10 @@ final class ReceiptModel: ObservableObject {
                 guard let self = self else { return Just([]).eraseToAnyPublisher() }
                 return self.provider.receiptItemList()
                     .subscribe(on: DispatchQueue.global())
+                    .receive(on: RunLoop.main)
                     .catch { [weak self] error -> AnyPublisher<[ReceiptItem], Never> in
                         self?.errorMessage = error.localizedDescription
+                        print("# err", error.localizedDescription)
                         return Just([]).eraseToAnyPublisher()
                     }
                     .eraseToAnyPublisher()

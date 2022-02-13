@@ -23,7 +23,19 @@ struct ReceiptFooter: View {
                 Text(model.totalCount)
             }
             .customFont(.DungGeunMo, size: 20)
+            
+            HStack {
+                Text("**")
+                Spacer()
+                Text("THANKS FOR\nGIVING ME A DAY!")
+                    .multilineTextAlignment(.center)
+                Spacer()
+                Text("**")
+            }
+            .customFont(.DungGeunMo, size: 20)
+            .padding(.top, 5)
         }
+        .padding(.vertical, 10)
     }
 }
 

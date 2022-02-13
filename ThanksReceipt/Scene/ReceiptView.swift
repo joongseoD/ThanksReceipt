@@ -15,27 +15,33 @@ struct ReceiptView: View {
         GeometryReader { proxy in
             ZStack {
                 VStack {
-                    ReceiptHeader(model: model)
+                    ToolBar(model: model)
                         .padding(.horizontal, 20)
                     
-                    List {
-                        ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
-                            ReceiptItemRow(item: item)
-                                .padding(.top, item.topPadding)
-                                .padding(.horizontal, 5)
-                                .listRowBackground(Color.background)
-                                .onAppear { model.didAppearRow(offset) }
-                                .onTapGesture { model.didTapRow(item.id) }
+                    VStack {
+                        ReceiptHeader(model: model)
+                            .padding(.horizontal, 20)
+                        
+                        List {
+                            ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
+                                ReceiptItemRow(item: item)
+                                    .padding(.top, item.topPadding)
+                                    .padding(.horizontal, 5)
+                                    .listRowBackground(Color.background)
+                                    .onAppear { model.didAppearRow(offset) }
+                                    .onTapGesture { model.didTapRow(item.id) }
+                            }
+                            .listRowSeparatorTint(.clear)
                         }
-                        .listRowSeparatorTint(.clear)
+                        .listStyle(.plain)
+                        
+                        ReceiptFooter(model: model)
+                            .padding(.horizontal, 20)
                     }
-                    .listStyle(.plain)
-                    
-                    ReceiptFooter(model: model)
-                        .padding(.horizontal, 20)
+                    .padding(.vertical, 15)
+                    .background(Color.background)
+                    .clipShape(ZigZag())
                 }
-                .padding(.vertical, 15)
-                .background(Color.background)
                 
                 if model.inputMode != nil {
                     ZStack {
@@ -52,7 +58,6 @@ struct ReceiptView: View {
                     .transition(.opacity.animation(.easeInOut))
                 }
             }
-            .clipShape(ZigZag())
             .onReceive(model.captureListHeight) {
                 print(model.receiptItems.count, $0)
                 let snapshot = takeScreenshot(origin: CGPoint(x: 0, y: 10), size: CGSize(width: proxy.size.width, height: proxy.size.height + $0))
@@ -70,19 +75,19 @@ struct ReceiptView_Previews: PreviewProvider {
 
 extension View {
     func snapshot() -> UIImage {
-          let controller = UIHostingController(rootView: self.edgesIgnoringSafeArea(.all))
-          let view = controller.view
-
-          let targetSize = controller.view.intrinsicContentSize
-          view?.bounds = CGRect(origin: .zero, size: targetSize)
-          view?.backgroundColor = .clear
-
-          let renderer = UIGraphicsImageRenderer(size: targetSize)
-
-          return renderer.image { _ in
-              view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-          }
-      }
+        let controller = UIHostingController(rootView: self.edgesIgnoringSafeArea(.all))
+        let view = controller.view
+        
+        let targetSize = controller.view.intrinsicContentSize
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
+        view?.backgroundColor = .clear
+        
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        
+        return renderer.image { _ in
+            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+    }
 }
 
 extension UIView {
