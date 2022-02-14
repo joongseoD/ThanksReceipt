@@ -15,9 +15,28 @@ enum DataError: Error {
 }
 
 final class DataProvider: DataProviding {
+    
+    private let schemeVersion: UInt64 = 1
+    
+    init() {
+        dataMigrationIfNeeded()
+    }
+    
+    private func dataMigrationIfNeeded() {
+        let config = Realm.Configuration(schemaVersion: schemeVersion) { [weak self] migration, oldSchemaVersion in
+            guard let self = self else { return }
+            print("## Scheme \(oldSchemaVersion) / \(self.schemeVersion)")
+            guard oldSchemaVersion < self.schemeVersion else { return }
+            migration.enumerateObjects(ofType: Receipt.className()) { oldObject, newObject in
+                // do something
+            }
+        }
+        Realm.Configuration.defaultConfiguration = config
+    }
+    
     func create(receiptItem: ReceiptItem) throws {
         let realm = try Realm()
-        let dataModel = Receipt(text: receiptItem.text, date: receiptItem.date)
+        let dataModel = Receipt(text: receiptItem.text, date: receiptItem.date, createdDate: Date())
         try realm.write {
             realm.add(dataModel)
         }
@@ -27,7 +46,10 @@ final class DataProvider: DataProviding {
         return AnyPublisher<[ReceiptItem], Error>.create { subscriber in
             do {
                 let realm = try Realm()
-                let items = Array(realm.objects(Receipt.self).sorted(by: \.date, ascending: false))
+                let sortProperties = [SortDescriptor(keyPath: "date", ascending: false),
+                                      SortDescriptor(keyPath: "createdDate", ascending: false)]
+                
+                let items = Array(realm.objects(Receipt.self).sorted(by: sortProperties))
                     .compactMap { receipt -> ReceiptItem? in
                         return ReceiptItem(dataModel: receipt)
                     }

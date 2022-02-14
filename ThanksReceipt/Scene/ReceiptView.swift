@@ -22,18 +22,26 @@ struct ReceiptView: View {
                         ReceiptHeader(model: model)
                             .padding(.horizontal, 20)
                         
-                        List {
-                            ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
-                                ReceiptItemRow(item: item)
-                                    .padding(.top, item.topPadding)
-                                    .padding(.horizontal, 5)
-                                    .listRowBackground(Color.background)
-                                    .onAppear { model.didAppearRow(offset) }
-                                    .onTapGesture { model.didTapRow(item.id) }
+                        ScrollViewReader { scrollProxy in
+                            ScrollView {
+                                LazyVStack {
+                                    ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
+                                        ReceiptItemRow(item: item)
+                                            .frame(height: 20)
+                                            .padding(.top, item.topPadding)
+                                            .padding(.horizontal, 20)
+                                            .id(item)
+                                            .onAppear { model.didAppearRow(offset) }
+                                            .onTapGesture { model.didTapRow(item.id) }
+                                    }
+                                }
+                                .transition(.move(edge: .bottom))
                             }
-                            .listRowSeparatorTint(.clear)
+                            .onChange(of: model.scrollFocusItem, perform: { newValue in
+                                guard let focusItem = newValue else { return }
+                                scrollProxy.scrollTo(focusItem, anchor: .bottom)
+                            })
                         }
-                        .listStyle(.plain)
                         
                         ReceiptFooter(model: model)
                             .padding(.horizontal, 20)

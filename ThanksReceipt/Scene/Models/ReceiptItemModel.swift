@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ReceiptItemModel {
+struct ReceiptItemModel: Hashable {
     var id: String
     var date: String
     var text: String

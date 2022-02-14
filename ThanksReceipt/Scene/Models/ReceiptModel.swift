@@ -23,6 +23,7 @@ final class ReceiptModel: ObservableObject {
     @Published private(set) var totalCount: String = "0.00"
     @Published private(set) var errorMessage: String?
     @Published var inputMode: ReceiptInputModel.InputMode?
+    @Published var scrollFocusItem: ReceiptItemModel?
     private var provider: DataProviding
     private let items = PassthroughSubject<[ReceiptItem], Never>()
     private let reload = CurrentValueSubject<Void, Never>(())
@@ -64,9 +65,11 @@ final class ReceiptModel: ObservableObject {
         pagingController.pageItems
             .filter { !$0.isEmpty }
             .map { $0.map { ReceiptItemModel(model: $0) } }
+            .map { $0.reversed() }
             .receive(on: RunLoop.main)
             .sink { [weak self] items in
-                self?.receiptItems = items
+                self?.receiptItems = Array(items)
+                self?.scrollFocusItem = self?.receiptItems.last
             }
             .store(in: &cancellables)
         
@@ -92,8 +95,7 @@ final class ReceiptModel: ObservableObject {
     }
     
     func didAppearRow(_ offset: Int) {
-        guard offset <= receiptItems.count else { return }
-        guard receiptItems.count - 1 == offset else { return }
+        guard receiptItems.count >= pageSize, offset == 0 else { return }
         pagingController.fetchNext()
     }
     
