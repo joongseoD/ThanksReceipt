@@ -39,7 +39,6 @@ final class PagingController<Item> {
             .store(in: &cancellables)
         
         Publishers.CombineLatest(page, items)
-            .filter { $1.isEmpty == false }
             .map { [weak self] (page, items) -> [Item] in
                 guard let self = self else { return [] }
                 let upperBound = min(page * self.size, items.count)

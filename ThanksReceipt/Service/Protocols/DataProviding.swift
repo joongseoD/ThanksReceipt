@@ -5,12 +5,13 @@
 //  Created by Damor on 2022/02/08.
 //
 
+import Foundation
 import Combine
 
 protocol DataProviding {
     func create(receiptItem: ReceiptItem) throws
     
-    func receiptItemList() -> AnyPublisher<[ReceiptItem], Error>
+    func receiptItemList(in date: Date) -> AnyPublisher<[ReceiptItem], Error>
     
     func update(_ item: ReceiptItem) throws
     

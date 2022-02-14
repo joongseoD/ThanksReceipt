@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		2575F8A127B7CBF600ED3994 /* ReceiptItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A027B7CBF600ED3994 /* ReceiptItemModel.swift */; };
 		2575F8A327B91C5400ED3994 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A227B91C5400ED3994 /* ToolBar.swift */; };
+		2575F8A527BA5A9300ED3994 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A427BA5A9300ED3994 /* Date+Extensions.swift */; };
+		2575F8A727BA5AB800ED3994 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A627BA5AB800ED3994 /* UIView+Extensions.swift */; };
+		2575F8A927BA5EAC00ED3994 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A827BA5EAC00ED3994 /* DatePickerView.swift */; };
 		25935A0227B24B0B00BD6A98 /* ThanksReceiptApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */; };
 		25935A0627B24B0D00BD6A98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25935A0527B24B0D00BD6A98 /* Assets.xcassets */; };
 		25935A0927B24B0D00BD6A98 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25935A0827B24B0D00BD6A98 /* Preview Assets.xcassets */; };
@@ -59,6 +62,9 @@
 /* Begin PBXFileReference section */
 		2575F8A027B7CBF600ED3994 /* ReceiptItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptItemModel.swift; sourceTree = "<group>"; };
 		2575F8A227B91C5400ED3994 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
+		2575F8A427BA5A9300ED3994 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		2575F8A627BA5AB800ED3994 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		2575F8A827BA5EAC00ED3994 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		259359FE27B24B0B00BD6A98 /* ThanksReceipt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThanksReceipt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksReceiptApp.swift; sourceTree = "<group>"; };
 		25935A0527B24B0D00BD6A98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -262,6 +268,7 @@
 				25BC489D27B5F4C40031E0D2 /* ReceiptItemRow.swift */,
 				25BC48A127B658590031E0D2 /* Blur.swift */,
 				25BC48A627B6A0960031E0D2 /* ZigZag.swift */,
+				2575F8A827BA5EAC00ED3994 /* DatePickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -311,6 +318,8 @@
 			isa = PBXGroup;
 			children = (
 				25BC48A427B69EBE0031E0D2 /* Color+Extensions.swift */,
+				2575F8A427BA5A9300ED3994 /* Date+Extensions.swift */,
+				2575F8A627BA5AB800ED3994 /* UIView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -565,10 +574,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				25BC48A027B6582E0031E0D2 /* Haptic.swift in Sources */,
+				2575F8A527BA5A9300ED3994 /* Date+Extensions.swift in Sources */,
 				25BC489127B3EA900031E0D2 /* Receipt.swift in Sources */,
 				25935A3327B25A9900BD6A98 /* DataProviding.swift in Sources */,
 				25935A2D27B24D7100BD6A98 /* ReceiptItem.swift in Sources */,
 				25BC489E27B5F4C40031E0D2 /* ReceiptItemRow.swift in Sources */,
+				2575F8A927BA5EAC00ED3994 /* DatePickerView.swift in Sources */,
 				25BC489327B3F60A0031E0D2 /* PagingController.swift in Sources */,
 				25BC48A227B658590031E0D2 /* Blur.swift in Sources */,
 				25935A3627B25DF600BD6A98 /* ReceiptView.swift in Sources */,
@@ -576,6 +587,7 @@
 				25935A3027B25A8500BD6A98 /* DataProvider.swift in Sources */,
 				25BC48A727B6A0960031E0D2 /* ZigZag.swift in Sources */,
 				25BC489C27B5F4010031E0D2 /* ReceiptFooter.swift in Sources */,
+				2575F8A727BA5AB800ED3994 /* UIView+Extensions.swift in Sources */,
 				25BC48A527B69EBF0031E0D2 /* Color+Extensions.swift in Sources */,
 				25BC489A27B5F3F80031E0D2 /* ReceiptHeader.swift in Sources */,
 				25BC488D27B3552B0031E0D2 /* CustomFontModifier.swift in Sources */,

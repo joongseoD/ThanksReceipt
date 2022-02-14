@@ -9,15 +9,26 @@ import SwiftUI
 
 struct ReceiptHeader: View {
     @ObservedObject var model: ReceiptModel
+    @Binding var showMonthPicker: Bool
     
     var body: some View {
         VStack {
             VStack {
+                HStack {
+                    Text(model.monthText)
+                    Image(systemName: "chevron.compact.down")
+                        .resizable()
+                        .frame(width: 10, height: 5)
+                }
+                .customFont(.DungGeunMo, size: 22)
+                .padding(.bottom, 5)
+                .onTapGesture { showMonthPicker = true }
+                
                 Text("* Thanks Receipt *")
                 Text("******************")
             }
             .customFont(.DungGeunMo, size: 30)
-            .padding(.vertical, 20)
+            .padding(.bottom, 20)
             
             LineStroke()
             
@@ -37,6 +48,6 @@ struct ReceiptHeader: View {
 
 struct ReceiptHeader_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptHeader(model: ReceiptModel())
+        ReceiptHeader(model: ReceiptModel(), showMonthPicker: .constant(false))
     }
 }

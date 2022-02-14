@@ -11,11 +11,13 @@ import Combine
 protocol ReceiptInputModelDependency {
     var provider: DataProviding { get }
     var mode: ReceiptInputModel.InputMode { get }
+    var date: Date { get }
 }
 
 struct ReceiptInputModelComponents: ReceiptInputModelDependency {
     var provider: DataProviding = DataProvider()
     var mode: ReceiptInputModel.InputMode
+    var date: Date = Date()
     // TODO: - Scheduler
 }
 
@@ -34,7 +36,7 @@ final class ReceiptInputModel: ObservableObject {
     @Published private(set) var textCount: String = ""
     @Published private(set) var dateString: String = ""
     @Published var inputMode: InputMode?
-    @Published var date: Date = Date() {
+    @Published var date: Date {
         didSet {
             dateString = dateFormatter.string(from: date)
         }
@@ -73,7 +75,9 @@ final class ReceiptInputModel: ObservableObject {
     ) {
         self.provider = dependency.provider
         self.inputMode = dependency.mode
+        self.date = dependency.date
         self.listener = listener
+        
         textCount = "\(text.count)/\(maxCount)"
         dateString = dateFormatter.string(from: date)
         

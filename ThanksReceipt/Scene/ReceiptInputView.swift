@@ -20,7 +20,9 @@ struct ReceiptInputView: View {
         GeometryReader { proxy in
             VStack {
                 if showDatePicker {
-                    datePicker
+                    DatePickerView(selection: $model.date,
+                                   pickerStyle: GraphicalDatePickerStyle(),
+                                   components: [.date]) { _ in showDatePicker = false }
                 } else {
                     Group {
                         HStack(spacing: 3) {
@@ -97,18 +99,6 @@ struct ReceiptInputView: View {
                 }
             }
         }
-    }
-    
-    var datePicker: some View {
-        DatePicker("", selection: $model.date, in: ...Date(), displayedComponents: [.date])
-            .datePickerStyle(GraphicalDatePickerStyle())
-            .environment(\.locale, Locale(identifier: "Ko"))
-            .labelsHidden()
-            .accentColor(.black)
-            .frame(maxHeight: 300)
-            .onChange(of: model.date, perform: { _ in
-                showDatePicker = false
-            })
     }
 }
 

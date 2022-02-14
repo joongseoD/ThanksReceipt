@@ -21,9 +21,12 @@ struct ReceiptModelComponents: ReceiptModelDependency {
 final class ReceiptModel: ObservableObject {
     @Published private(set) var receiptItems: [ReceiptSectionModel] = []
     @Published private(set) var totalCount: String = "0.00"
+    @Published private(set) var monthText: String = ""
     @Published private(set) var errorMessage: String?
     @Published var inputMode: ReceiptInputModel.InputMode?
     @Published var scrollFocusItem: ReceiptItemModel?
+    @Published var selectedMonth: Date = Date()
+
     private var provider: DataProviding
     private let items = PassthroughSubject<[ReceiptItem], Never>()
     private let reload = CurrentValueSubject<Void, Never>(())
@@ -34,6 +37,14 @@ final class ReceiptModel: ObservableObject {
     
     var captureListHeight: AnyPublisher<CGFloat, Never> { _captureListHeight.eraseToAnyPublisher() }
     let pageSize = 100
+    
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM, yyyy"
+        formatter.locale = Locale(identifier: "En")
+        return formatter
+    }()
+    
     
     init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
         self.provider = dependency.provider
@@ -47,9 +58,10 @@ final class ReceiptModel: ObservableObject {
     
     private func setup() {
         reload
-            .flatMap { [weak self] _ -> AnyPublisher<[ReceiptItem], Never> in
+            .withLatestFrom($selectedMonth)
+            .flatMap { [weak self] month -> AnyPublisher<[ReceiptItem], Never> in
                 guard let self = self else { return Just([]).eraseToAnyPublisher() }
-                return self.provider.receiptItemList()
+                return self.provider.receiptItemList(in: month)
                     .subscribe(on: DispatchQueue.global())
                     .receive(on: RunLoop.main)
                     .catch { [weak self] error -> AnyPublisher<[ReceiptItem], Never> in
@@ -63,7 +75,6 @@ final class ReceiptModel: ObservableObject {
             .store(in: &cancellables)
         
         pagingController.pageItems
-            .filter { !$0.isEmpty }
             .map { $0.map { ReceiptItemModel(model: $0) } }
             .map { Array($0.reversed()) }
             .map { itemModels -> [ReceiptSectionModel] in
@@ -79,16 +90,14 @@ final class ReceiptModel: ObservableObject {
                 }
             }
             .receive(on: RunLoop.main)
-            .sink { [weak self] sectionModels in
-                self?.receiptItems = sectionModels
-            }
+            .assign(to: \.receiptItems, on: self)
             .store(in: &cancellables)
         
         $receiptItems
             .filter { !$0.isEmpty }
             .first()
             .map { $0.last?.items.last ?? $0.last?.header }
-            .sink { [weak self] in self?.scrollFocusItem = $0 }
+            .assign(to: \.scrollFocusItem, on: self)
             .store(in: &cancellables)
         
         selectedItemId
@@ -97,6 +106,13 @@ final class ReceiptModel: ObservableObject {
                 return items.first(where: { $0.id == id })
             }
             .sink { [weak self]  in self?.editItem($0) }
+            .store(in: &cancellables)
+        
+        $selectedMonth
+            .compactMap { [weak self] date in
+                self?.dateFormatter.string(from: date)
+            }
+            .assign(to: \.monthText, on: self)
             .store(in: &cancellables)
     }
     
@@ -123,6 +139,11 @@ final class ReceiptModel: ObservableObject {
     
     func didTapBackgroundView() {
         closeInputMode()
+    }
+    
+    func didChangeMonth(_ date: Date) {
+        selectedMonth = date
+        reload.send(())
     }
 }
 

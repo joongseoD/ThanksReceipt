@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ReceiptView: View {
     @StateObject var model = ReceiptModel()
+    @State private var showMonthPicker = false
     // TODO: - Loading, Alert, Toast
     
     var body: some View {
@@ -19,7 +20,7 @@ struct ReceiptView: View {
                         .padding(.horizontal, 20)
                     
                     VStack {
-                        ReceiptHeader(model: model)
+                        ReceiptHeader(model: model, showMonthPicker: $showMonthPicker)
                             .padding(.horizontal, 20)
                         
                         ScrollViewReader { scrollProxy in
@@ -71,10 +72,20 @@ struct ReceiptView: View {
                             .ignoresSafeArea()
                             .onTapGesture(perform: model.didTapBackgroundView)
                         
-                        ReceiptInputView(dependency: ReceiptInputModelComponents(mode: model.inputMode!),
+                        ReceiptInputView(dependency: ReceiptInputModelComponents(mode: model.inputMode!,
+                                                                                 date: model.selectedMonth),
                                          listener: model)
                     }
                     .transition(.opacity.animation(.easeInOut))
+                }
+                
+                if showMonthPicker {
+                    DatePickerView(selection: $model.selectedMonth,
+                                   pickerStyle: WheelDatePickerStyle(),
+                                   components: [.date]) { date in
+                        showMonthPicker = false
+                        model.didChangeMonth(date)
+                    }
                 }
             }
             .onReceive(model.captureListHeight) {
@@ -106,31 +117,5 @@ extension View {
         return renderer.image { _ in
             view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
-    }
-}
-
-extension UIView {
-    var renderedImage: UIImage {
-        // rect of capure
-        let rect = self.bounds
-        // create the context of bitmap
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
-        let context: CGContext = UIGraphicsGetCurrentContext()!
-        self.layer.render(in: context)
-        // get a image from current context bitmap
-        let capturedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        return capturedImage
-    }
-}
-
-extension View {
-    func takeScreenshot(origin: CGPoint, size: CGSize) -> UIImage {
-        let window = UIWindow(frame: CGRect(origin: origin, size: size))
-        let hosting = UIHostingController(rootView: self)
-        hosting.view.frame = window.frame
-        window.addSubview(hosting.view)
-        window.makeKeyAndVisible()
-        return hosting.view.renderedImage
     }
 }
