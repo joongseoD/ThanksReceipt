@@ -28,24 +28,29 @@ struct ReceiptView: View {
                                 LazyVStack {
                                     ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, section in
                                         Section(
-                                            header: ReceiptItemRow(sectionModel: section)
+                                            header:
+                                                Button(action: { model.didTapRow(section.header.id) }) {
+                                                    ReceiptItemRow(sectionModel: section)
+                                                }
+                                                .foregroundColor(.black)
                                                 .frame(height: 20)
                                                 .padding(.horizontal, 20)
                                                 .id(section.header.id)
-                                                .onAppear { model.didAppearRow(offset) }
-                                                .onTapGesture { model.didTapRow(section.header.id) },
+                                                .onAppear { model.didAppearRow(offset) },
                                             footer: LineStroke()
                                                 .foregroundColor(.gray)
                                                 .opacity(0.3)
                                                 .padding(.horizontal, 20)
                                         ) {
                                             ForEach(Array(section.items.enumerated()), id: \.offset) { offset, item in
-                                                ReceiptItemRow(text: item.text)
-                                                    .frame(height: 20)
-                                                    .padding(.horizontal, 20)
-                                                    .id(item.id)
-                                                    .onAppear { model.didAppearRow(offset) }
-                                                    .onTapGesture { model.didTapRow(item.id) }
+                                                Button(action: { model.didTapRow(item.id) }) {
+                                                    ReceiptItemRow(text: item.text)
+                                                }
+                                                .foregroundColor(.black)
+                                                .frame(height: 20)
+                                                .padding(.horizontal, 20)
+                                                .id(item.id)
+                                                .onAppear { model.didAppearRow(offset) }
                                             }
                                         }
                                     }
