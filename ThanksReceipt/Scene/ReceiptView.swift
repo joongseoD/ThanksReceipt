@@ -31,16 +31,19 @@ struct ReceiptView: View {
                                             header: ReceiptItemRow(sectionModel: section)
                                                 .frame(height: 20)
                                                 .padding(.horizontal, 20)
-                                                .id(section.header)
+                                                .id(section.header.id)
                                                 .onAppear { model.didAppearRow(offset) }
                                                 .onTapGesture { model.didTapRow(section.header.id) },
-                                            footer: LineStroke().foregroundColor(.gray).opacity(0.3)
+                                            footer: LineStroke()
+                                                .foregroundColor(.gray)
+                                                .opacity(0.3)
+                                                .padding(.horizontal, 20)
                                         ) {
                                             ForEach(Array(section.items.enumerated()), id: \.offset) { offset, item in
                                                 ReceiptItemRow(text: item.text)
                                                     .frame(height: 20)
                                                     .padding(.horizontal, 20)
-                                                    .id(item)
+                                                    .id(item.id)
                                                     .onAppear { model.didAppearRow(offset) }
                                                     .onTapGesture { model.didTapRow(item.id) }
                                             }
@@ -49,9 +52,9 @@ struct ReceiptView: View {
                                 }
                                 .transition(.move(edge: .bottom))
                             }
-                            .onChange(of: model.scrollFocusItem, perform: { newValue in
-                                guard let focusItem = newValue else { return }
-                                scrollProxy.scrollTo(focusItem, anchor: .bottom)
+                            .onChange(of: model.scrollToId, perform: { newValue in
+                                guard let focusID = newValue else { return }
+                                scrollProxy.scrollTo(focusID, anchor: .bottom)
                             })
                         }
                         
@@ -80,12 +83,22 @@ struct ReceiptView: View {
                 }
                 
                 if showMonthPicker {
-                    DatePickerView(selection: $model.selectedMonth,
-                                   pickerStyle: WheelDatePickerStyle(),
-                                   components: [.date]) { date in
-                        showMonthPicker = false
-                        model.didChangeMonth(date)
+                    ZStack {
+                        LinearGradient(colors: [.white.opacity(0.8), .gray.opacity(0.8)],
+                                       startPoint: .top,
+                                       endPoint: .bottom)
+                            .background(Blur(style: .systemUltraThinMaterial).opacity(0.8))
+                            .ignoresSafeArea()
+                            .onTapGesture(perform: model.didTapBackgroundView)
+                        
+                        DatePickerView(selection: $model.selectedMonth,
+                                       pickerStyle: WheelDatePickerStyle(),
+                                       components: [.date]) { date in
+                            showMonthPicker = false
+                            model.didChangeMonth(date)
+                        }
                     }
+                    .transition(.opacity.animation(.easeInOut))
                 }
             }
             .onReceive(model.captureListHeight) {

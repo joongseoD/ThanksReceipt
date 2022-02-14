@@ -12,7 +12,8 @@ struct ReceiptSectionModel {
     var items: [ReceiptItemModel]
     
     var text: String { header.text }
-    var count: String { "\(items.count + 1).00" }
+    var countString: String { "\(count).00" }
+    var count: Int { items.count + 1 }
     var date: String { header.date }
 }
 

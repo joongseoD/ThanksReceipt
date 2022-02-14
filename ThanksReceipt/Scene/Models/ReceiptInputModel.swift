@@ -110,8 +110,9 @@ final class ReceiptInputModel: ObservableObject {
                 try provider.update(editItem)
                 listener?.didUpdateReceipt(editItem)
             } else {
-                let receiptItem = ReceiptItem(text: text, date: date)
-                try provider.create(receiptItem: receiptItem)
+                var receiptItem = ReceiptItem(text: text, date: date)
+                let newId = try provider.create(receiptItem: receiptItem)
+                receiptItem.id = newId
                 listener?.didSaveRecipt(receiptItem)
             }
             

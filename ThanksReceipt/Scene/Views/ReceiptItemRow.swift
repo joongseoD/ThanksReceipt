@@ -15,7 +15,7 @@ struct ReceiptItemRow: View {
     init(sectionModel: ReceiptSectionModel) {
         self.date = sectionModel.date
         self.text = sectionModel.text
-        self.count = sectionModel.count
+        self.count = sectionModel.countString
     }
     
     init(text: String) {

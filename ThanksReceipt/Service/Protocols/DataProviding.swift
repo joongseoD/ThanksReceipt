@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol DataProviding {
-    func create(receiptItem: ReceiptItem) throws
+    func create(receiptItem: ReceiptItem) throws -> String?
     
     func receiptItemList(in date: Date) -> AnyPublisher<[ReceiptItem], Error>
     

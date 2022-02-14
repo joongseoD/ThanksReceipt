@@ -11,7 +11,7 @@ struct DatePickerView<Style: DatePickerStyle>: View {
     @Binding var selection: Date
     var pickerStyle: Style
     var components: DatePickerComponents
-    var onChange: ((Date) -> Void)
+    var onChange: ((Date) -> Void)?
     
     var body: some View {
         DatePicker("", selection: $selection, in: ...Date(), displayedComponents: components)
@@ -20,7 +20,7 @@ struct DatePickerView<Style: DatePickerStyle>: View {
             .labelsHidden()
             .accentColor(.black)
             .frame(maxHeight: 300)
-            .onChange(of: selection, perform: onChange)
+            .onChange(of: selection, perform: { onChange?($0) })
     }
 }
 

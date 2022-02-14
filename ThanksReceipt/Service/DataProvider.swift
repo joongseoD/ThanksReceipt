@@ -34,12 +34,13 @@ final class DataProvider: DataProviding {
         Realm.Configuration.defaultConfiguration = config
     }
     
-    func create(receiptItem: ReceiptItem) throws {
+    func create(receiptItem: ReceiptItem) throws -> String? {
         let realm = try Realm()
         let dataModel = Receipt(text: receiptItem.text, date: receiptItem.date, createdDate: Date())
         try realm.write {
             realm.add(dataModel)
         }
+        return dataModel.id
     }
     
     func receiptItemList(in date: Date) -> AnyPublisher<[ReceiptItem], Error> {
