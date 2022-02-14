@@ -8,22 +8,35 @@
 import SwiftUI
 
 struct ReceiptItemRow: View {
-    var item: ReceiptItemModel
+    var date: String = ""
+    var text: String = ""
+    var count: String = ""
+    
+    init(sectionModel: ReceiptSectionModel) {
+        self.date = sectionModel.date
+        self.text = sectionModel.text
+        self.count = sectionModel.count
+    }
+    
+    init(text: String) {
+        self.text = text
+    }
     
     var body: some View {
         HStack(alignment: .center, spacing: 2.5) {
-            Text(item.date)
+            Text(date)
                 .customFont(.DungGeunMo, size: 13)
+                .frame(width: 60, alignment: .leading)
             
-            Spacer()
-            
-            Text(item.text)
+            Text(text)
                 .lineLimit(2)
+                .multilineTextAlignment(.leading)
                 .customFont(.DungGeunMo, size: 15)
+                .padding(.leading, 10)
             
             Spacer()
             
-            Text(item.count)
+            Text(count)
                 .frame(minWidth: 50, alignment: .trailing)
                 .customFont(.DungGeunMo, size: 15)
         }
@@ -32,6 +45,6 @@ struct ReceiptItemRow: View {
 
 struct ReceiptItemRow_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptItemRow(item: ReceiptItemModel(id: "", date: "", text: "", count: ""))
+        ReceiptItemRow(text: "")
     }
 }

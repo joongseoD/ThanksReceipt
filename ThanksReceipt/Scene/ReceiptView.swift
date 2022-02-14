@@ -25,14 +25,25 @@ struct ReceiptView: View {
                         ScrollViewReader { scrollProxy in
                             ScrollView {
                                 LazyVStack {
-                                    ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, item in
-                                        ReceiptItemRow(item: item)
-                                            .frame(height: 20)
-                                            .padding(.top, item.topPadding)
-                                            .padding(.horizontal, 20)
-                                            .id(item)
-                                            .onAppear { model.didAppearRow(offset) }
-                                            .onTapGesture { model.didTapRow(item.id) }
+                                    ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, section in
+                                        Section(
+                                            header: ReceiptItemRow(sectionModel: section)
+                                                .frame(height: 20)
+                                                .padding(.horizontal, 20)
+                                                .id(section.header)
+                                                .onAppear { model.didAppearRow(offset) }
+                                                .onTapGesture { model.didTapRow(section.header.id) },
+                                            footer: LineStroke().foregroundColor(.gray).opacity(0.3)
+                                        ) {
+                                            ForEach(Array(section.items.enumerated()), id: \.offset) { offset, item in
+                                                ReceiptItemRow(text: item.text)
+                                                    .frame(height: 20)
+                                                    .padding(.horizontal, 20)
+                                                    .id(item)
+                                                    .onAppear { model.didAppearRow(offset) }
+                                                    .onTapGesture { model.didTapRow(item.id) }
+                                            }
+                                        }
                                     }
                                 }
                                 .transition(.move(edge: .bottom))

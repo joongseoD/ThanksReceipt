@@ -19,7 +19,7 @@ struct ReceiptModelComponents: ReceiptModelDependency {
 }
 
 final class ReceiptModel: ObservableObject {
-    @Published private(set) var receiptItems: [ReceiptItemModel] = []
+    @Published private(set) var receiptItems: [ReceiptSectionModel] = []
     @Published private(set) var totalCount: String = "0.00"
     @Published private(set) var errorMessage: String?
     @Published var inputMode: ReceiptInputModel.InputMode?
@@ -30,10 +30,10 @@ final class ReceiptModel: ObservableObject {
     private let selectedItemId = PassthroughSubject<String, Never>()
     private let _captureListHeight = PassthroughSubject<CGFloat, Never>()
     private var cancellables = Set<AnyCancellable>()
-    private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize)
+    private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize) // TODO: - scheduler
     
     var captureListHeight: AnyPublisher<CGFloat, Never> { _captureListHeight.eraseToAnyPublisher() }
-    let pageSize = 10
+    let pageSize = 100
     
     init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
         self.provider = dependency.provider
@@ -65,12 +65,30 @@ final class ReceiptModel: ObservableObject {
         pagingController.pageItems
             .filter { !$0.isEmpty }
             .map { $0.map { ReceiptItemModel(model: $0) } }
-            .map { $0.reversed() }
-            .receive(on: RunLoop.main)
-            .sink { [weak self] items in
-                self?.receiptItems = Array(items)
-                self?.scrollFocusItem = self?.receiptItems.last
+            .map { Array($0.reversed()) }
+            .map { itemModels -> [ReceiptSectionModel] in
+                itemModels.reduce([]) { sectionModels, itemModel -> [ReceiptSectionModel] in
+                    var sectionModels = sectionModels
+                    if let index = sectionModels.firstIndex(where: { $0.date == itemModel.date }) {
+                        sectionModels[index].items.append(itemModel)
+                        return sectionModels
+                    } else {
+                        sectionModels.append(ReceiptSectionModel(header: itemModel, items: []))
+                    }
+                    return sectionModels
+                }
             }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] sectionModels in
+                self?.receiptItems = sectionModels
+            }
+            .store(in: &cancellables)
+        
+        $receiptItems
+            .filter { !$0.isEmpty }
+            .first()
+            .map { $0.last?.items.last ?? $0.last?.header }
+            .sink { [weak self] in self?.scrollFocusItem = $0 }
             .store(in: &cancellables)
         
         selectedItemId
