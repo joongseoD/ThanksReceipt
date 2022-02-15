@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct ToolBar: View {
-    @EnvironmentObject var model: ReceiptModel
+    var didTapSave: (() -> Void)
+    var didTapAdd: (() -> Void)
     
     var body: some View {
         HStack {
-            Button(action: model.saveAsImage) {
+            Button(action: didTapSave) {
                 Image(systemName: "printer")
             }
             
             Spacer()
             
-            Button(action: model.addItem) {
+            Button(action: didTapAdd) {
                 Image(systemName: "pencil")
             }
         }
@@ -29,6 +30,6 @@ struct ToolBar: View {
 
 struct ToolBar_Previews: PreviewProvider {
     static var previews: some View {
-        ToolBar()
+        ToolBar(didTapSave: { }, didTapAdd: { })
     }
 }

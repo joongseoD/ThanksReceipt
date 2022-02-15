@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReceiptFooter<Label: View>: View {
     var totalCount: String
-    var label: () -> Label
+    var label: (() -> Label)
     
     init(totalCount: String, @ViewBuilder label: @escaping () -> Label) {
         self.totalCount = totalCount

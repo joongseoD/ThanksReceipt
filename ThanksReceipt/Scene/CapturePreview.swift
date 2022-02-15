@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct CapturePreview: View {
+    @EnvironmentObject var receiptModel: ReceiptModel
     @StateObject var model = CapturePreviewModel()
     @Binding var showPreview: Bool
+    @FocusState private var focusField: Field?
     @State private var willDisapper = false
-    @FocusState private var focusField: ReceiptInputView.Field?
     @State private var scale: CGFloat = 1
     @State private var headerText: String = Constants.headerText
     @State private var footerText: String = Constants.footerText
-    @EnvironmentObject var receiptModel: ReceiptModel
     
     var body: some View {
         GeometryReader { proxy in
@@ -35,7 +35,7 @@ struct CapturePreview: View {
                             VStack {
                                 TextField("", text: $headerText)
                                     .customFont(.DungGeunMo, size: 30)
-                                    .focused($focusField, equals: .text)
+                                    .focused($focusField, equals: .header)
                                     .multilineTextAlignment(.center)
                                 
                                 LineStroke()
@@ -51,7 +51,7 @@ struct CapturePreview: View {
                             VStack {
                                 TextField("", text: $footerText)
                                     .customFont(.DungGeunMo, size: 20)
-                                    .focused($focusField, equals: .text)
+                                    .focused($focusField, equals: .footer)
                                     .multilineTextAlignment(.center)
                                 
                                 LineStroke()
@@ -72,7 +72,6 @@ struct CapturePreview: View {
             withAnimation(Animation.easeInOut(duration: 0.1)) {
                 scale = 0.87
             }
-//            focusField = .text
         }
         .onChange(of: willDisapper) { newValue in
             guard newValue else { return }
@@ -98,6 +97,7 @@ struct CapturePreview: View {
                     Spacer()
                     Text("배경색 변경")
                         .customFont(.DungGeunMo, size: 19)
+                        .onTapGesture {  }
                 }
             }
         }
@@ -151,27 +151,15 @@ struct CapturePreview: View {
     }
 }
 
-final class CapturePreviewModel: ObservableObject {
-    private let maxSelectableCount = 7
-    @Published var selectedColor: Color = .white
-    
-    var selectedItems: [ReceiptItemModel] = []
-    
-    var totalCount: String { sectionModels.totalCount }
-        
-    var sectionModels: [ReceiptSectionModel] { selectedItems.mapToSectionModel() }
-    
-    func didSelectItem(_ item: ReceiptItemModel) {
-        guard selectedItems.count <= maxSelectableCount else {
-            print("## 7가지만 선택해라")
-            return
-        }
-        selectedItems.append(item)
-    }
-}
-
 struct CapturePreview_Previews: PreviewProvider {
     static var previews: some View {
         CapturePreview(showPreview: .constant(false))
+    }
+}
+
+extension CapturePreview {
+    enum Field {
+        case header
+        case footer
     }
 }

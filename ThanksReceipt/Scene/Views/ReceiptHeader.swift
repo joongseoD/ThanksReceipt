@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReceiptHeader<Label: View>: View {
     var date: String
-    var label: () -> Label
+    var label: (() -> Label)
     var didTapMonth: (() -> Void)?
     
     init(date: String, @ViewBuilder label: @escaping () -> Label, didTapMonth: (() -> Void)? = nil) {
@@ -21,17 +21,20 @@ struct ReceiptHeader<Label: View>: View {
     var body: some View {
         VStack {
             VStack {
-                HStack {
-                    Text(date)
-                    if didTapMonth != nil {
-                        Image(systemName: "chevron.compact.down")
-                            .resizable()
-                            .frame(width: 10, height: 5)
+                Button(action: { didTapMonth?() }) {
+                    HStack {
+                        Text(date)
+                        if didTapMonth != nil {
+                            Image(systemName: "chevron.compact.down")
+                                .resizable()
+                                .frame(width: 10, height: 5)
+                        }
                     }
                 }
                 .customFont(.DungGeunMo, size: 22)
+                .foregroundColor(.black)
+                .disabled(didTapMonth == nil)
                 .padding(.bottom, 5)
-                .onTapGesture { didTapMonth?() }
                 
                 label()
                 Text("******************")

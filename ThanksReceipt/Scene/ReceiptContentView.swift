@@ -15,7 +15,7 @@ struct ReceiptContentView: View {
         VStack {
             ReceiptHeader(date: model.monthText,
                           label: { Text(Constants.headerText) },
-                          didTapMonth: { showMonthPicker = false })
+                          didTapMonth: { showMonthPicker = true })
                 .padding(.horizontal, 20)
             
             ReceiptList(items: model.receiptItems,

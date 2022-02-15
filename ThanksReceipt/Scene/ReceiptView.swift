@@ -18,12 +18,12 @@ struct ReceiptView: View {
         GeometryReader { proxy in
             ZStack {
                 VStack {
-                    ToolBar()
+                    ToolBar(didTapSave: { showPreview = true },
+                            didTapAdd: model.addItem)
                         .padding(.horizontal, 20)
                     
                     ReceiptContentView(showMonthPicker: $showMonthPicker)
                 }
-                .environmentObject(model)
                 
                 if let inputMode = model.inputMode {
                     ReceiptInputView(
@@ -52,9 +52,9 @@ struct ReceiptView: View {
                 
                 if showPreview {
                     CapturePreview(showPreview: $showPreview)
-                        .environmentObject(model)
                 }
             }
+            .environmentObject(model)
             .onReceive(model.captureListHeight) {
                 print(model.receiptItems.count, $0)
                 showPreview = true
@@ -66,22 +66,5 @@ struct ReceiptView: View {
 struct ReceiptView_Previews: PreviewProvider {
     static var previews: some View {
         ReceiptView()
-    }
-}
-
-extension View {
-    func snapshot() -> UIImage {
-        let controller = UIHostingController(rootView: self.edgesIgnoringSafeArea(.all))
-        let view = controller.view
-        
-        let targetSize = controller.view.intrinsicContentSize
-        view?.bounds = CGRect(origin: .zero, size: targetSize)
-        view?.backgroundColor = .clear
-        
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-        
-        return renderer.image { _ in
-            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
     }
 }
