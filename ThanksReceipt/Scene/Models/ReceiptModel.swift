@@ -78,25 +78,13 @@ final class ReceiptModel: ObservableObject {
         pagingController.pageItems
             .map { $0.map { ReceiptItemModel(model: $0) } }
             .map { Array($0.reversed()) }
-            .map { itemModels -> [ReceiptSectionModel] in
-                itemModels.reduce([]) { sectionModels, itemModel -> [ReceiptSectionModel] in
-                    var sectionModels = sectionModels
-                    if let index = sectionModels.firstIndex(where: { $0.date == itemModel.date }) {
-                        sectionModels[index].items.append(itemModel)
-                        return sectionModels
-                    } else {
-                        sectionModels.append(ReceiptSectionModel(header: itemModel, items: []))
-                    }
-                    return sectionModels
-                }
-            }
+            .map { $0.mapToSectionModel() }
             .receive(on: RunLoop.main)
             .assign(to: \.receiptItems, on: self)
             .store(in: &cancellables)
         
         $receiptItems
-            .map { $0.reduce(0) { count, sectionModel in count + sectionModel.count } }
-            .map { "\($0).00" }
+            .map { $0.totalCount }
             .assign(to: \.totalCount, on: self)
             .store(in: &cancellables)
         
@@ -172,7 +160,6 @@ extension ReceiptModel: ReceiptInputModelListener {
     func didUpdateReceipt(_ item: ReceiptItem) {
         reload.send(())
         closeInputMode()
-        scrollFocusId.send(item.id)
     }
     
     private func closeInputMode() {

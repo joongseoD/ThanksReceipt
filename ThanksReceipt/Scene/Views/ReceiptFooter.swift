@@ -7,8 +7,14 @@
 
 import SwiftUI
 
-struct ReceiptFooter: View {
-    @EnvironmentObject var model: ReceiptModel
+struct ReceiptFooter<Label: View>: View {
+    var totalCount: String
+    var label: () -> Label
+    
+    init(totalCount: String, @ViewBuilder label: @escaping () -> Label) {
+        self.totalCount = totalCount
+        self.label = label
+    }
     
     var body: some View {
         VStack {
@@ -20,15 +26,14 @@ struct ReceiptFooter: View {
                 Text("TOTAL")
                     .padding(.trailing, 15)
                 
-                Text(model.totalCount)
+                Text(totalCount)
             }
             .customFont(.DungGeunMo, size: 20)
             
             HStack {
                 Text("**")
                 Spacer()
-                Text("THANKS FOR\nGIVING ME A DAY!")
-                    .multilineTextAlignment(.center)
+                label()
                 Spacer()
                 Text("**")
             }
@@ -41,6 +46,6 @@ struct ReceiptFooter: View {
 
 struct ReceiptFooter_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptFooter()
+        ReceiptFooter(totalCount: "") { }
     }
 }

@@ -8,44 +8,59 @@
 import SwiftUI
 
 struct ReceiptList: View {
-    @EnvironmentObject var model: ReceiptModel
+    var items: [ReceiptSectionModel] = []
+    var didTapRow: ((_ item: ReceiptItemModel) -> Void)?
+    var didAppearRow: ((_ index: Int) -> Void)?
+    var scrollToId: String?
     
     var body: some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
                 LazyVStack {
-                    ForEach(Array(model.receiptItems.enumerated()), id: \.offset) { offset, section in
+                    ForEach(Array(items.enumerated()), id: \.offset) { offset, section in
                         Section(
                             header:
-                                Button(action: { model.didTapRow(section.header.id) }) {
+                                Button(action: {
+//                                    model.didTapRow(section.header.id)
+                                    didTapRow?(section.header)
+                                }) {
                                     ReceiptItemRow(sectionModel: section)
                                 }
                                 .foregroundColor(.black)
                                 .frame(height: 20)
                                 .padding(.horizontal, 20)
                                 .id(section.header.id)
-                                .onAppear { model.didAppearRow(offset) },
+                                .onAppear {
+//                                    model.didAppearRow(offset)
+                                    didAppearRow?(offset)
+                                },
                             footer: LineStroke()
                                 .foregroundColor(.gray)
                                 .opacity(0.3)
                                 .padding(.horizontal, 20)
                         ) {
                             ForEach(Array(section.items.enumerated()), id: \.offset) { offset, item in
-                                Button(action: { model.didTapRow(item.id) }) {
+                                Button(action: {
+//                                    model.didTapRow(item.id)
+                                    didTapRow?(item)
+                                }) {
                                     ReceiptItemRow(text: item.text)
                                 }
                                 .foregroundColor(.black)
                                 .frame(height: 20)
                                 .padding(.horizontal, 20)
                                 .id(item.id)
-                                .onAppear { model.didAppearRow(offset) }
+                                .onAppear {
+//                                    model.didAppearRow(offset)
+                                    didAppearRow?(offset)
+                                }
                             }
                         }
                     }
                 }
                 .transition(.move(edge: .bottom))
             }
-            .onChange(of: model.scrollToId, perform: { newValue in
+            .onChange(of: scrollToId, perform: { newValue in
                 guard let focusID = newValue else { return }
                 scrollProxy.scrollTo(focusID, anchor: .bottom)
             })

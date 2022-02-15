@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ReceiptView: View {
     @StateObject var model = ReceiptModel()
     @State private var showMonthPicker = false
+    @State private var showPreview = false
     // TODO: - Loading, Alert, Toast
     
     var body: some View {
@@ -19,64 +21,43 @@ struct ReceiptView: View {
                     ToolBar()
                         .padding(.horizontal, 20)
                     
-                    VStack {
-                        ReceiptHeader(showMonthPicker: $showMonthPicker)
-                            .padding(.horizontal, 20)
-                        
-                        ReceiptList()
-                        
-                        ReceiptFooter()
-                            .padding(.horizontal, 20)
-                    }
-                    .padding(.vertical, 15)
-                    .background(Color.background)
-                    .clipShape(ZigZag())
+                    ReceiptContentView(showMonthPicker: $showMonthPicker)
                 }
                 .environmentObject(model)
                 
-                if model.inputMode != nil {
-                    ZStack {
-                        LinearGradient(colors: [.white.opacity(0.8), .gray.opacity(0.8)],
-                                       startPoint: .top,
-                                       endPoint: .bottom)
-                            .background(Blur(style: .systemUltraThinMaterial).opacity(0.8))
-                            .ignoresSafeArea()
-                            .onTapGesture(perform: model.didTapBackgroundView)
-                        
-                        ReceiptInputView(
-                            dependency: ReceiptInputModelComponents(
-                                mode: model.inputMode!,
-                                date: model.selectedMonth
-                            ),
-                            listener: model
-                        )
-                    }
+                if let inputMode = model.inputMode {
+                    ReceiptInputView(
+                        dependency: ReceiptInputModelComponents(
+                            mode: inputMode,
+                            date: model.selectedMonth
+                        ),
+                        listener: model
+                    )
+                    .backgroundBlur(onTapBackground: model.didTapBackgroundView)
                     .transition(.opacity.animation(.easeInOut))
                 }
                 
                 if showMonthPicker {
-                    ZStack {
-                        LinearGradient(colors: [.white.opacity(0.8), .gray.opacity(0.8)],
-                                       startPoint: .top,
-                                       endPoint: .bottom)
-                            .background(Blur(style: .systemUltraThinMaterial).opacity(0.8))
-                            .ignoresSafeArea()
-                            .onTapGesture(perform: model.didTapBackgroundView)
-                        
-                        DatePickerView(selection: $model.selectedMonth,
-                                       pickerStyle: WheelDatePickerStyle(),
-                                       components: [.date]) { date in
-                            showMonthPicker = false
-                            model.didChangeMonth(date)
-                        }
+                    DatePickerView(
+                        selection: $model.selectedMonth,
+                        pickerStyle: WheelDatePickerStyle(),
+                        components: [.date]
+                    ) { date in
+                        showMonthPicker = false
+                        model.didChangeMonth(date)
                     }
+                    .backgroundBlur(onTapBackground: model.didTapBackgroundView)
                     .transition(.opacity.animation(.easeInOut))
+                }
+                
+                if showPreview {
+                    CapturePreview(showPreview: $showPreview)
+                        .environmentObject(model)
                 }
             }
             .onReceive(model.captureListHeight) {
                 print(model.receiptItems.count, $0)
-                let snapshot = takeScreenshot(origin: CGPoint(x: 0, y: 10), size: CGSize(width: proxy.size.width, height: proxy.size.height + $0))
-                UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
+                showPreview = true
             }
         }
     }

@@ -11,7 +11,8 @@ struct ReceiptInputView: View {
     @StateObject private var model: ReceiptInputModel
     @State private var showDatePicker = false
     @State private var scale: CGFloat = 0.5
-    
+    @FocusState private var focusField: Field?
+
     init(dependency: ReceiptInputModelDependency, listener: ReceiptInputModelListener?) {
         _model = StateObject(wrappedValue: ReceiptInputModel(dependency: dependency, listener: listener))
     }
@@ -43,6 +44,7 @@ struct ReceiptInputView: View {
                         
                         TextField("", text: $model.text)
                             .customFont(.DungGeunMo, size: 16)
+                            .focused($focusField, equals: .text)
                         
                         LineStroke()
                         
@@ -92,6 +94,7 @@ struct ReceiptInputView: View {
                 withAnimation(Animation.easeInOut(duration: 0.1)) {
                     scale = 1
                 }
+                focusField = .text
             }
             .onDisappear {
                 withAnimation(Animation.easeInOut(duration: 0.1)) {
@@ -99,6 +102,12 @@ struct ReceiptInputView: View {
                 }
             }
         }
+    }
+}
+
+extension ReceiptInputView {
+    enum Field {
+        case text
     }
 }
 
