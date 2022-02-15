@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ReceiptHeader: View {
-    @ObservedObject var model: ReceiptModel
+    @EnvironmentObject var model: ReceiptModel
     @Binding var showMonthPicker: Bool
     
     var body: some View {
@@ -48,6 +48,6 @@ struct ReceiptHeader: View {
 
 struct ReceiptHeader_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptHeader(model: ReceiptModel(), showMonthPicker: .constant(false))
+        ReceiptHeader(showMonthPicker: .constant(false))
     }
 }

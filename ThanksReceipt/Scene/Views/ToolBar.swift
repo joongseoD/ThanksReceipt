@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ToolBar: View {
-    @ObservedObject var model: ReceiptModel
+    @EnvironmentObject var model: ReceiptModel
     
     var body: some View {
         HStack {
@@ -29,6 +29,6 @@ struct ToolBar: View {
 
 struct ToolBar_Previews: PreviewProvider {
     static var previews: some View {
-        ToolBar(model: .init())
+        ToolBar()
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ReceiptFooter: View {
-    @ObservedObject var model: ReceiptModel
+    @EnvironmentObject var model: ReceiptModel
     
     var body: some View {
         VStack {
@@ -41,6 +41,6 @@ struct ReceiptFooter: View {
 
 struct ReceiptFooter_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptFooter(model: ReceiptModel())
+        ReceiptFooter()
     }
 }
