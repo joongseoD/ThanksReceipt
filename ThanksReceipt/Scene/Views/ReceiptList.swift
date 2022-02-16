@@ -14,6 +14,7 @@ struct ReceiptList: View {
     var didTapSection: ((_ section: ReceiptSectionModel) -> Void)?
     var scrollToId: String?
     var selectedSections: [ReceiptSectionModel]?
+    var rowHeight: CGFloat = 30
     
     var body: some View {
         ScrollViewReader { scrollProxy in
@@ -25,7 +26,7 @@ struct ReceiptList: View {
                                 Button(action: { didTapRow?(section.header) }) {
                                     ReceiptItemRow(sectionModel: section)
                                 }
-                                .rowStyle(section.header)
+                                .rowStyle(section.header, height: rowHeight)
                                 .onAppear { didAppearRow?(offset) },
                             footer: LineStroke()
                                 .foregroundColor(.gray)
@@ -37,7 +38,7 @@ struct ReceiptList: View {
                                 Button(action: { didTapRow?(item) }) {
                                     ReceiptItemRow(text: item.text)
                                 }
-                                .rowStyle(item)
+                                .rowStyle(item, height: rowHeight)
                                 .onAppear { didAppearRow?(offset) }
                             }
                         }
@@ -72,9 +73,9 @@ struct ReceiptList: View {
 }
 
 fileprivate extension View {
-    func rowStyle(_ item: ReceiptItemModel) -> some View {
+    func rowStyle(_ item: ReceiptItemModel, height: CGFloat) -> some View {
         self.foregroundColor(.black)
-            .frame(height: 30)
+            .frame(height: height)
             .padding(.horizontal, 20)
             .id(item.id)
     }

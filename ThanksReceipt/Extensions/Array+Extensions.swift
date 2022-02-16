@@ -9,8 +9,11 @@ import Foundation
 
 extension Array where Element == ReceiptSectionModel {
     var totalCount: String {
-        let count = reduce(0) { count, sectionModel in count + sectionModel.count }
-        return "\(count).00"
+        "\(itemsCount).00"
+    }
+    
+    var itemsCount: Int {
+        reduce(0) { count, sectionModel in count + sectionModel.count }
     }
 }
 

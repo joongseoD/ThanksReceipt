@@ -21,6 +21,18 @@ final class CapturePreviewModel: ObservableObject {
     
     var selectedCountText: String { "\(selectedSections.count)/\(maxSelectableCount)" }
     
+    let rowHeight: CGFloat = 30
+    let padding: CGFloat = 10
+    let extraAreaHeight: CGFloat = 260
+    
+    var receiptHeight: CGFloat {
+        let rowHeights = rowHeight * CGFloat(selectedSections.itemsCount)
+        let footerHeight = padding * CGFloat(selectedSections.count)
+        return rowHeights + footerHeight + extraAreaHeight
+    }
+    
+    var snapshotSize: CGFloat { receiptHeight + 70 }
+    
     func didSelectSection(_ section: ReceiptSectionModel) {
         guard selectedSections.count <= maxSelectableCount else {
             message = "7개 항목까지 선택할 수 있어요."

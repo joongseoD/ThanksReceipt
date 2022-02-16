@@ -145,15 +145,21 @@ extension CapturePreview {
         }
     }
     
+    // background, saveImage width height는 동일하게
+    // 영수증 높이 보다 70 더 크게
     private func saveImage() {
-        let snapshot = snapshotView.takeScreenshot(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 500, height: 500))
+        let snapshot = snapshotView.takeScreenshot(
+            origin: CGPoint(x: 0, y: 0),
+            size: CGSize(width: model.snapshotSize,
+                         height: model.snapshotSize)
+        )
         UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
     }
     
     private var snapshotView: some View {
         ZStack {
             model.selectedColor
-                .frame(width: 500, height: 500)
+                .frame(width: model.snapshotSize, height: model.snapshotSize)
             
             VStack {
                 ReceiptHeader(date: receiptModel.monthText) {
@@ -173,7 +179,7 @@ extension CapturePreview {
             .background(Color.background)
             .clipShape(ZigZag())
             .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
-            .frame(width: 340, height: 450)
+            .frame(width: 340, height: model.receiptHeight)
         }
         .ignoresSafeArea()
         .colorScheme(.light)
