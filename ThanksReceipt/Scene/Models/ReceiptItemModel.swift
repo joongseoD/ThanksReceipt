@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ReceiptSectionModel {
+struct ReceiptSectionModel: Equatable {
     var header: ReceiptItemModel
     var items: [ReceiptItemModel]
     
@@ -16,7 +16,6 @@ struct ReceiptSectionModel {
     var count: Int { items.count + 1 }
     var date: String { header.date }
 }
-
 
 struct ReceiptItemModel: Hashable {
     var id: String

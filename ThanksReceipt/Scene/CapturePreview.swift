@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct CapturePreview: View {
-    @EnvironmentObject var receiptModel: ReceiptModel
     @StateObject var model = CapturePreviewModel()
+    @EnvironmentObject var receiptModel: ReceiptModel
     @Binding var showPreview: Bool
     @FocusState private var focusField: Field?
     @State private var willDisapper = false
@@ -50,7 +50,8 @@ struct CapturePreview: View {
                         .padding(.horizontal, 20)
                         
                         ReceiptList(items: receiptModel.receiptItems,
-                                    didTapRow: { model.didSelectItem($0) })
+                                    didTapSection: model.didSelectSection(_:),
+                                    selectedSections: model.selectedSections)
                         
                         ReceiptFooter(totalCount: receiptModel.totalCount) {
                             VStack {
@@ -67,6 +68,21 @@ struct CapturePreview: View {
                             .frame(height: 35)
                         }
                         .padding(.horizontal, 20)
+                        .overlay(
+                            HStack {
+                                VStack {
+                                    Text(model.selectedCountText)
+                                        .customFont(.DungGeunMo, size: 25)
+                                        .foregroundColor(.black.opacity(0.3))
+                                    
+                                    Spacer()
+                                }
+                                .padding(.leading, 15)
+                                .padding(.top, 15)
+                                
+                                Spacer()
+                            }
+                        )
                     }
                     .padding(.vertical, 15)
                     .background(Color.background)
@@ -144,7 +160,7 @@ extension CapturePreview {
                 }
                 .padding(.horizontal, 20)
                 
-                ReceiptList(items: model.sectionModels)
+                ReceiptList(items: model.selectedSections)
                 
                 ReceiptFooter(totalCount: model.totalCount) {
                     Text(footerText)

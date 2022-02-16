@@ -11,23 +11,27 @@ final class CapturePreviewModel: ObservableObject {
     private let maxSelectableCount = 7
     @Published var selectedColor: Color = .white
     @Published var message: String?
+    @Published var selectedSections: [ReceiptSectionModel] = []
     
     var colorList: [Color] = [
         .white, .black, .blue, .green, .yellow, .orange, .pink, .red, .purple
     ]
     
-    var selectedItems: [ReceiptItemModel] = []
+    var totalCount: String { selectedSections.totalCount }
     
-    var totalCount: String { sectionModels.totalCount }
-        
-    var sectionModels: [ReceiptSectionModel] { selectedItems.mapToSectionModel() }
+    var selectedCountText: String { "\(selectedSections.count)/\(maxSelectableCount)" }
     
-    func didSelectItem(_ item: ReceiptItemModel) {
-        guard selectedItems.count <= maxSelectableCount else {
+    func didSelectSection(_ section: ReceiptSectionModel) {
+        guard selectedSections.count <= maxSelectableCount else {
             message = "7개 항목까지 선택할 수 있어요."
             return
         }
-        selectedItems.append(item)
+        
+        if let index = selectedSections.firstIndex(of: section) {
+            selectedSections.remove(at: index)
+        } else {
+            selectedSections.append(section)
+        }
     }
     
     func didTapHeader() {

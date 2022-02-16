@@ -11,12 +11,14 @@ struct ReceiptList: View {
     var items: [ReceiptSectionModel] = []
     var didTapRow: ((_ item: ReceiptItemModel) -> Void)?
     var didAppearRow: ((_ index: Int) -> Void)?
+    var didTapSection: ((_ section: ReceiptSectionModel) -> Void)?
     var scrollToId: String?
+    var selectedSections: [ReceiptSectionModel]?
     
     var body: some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
-                LazyVStack {
+                LazyVStack(spacing: 0) {
                     ForEach(Array(items.enumerated()), id: \.offset) { offset, section in
                         Section(
                             header:
@@ -29,6 +31,7 @@ struct ReceiptList: View {
                                 .foregroundColor(.gray)
                                 .opacity(0.3)
                                 .padding(.horizontal, 20)
+                                .padding(.vertical, 5)
                         ) {
                             ForEach(Array(section.items.enumerated()), id: \.offset) { offset, item in
                                 Button(action: { didTapRow?(item) }) {
@@ -38,6 +41,16 @@ struct ReceiptList: View {
                                 .onAppear { didAppearRow?(offset) }
                             }
                         }
+                        .background(
+                            selectionColor(section)
+                                .padding(.horizontal, 15)
+                        )
+                        .simultaneousGesture(
+                            TapGesture()
+                                .onEnded { _ in
+                                    didTapSection?(section)
+                                }
+                        )
                     }
                 }
                 .transition(.move(edge: .bottom))
@@ -48,12 +61,20 @@ struct ReceiptList: View {
             })
         }
     }
+    
+    private func selectionColor(_ section: ReceiptSectionModel) -> Color {
+        if let sections = selectedSections, sections.contains(section) {
+            return Color.green
+        } else {
+            return Color.clear
+        }
+    }
 }
 
 fileprivate extension View {
     func rowStyle(_ item: ReceiptItemModel) -> some View {
         self.foregroundColor(.black)
-            .frame(height: 20)
+            .frame(height: 30)
             .padding(.horizontal, 20)
             .id(item.id)
     }
