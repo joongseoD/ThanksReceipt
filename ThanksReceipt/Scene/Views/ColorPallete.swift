@@ -24,6 +24,8 @@ struct ColorPallete: View {
                             color
                                 .clipShape(Circle())
                                 .frame(width: 30, height: 30)
+                                .shadow(color: .black.opacity(0.3), radius: 2, x: 0.5, y: 0.5)
+                                .padding(.vertical, 5)
                             
                         }
                         .buttonStyle(SelectionButtonStyle())
