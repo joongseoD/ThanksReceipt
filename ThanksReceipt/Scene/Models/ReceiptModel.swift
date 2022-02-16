@@ -41,7 +41,7 @@ final class ReceiptModel: ObservableObject {
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM, yyyy"
+        formatter.dateFormat = "MMMM"
         formatter.locale = Locale(identifier: "En")
         return formatter
     }()

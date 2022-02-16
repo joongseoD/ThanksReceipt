@@ -24,6 +24,7 @@ struct ReceiptFooter<Label: View>: View {
                 Spacer()
                 
                 Text("TOTAL")
+                    .kerning(1.5)
                     .padding(.trailing, 15)
                 
                 Text(totalCount)
@@ -37,7 +38,7 @@ struct ReceiptFooter<Label: View>: View {
                 Spacer()
                 Text("**")
             }
-            .customFont(.DungGeunMo, size: 20)
+            .customFont(.DungGeunMo, size: 19)
             .padding(.top, 5)
         }
         .padding(.vertical, 10)

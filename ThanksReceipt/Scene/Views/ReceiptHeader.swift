@@ -21,9 +21,17 @@ struct ReceiptHeader<Label: View>: View {
     var body: some View {
         VStack {
             VStack {
+                label()
+                    .customFont(.DungGeunMo, size: 30)
+                Text("****************************")
+                    .kerning(1.2)
+                    .customFont(.DungGeunMo, size: 18)
+                    .padding(.bottom, 5)
+                
                 Button(action: { didTapMonth?() }) {
                     HStack {
                         Text(date)
+                            .kerning(1.5)
                         if didTapMonth != nil {
                             Image(systemName: "chevron.compact.down")
                                 .resizable()
@@ -31,27 +39,22 @@ struct ReceiptHeader<Label: View>: View {
                         }
                     }
                 }
-                .customFont(.DungGeunMo, size: 22)
+                .customFont(.DungGeunMo, size: 20)
                 .foregroundColor(.black)
                 .disabled(didTapMonth == nil)
-                .padding(.bottom, 5)
-                
-                label()
-                Text("******************")
             }
-            .customFont(.DungGeunMo, size: 30)
             .padding(.bottom, 20)
             
             LineStroke()
             
             HStack {
-                Text("DATE")
+                Text("DATE").kerning(1.5)
                 Spacer()
-                Text("ITEM")
+                Text("ITEM").kerning(1.5)
                 Spacer()
-                Text("COUNT")
+                Text("COUNT").kerning(1.5)
             }
-            .customFont(.DungGeunMo, size: 20)
+            .customFont(.DungGeunMo, size: 18)
             
             LineStroke()
         }

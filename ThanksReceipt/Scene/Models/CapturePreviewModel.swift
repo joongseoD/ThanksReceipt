@@ -11,6 +11,11 @@ final class CapturePreviewModel: ObservableObject {
     private let maxSelectableCount = 7
     @Published var selectedColor: Color = .white
     @Published var message: String?
+    
+    var colorList: [Color] = [
+        .white, .black, .blue, .green, .yellow, .orange, .pink, .red, .purple
+    ]
+    
     var selectedItems: [ReceiptItemModel] = []
     
     var totalCount: String { sectionModels.totalCount }

@@ -16,6 +16,8 @@ struct CapturePreview: View {
     @State private var scale: CGFloat = 1
     @State private var headerText: String = Constants.headerText
     @State private var footerText: String = Constants.footerText
+    @State private var headerCursor = true
+    @State private var footerCursor = true
     
     var body: some View {
         GeometryReader { proxy in
@@ -27,7 +29,7 @@ struct CapturePreview: View {
                     .ignoresSafeArea()
                     .onTapGesture { focusField = nil }
                 
-                VStack {
+                VStack(spacing: 0) {
                     headerView
                     
                     VStack {
@@ -37,10 +39,13 @@ struct CapturePreview: View {
                                     .customFont(.DungGeunMo, size: 30)
                                     .focused($focusField, equals: .header)
                                     .multilineTextAlignment(.center)
+                                    .cursor(show: headerCursor)
+                                    .onTapGesture { headerCursor = false }
                                 
                                 LineStroke()
                             }
                             .padding(.horizontal, 35)
+                            .frame(height: 35)
                         }
                         .padding(.horizontal, 20)
                         
@@ -53,9 +58,13 @@ struct CapturePreview: View {
                                     .customFont(.DungGeunMo, size: 20)
                                     .focused($focusField, equals: .footer)
                                     .multilineTextAlignment(.center)
+                                    .cursor(show: footerCursor)
+                                    .onTapGesture { footerCursor = false }
                                 
                                 LineStroke()
                             }
+                            .padding(.horizontal, 10)
+                            .frame(height: 35)
                         }
                         .padding(.horizontal, 20)
                     }
@@ -64,7 +73,10 @@ struct CapturePreview: View {
                     .clipShape(ZigZag())
                     .scaleEffect(scale)
                     
-                    Button(action: saveImage) { saveButton }
+                    ColorPallete(selection: $model.selectedColor,
+                                 colorList: model.colorList)
+                    
+                    saveButton
                 }
             }
         }
@@ -91,31 +103,29 @@ struct CapturePreview: View {
                 Image(systemName: "arrow.left")
                     .font(.system(size: 20, weight: .regular))
             }
+            .frame(width: 50, height: 20, alignment: .leading)
             
-            ColorPicker(selection: $model.selectedColor) {
-                HStack {
-                    Spacer()
-                    Text("배경색 변경")
-                        .customFont(.DungGeunMo, size: 19)
-                        .onTapGesture {  }
-                }
-            }
+            Spacer()
         }
         .foregroundColor(.black)
         .padding(.horizontal, 25)
         .padding(.vertical, 15)
-        .background(Color.background)
+        .background(.white.opacity(0.25))
     }
-    
+}
+
+extension CapturePreview {
     private var saveButton: some View {
-        Color.black
-            .ignoresSafeArea()
-            .overlay(
-                Text("이미지 저장")
-                    .customFont(.DungGeunMo, size: 17)
-                    .foregroundColor(.white)
-            )
-            .frame(height: 40)
+        Button(action: saveImage) {
+            Color.black
+                .ignoresSafeArea()
+                .overlay(
+                    Text("이미지 저장")
+                        .customFont(.DungGeunMo, size: 17)
+                        .foregroundColor(.white)
+                )
+                .frame(height: 40)
+        }
     }
     
     private func saveImage() {
@@ -148,6 +158,7 @@ struct CapturePreview: View {
             .frame(width: 340, height: 450)
         }
         .ignoresSafeArea()
+        .colorScheme(.light)
     }
 }
 

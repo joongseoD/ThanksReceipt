@@ -14,7 +14,7 @@ struct ReceiptContentView: View {
     var body: some View {
         VStack {
             ReceiptHeader(date: model.monthText,
-                          label: { Text(Constants.headerText) },
+                          label: { Text(Constants.headerText).kerning(1.5) },
                           didTapMonth: { showMonthPicker = true })
                 .padding(.horizontal, 20)
             
@@ -25,6 +25,7 @@ struct ReceiptContentView: View {
             
             ReceiptFooter(totalCount: model.totalCount) {
                 Text(Constants.footerText)
+                    .kerning(1.5)
                     .multilineTextAlignment(.center)
             }
             .padding(.horizontal, 20)

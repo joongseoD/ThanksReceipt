@@ -37,6 +37,7 @@ struct ReceiptItemRow: View {
             Spacer()
             
             Text(count)
+                .kerning(1.5)
                 .frame(minWidth: 50, alignment: .trailing)
                 .customFont(.DungGeunMo, size: 15)
         }

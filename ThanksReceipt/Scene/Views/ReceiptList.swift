@@ -20,40 +20,22 @@ struct ReceiptList: View {
                     ForEach(Array(items.enumerated()), id: \.offset) { offset, section in
                         Section(
                             header:
-                                Button(action: {
-//                                    model.didTapRow(section.header.id)
-                                    didTapRow?(section.header)
-                                }) {
+                                Button(action: { didTapRow?(section.header) }) {
                                     ReceiptItemRow(sectionModel: section)
                                 }
-                                .foregroundColor(.black)
-                                .frame(height: 20)
-                                .padding(.horizontal, 20)
-                                .id(section.header.id)
-                                .onAppear {
-//                                    model.didAppearRow(offset)
-                                    didAppearRow?(offset)
-                                },
+                                .rowStyle(section.header)
+                                .onAppear { didAppearRow?(offset) },
                             footer: LineStroke()
                                 .foregroundColor(.gray)
                                 .opacity(0.3)
                                 .padding(.horizontal, 20)
                         ) {
                             ForEach(Array(section.items.enumerated()), id: \.offset) { offset, item in
-                                Button(action: {
-//                                    model.didTapRow(item.id)
-                                    didTapRow?(item)
-                                }) {
+                                Button(action: { didTapRow?(item) }) {
                                     ReceiptItemRow(text: item.text)
                                 }
-                                .foregroundColor(.black)
-                                .frame(height: 20)
-                                .padding(.horizontal, 20)
-                                .id(item.id)
-                                .onAppear {
-//                                    model.didAppearRow(offset)
-                                    didAppearRow?(offset)
-                                }
+                                .rowStyle(item)
+                                .onAppear { didAppearRow?(offset) }
                             }
                         }
                     }
@@ -65,6 +47,15 @@ struct ReceiptList: View {
                 scrollProxy.scrollTo(focusID, anchor: .bottom)
             })
         }
+    }
+}
+
+fileprivate extension View {
+    func rowStyle(_ item: ReceiptItemModel) -> some View {
+        self.foregroundColor(.black)
+            .frame(height: 20)
+            .padding(.horizontal, 20)
+            .id(item.id)
     }
 }
 

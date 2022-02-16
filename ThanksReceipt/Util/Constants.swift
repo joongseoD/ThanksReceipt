@@ -9,5 +9,5 @@ import Foundation
 
 struct Constants {
     static let headerText: String = "* Thanks Receipt *"
-    static let footerText: String = "THANKS FOR\nGIVING ME A DAY!"
+    static let footerText: String = "THANKS FOR GIVING ME A DAY!"
 }
