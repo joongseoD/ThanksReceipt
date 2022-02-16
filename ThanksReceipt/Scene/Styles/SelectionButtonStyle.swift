@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct ListSelectionStyle: ButtonStyle {
-    var selectionColor: Color = .gray
+struct SelectionButtonStyle: ButtonStyle {
+    var selectionColor: Color = .clear
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .background(configuration.isPressed ? selectionColor : Color.clear)
+            .scaleEffect(configuration.isPressed ? 0.8 : 1.0)
     }
 }

@@ -20,10 +20,13 @@ struct ColorPallete: View {
                         .padding(.trailing, 2)
                     
                     ForEach(colorList, id: \.self) { color in
-                        color
-                            .clipShape(Circle())
-                            .frame(width: 30, height: 30)
-                            .onTapGesture { selection = color }
+                        Button(action: { selection = color }) {
+                            color
+                                .clipShape(Circle())
+                                .frame(width: 30, height: 30)
+                            
+                        }
+                        .buttonStyle(SelectionButtonStyle())
                     }
                 }
             }
