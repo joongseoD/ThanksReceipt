@@ -88,6 +88,7 @@ struct CapturePreview: View {
                     .background(Color.background)
                     .clipShape(ZigZag())
                     .scaleEffect(scale)
+                    .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
                     
                     ColorPallete(selection: $model.selectedColor,
                                  colorList: model.colorList)
@@ -171,6 +172,7 @@ extension CapturePreview {
             .padding(.vertical, 15)
             .background(Color.background)
             .clipShape(ZigZag())
+            .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
             .frame(width: 340, height: 450)
         }
         .ignoresSafeArea()

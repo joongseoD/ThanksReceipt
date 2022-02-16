@@ -21,6 +21,7 @@ struct ReceiptView: View {
                     ToolBar(didTapSave: { showPreview = true },
                             didTapAdd: model.addItem)
                         .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
                     
                     ReceiptContentView(showMonthPicker: $showMonthPicker)
                 }

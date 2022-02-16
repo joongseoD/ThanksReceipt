@@ -33,6 +33,7 @@ struct ReceiptContentView: View {
         .padding(.vertical, 15)
         .background(Color.background)
         .clipShape(ZigZag())
+        .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
     }
 }
 
