@@ -78,9 +78,8 @@ final class DataProvider: DataProviding {
     
     func delete(id: String) throws {
         let realm = try Realm()
-        let receipt = Receipt(id: id)
         try realm.write {
-            realm.delete(receipt)
+            realm.delete(realm.objects(Receipt.self).filter("id=%@", id))
         }
     }
 }

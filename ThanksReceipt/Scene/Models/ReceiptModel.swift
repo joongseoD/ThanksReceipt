@@ -162,6 +162,11 @@ extension ReceiptModel: ReceiptInputModelListener {
         closeInputMode()
     }
     
+    func didDeleteReceipt(_ item: ReceiptItem) {
+        reload.send(())
+        closeInputMode()
+    }
+    
     private func closeInputMode() {
         inputMode = nil
     }

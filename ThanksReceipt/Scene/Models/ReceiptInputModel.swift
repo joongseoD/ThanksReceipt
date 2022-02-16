@@ -24,14 +24,10 @@ struct ReceiptInputModelComponents: ReceiptInputModelDependency {
 protocol ReceiptInputModelListener: AnyObject {
     func didSaveRecipt(_ item: ReceiptItem)
     func didUpdateReceipt(_ item: ReceiptItem)
+    func didDeleteReceipt(_ item: ReceiptItem)
 }
 
 final class ReceiptInputModel: ObservableObject {
-    enum InputMode {
-        case create
-        case edit(_ model: ReceiptItem)
-    }
-    
     @Published private(set) var errorMessage: String = ""
     @Published private(set) var textCount: String = ""
     @Published private(set) var dateString: String = ""
@@ -121,4 +117,21 @@ final class ReceiptInputModel: ObservableObject {
         }
     }
     
+    func deleteReceipt() {
+        if case let .edit(item) = inputMode, let id = item.id {
+            do {
+                try provider.delete(id: id)
+                listener?.didDeleteReceipt(item)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+        }
+    }
+}
+
+extension ReceiptInputModel {
+    enum InputMode: Equatable {
+        case create
+        case edit(_ model: ReceiptItem)
+    }
 }
