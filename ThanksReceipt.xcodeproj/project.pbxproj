@@ -33,6 +33,8 @@
 		25AFC94527BB77A3000FA123 /* ReceiptContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFC94427BB77A3000FA123 /* ReceiptContentView.swift */; };
 		25AFC94727BB784F000FA123 /* BackgroundBlurModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFC94627BB784F000FA123 /* BackgroundBlurModifier.swift */; };
 		25AFC94927BB7C51000FA123 /* CapturePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFC94827BB7C51000FA123 /* CapturePreview.swift */; };
+		25B569A027BD19F7001879DF /* CursorMimicViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B5699F27BD19F7001879DF /* CursorMimicViewModifier.swift */; };
+		25B569A227BD2105001879DF /* ColorPallete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B569A127BD2105001879DF /* ColorPallete.swift */; };
 		25BC488927B354210031E0D2 /* DungGeunMo.otf in Resources */ = {isa = PBXBuildFile; fileRef = 25BC488827B354210031E0D2 /* DungGeunMo.otf */; };
 		25BC488D27B3552B0031E0D2 /* CustomFontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */; };
 		25BC489127B3EA900031E0D2 /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC489027B3EA900031E0D2 /* Receipt.swift */; };
@@ -97,6 +99,8 @@
 		25AFC94427BB77A3000FA123 /* ReceiptContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptContentView.swift; sourceTree = "<group>"; };
 		25AFC94627BB784F000FA123 /* BackgroundBlurModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundBlurModifier.swift; sourceTree = "<group>"; };
 		25AFC94827BB7C51000FA123 /* CapturePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturePreview.swift; sourceTree = "<group>"; };
+		25B5699F27BD19F7001879DF /* CursorMimicViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorMimicViewModifier.swift; sourceTree = "<group>"; };
+		25B569A127BD2105001879DF /* ColorPallete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPallete.swift; sourceTree = "<group>"; };
 		25BC488827B354210031E0D2 /* DungGeunMo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DungGeunMo.otf; sourceTree = "<group>"; };
 		25BC488A27B3547F0031E0D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFontModifier.swift; sourceTree = "<group>"; };
@@ -298,6 +302,7 @@
 				25BC48A127B658590031E0D2 /* Blur.swift */,
 				25BC48A627B6A0960031E0D2 /* ZigZag.swift */,
 				2575F8A827BA5EAC00ED3994 /* DatePickerView.swift */,
+				25B569A127BD2105001879DF /* ColorPallete.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -315,6 +320,7 @@
 			children = (
 				25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */,
 				25AFC94627BB784F000FA123 /* BackgroundBlurModifier.swift */,
+				25B5699F27BD19F7001879DF /* CursorMimicViewModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -624,6 +630,7 @@
 				25935A3027B25A8500BD6A98 /* DataProvider.swift in Sources */,
 				25BC48A727B6A0960031E0D2 /* ZigZag.swift in Sources */,
 				25BC489C27B5F4010031E0D2 /* ReceiptFooter.swift in Sources */,
+				25B569A227BD2105001879DF /* ColorPallete.swift in Sources */,
 				2575F8AC27BA885400ED3994 /* ListSelectionStyle.swift in Sources */,
 				2575F8A727BA5AB800ED3994 /* UIView+Extensions.swift in Sources */,
 				25BC48A527B69EBF0031E0D2 /* Color+Extensions.swift in Sources */,
@@ -636,6 +643,7 @@
 				2575F8A127B7CBF600ED3994 /* ReceiptItemModel.swift in Sources */,
 				2575F8A327B91C5400ED3994 /* ToolBar.swift in Sources */,
 				25935A0227B24B0B00BD6A98 /* ThanksReceiptApp.swift in Sources */,
+				25B569A027BD19F7001879DF /* CursorMimicViewModifier.swift in Sources */,
 				25935A3D27B25ECE00BD6A98 /* ReceiptInputModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
