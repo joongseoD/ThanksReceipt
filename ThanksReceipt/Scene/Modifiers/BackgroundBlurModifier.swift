@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct BackgroundBlurModifier: ViewModifier {
-    
     var onTapBackground: (() -> Void)?
     
     func body(content: Content) -> some View {

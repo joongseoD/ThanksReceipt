@@ -33,6 +33,7 @@
 		25AFC94527BB77A3000FA123 /* ReceiptContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFC94427BB77A3000FA123 /* ReceiptContentView.swift */; };
 		25AFC94727BB784F000FA123 /* BackgroundBlurModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFC94627BB784F000FA123 /* BackgroundBlurModifier.swift */; };
 		25AFC94927BB7C51000FA123 /* CapturePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFC94827BB7C51000FA123 /* CapturePreview.swift */; };
+		25B20B1627BE2E58003E4965 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B20B1527BE2E58003E4965 /* ToastView.swift */; };
 		25B569A027BD19F7001879DF /* CursorMimicViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B5699F27BD19F7001879DF /* CursorMimicViewModifier.swift */; };
 		25B569A227BD2105001879DF /* ColorPallete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B569A127BD2105001879DF /* ColorPallete.swift */; };
 		25B569A427BD2E2A001879DF /* InputBottomToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B569A327BD2E2A001879DF /* InputBottomToolBar.swift */; };
@@ -100,6 +101,7 @@
 		25AFC94427BB77A3000FA123 /* ReceiptContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptContentView.swift; sourceTree = "<group>"; };
 		25AFC94627BB784F000FA123 /* BackgroundBlurModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundBlurModifier.swift; sourceTree = "<group>"; };
 		25AFC94827BB7C51000FA123 /* CapturePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturePreview.swift; sourceTree = "<group>"; };
+		25B20B1527BE2E58003E4965 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		25B5699F27BD19F7001879DF /* CursorMimicViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorMimicViewModifier.swift; sourceTree = "<group>"; };
 		25B569A127BD2105001879DF /* ColorPallete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPallete.swift; sourceTree = "<group>"; };
 		25B569A327BD2E2A001879DF /* InputBottomToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBottomToolBar.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				2575F8A827BA5EAC00ED3994 /* DatePickerView.swift */,
 				25B569A127BD2105001879DF /* ColorPallete.swift */,
 				25B569A327BD2E2A001879DF /* InputBottomToolBar.swift */,
+				25B20B1527BE2E58003E4965 /* ToastView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -630,6 +633,7 @@
 				25AFC94327BB7595000FA123 /* ReceiptList.swift in Sources */,
 				25BC48A227B658590031E0D2 /* Blur.swift in Sources */,
 				25935A3627B25DF600BD6A98 /* ReceiptView.swift in Sources */,
+				25B20B1627BE2E58003E4965 /* ToastView.swift in Sources */,
 				25935A3927B25E0900BD6A98 /* ReceiptModel.swift in Sources */,
 				25935A3027B25A8500BD6A98 /* DataProvider.swift in Sources */,
 				25BC48A727B6A0960031E0D2 /* ZigZag.swift in Sources */,

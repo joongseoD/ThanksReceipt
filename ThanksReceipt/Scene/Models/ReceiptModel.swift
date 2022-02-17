@@ -22,7 +22,7 @@ final class ReceiptModel: ObservableObject {
     @Published private(set) var receiptItems: [ReceiptSectionModel] = []
     @Published private(set) var totalCount: String = "0.00"
     @Published private(set) var monthText: String = ""
-    @Published private(set) var errorMessage: String?
+    @Published var message: String?
     @Published var inputMode: ReceiptInputModel.InputMode?
     @Published var scrollToId: String?
     @Published var selectedMonth: Date = Date()
@@ -64,10 +64,10 @@ final class ReceiptModel: ObservableObject {
                 guard let self = self else { return Just([]).eraseToAnyPublisher() }
                 return self.provider.receiptItemList(in: month)
                     .subscribe(on: DispatchQueue.global())
-                    .receive(on: RunLoop.main)
                     .catch { [weak self] error -> AnyPublisher<[ReceiptItem], Never> in
-                        self?.errorMessage = error.localizedDescription
-                        print("# err", error.localizedDescription)
+                        DispatchQueue.main.async {
+                            self?.message = error.localizedDescription
+                        }
                         return Just([]).eraseToAnyPublisher()
                     }
                     .eraseToAnyPublisher()
@@ -93,12 +93,12 @@ final class ReceiptModel: ObservableObject {
             .first()
             .map { $0.last?.items.last ?? $0.last?.header }
             .map { $0?.id }
-        
+            
         let focusId = $receiptItems
             .withLatestFrom(scrollFocusId)
-            .debounce(for: 0.5, scheduler: RunLoop.main)
         
         Publishers.Zip(reload, Publishers.Merge(lastItemIdWhenFirstLoaded, focusId))
+            .debounce(for: 0.05, scheduler: RunLoop.main)
             .compactMap { $1 }
             .assign(to: \.scrollToId, on: self)
             .store(in: &cancellables)
@@ -115,7 +115,10 @@ final class ReceiptModel: ObservableObject {
             .compactMap { [weak self] date in
                 self?.dateFormatter.string(from: date)
             }
-            .assign(to: \.monthText, on: self)
+            .sink { [weak self] date in
+                self?.monthText = date
+                self?.message = "Hello, \(date)."
+            }
             .store(in: &cancellables)
     }
     
@@ -155,16 +158,19 @@ extension ReceiptModel: ReceiptInputModelListener {
         reload.send(())
         closeInputMode()
         scrollFocusId.send(item.id)
+        message = "Thanks."
     }
     
     func didUpdateReceipt(_ item: ReceiptItem) {
         reload.send(())
         closeInputMode()
+        message = "Thanks."
     }
     
     func didDeleteReceipt(_ item: ReceiptItem) {
         reload.send(())
         closeInputMode()
+        message = "Deleted."
     }
     
     private func closeInputMode() {

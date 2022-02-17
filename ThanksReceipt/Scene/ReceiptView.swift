@@ -60,6 +60,7 @@ struct ReceiptView: View {
                 print(model.receiptItems.count, $0)
                 showPreview = true
             }
+            .toast(message: $model.message)
         }
     }
 }
