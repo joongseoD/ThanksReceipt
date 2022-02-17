@@ -13,21 +13,31 @@ struct ToastViewModifier: ViewModifier {
     @State private var maskingMessage: String?
     @Binding var message: String?
     var duration: Double
+    var anchor: Anchor = .center
+    var fontSize: CGFloat = 20
     
     func body(content: Content) -> some View {
         ZStack {
             content
             
             if let maskingMessage = maskingMessage {
-                AnimateText(maskingMessage)
-                    .customFont(.DungGeunMo, size: 20)
-                    .padding(.all, 20)
-                    .foregroundColor(.white)
-                    .background(Color.black)
-                    .cornerRadius(10)
-                    .scaleEffect(x: 1, y: show ? 1 : 0, anchor: .center)
-                    .animation(.easeInOut(duration: 0.1), value: show)
-                    .shadow(color: .black.opacity(0.4), radius: 4, x: 1, y: 2)
+                VStack {
+                    if anchor == .bottom {
+                        Spacer()
+                    }
+                    AnimateText(maskingMessage)
+                        .customFont(.DungGeunMo, size: fontSize)
+                        .padding(.all, 20)
+                        .foregroundColor(.white)
+                        .background(Color.black)
+                        .cornerRadius(10)
+                        .scaleEffect(x: 1, y: show ? 1 : 0, anchor: .center)
+                        .animation(.easeInOut(duration: 0.1), value: show)
+                        .shadow(color: .black.opacity(0.4), radius: 4, x: 1, y: 2)
+                    if anchor == .top {
+                        Spacer()
+                    }
+                }
             }
         }
         .onChange(of: message) { newValue in
@@ -55,8 +65,16 @@ struct ToastViewModifier: ViewModifier {
     }
 }
 
+extension ToastViewModifier {
+    enum Anchor {
+        case top
+        case center
+        case bottom
+    }
+}
+
 extension View {
-    func toast(message: Binding<String?>, duration: Double = 2) -> some View {
-        self.modifier(ToastViewModifier(message: message, duration: duration))
+    func toast(message: Binding<String?>, duration: Double = 2, anchor: ToastViewModifier.Anchor = .center, fontSize: CGFloat = 20) -> some View {
+        self.modifier(ToastViewModifier(message: message, duration: duration, anchor: anchor, fontSize: fontSize))
     }
 }

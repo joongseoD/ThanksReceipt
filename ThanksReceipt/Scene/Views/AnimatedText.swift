@@ -51,16 +51,14 @@ struct AnimateText: View {
                     maskingText = String(chars)
                 }
                 
-                if message.count - 1 == index {
-                    self.index += 1
-                    
-                    if repeatAnimation, textList.count == self.index {
-                        self.index = 0
-                    }
-                    guard textList.indices.contains(self.index) else { return }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-                        animateMasking(textList[self.index])
-                    }
+                guard message.count - 1 == index else { return }
+                self.index += 1
+                if repeatAnimation, textList.count == self.index {
+                    self.index = 0
+                }
+                guard textList.indices.contains(self.index) else { return }
+                DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+                    animateMasking(textList[self.index])
                 }
             }
         }

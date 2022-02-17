@@ -25,6 +25,7 @@ struct ReceiptView: View {
                     
                     ReceiptContentView(showMonthPicker: $showMonthPicker)
                 }
+                .toast(message: $model.message)
                 
                 if let inputMode = model.inputMode {
                     ReceiptInputView(
@@ -60,7 +61,6 @@ struct ReceiptView: View {
                 print(model.receiptItems.count, $0)
                 showPreview = true
             }
-            .toast(message: $model.message)
         }
     }
 }
