@@ -19,8 +19,7 @@ struct ToastViewModifier: ViewModifier {
             content
             
             if let maskingMessage = maskingMessage {
-                Text(maskingMessage)
-                    .kerning(1.3)
+                AnimateText(maskingMessage)
                     .customFont(.DungGeunMo, size: 20)
                     .padding(.all, 20)
                     .foregroundColor(.white)
@@ -35,24 +34,8 @@ struct ToastViewModifier: ViewModifier {
             show = newValue != nil
             
             guard let newValue = newValue else { return }
-            animateMasking(newValue)
+            maskingMessage = newValue
             reserveHiding()
-        }
-    }
-    
-    private func animateMasking(_ message: String) {
-        maskingMessage = String(message.map { _ in "*" })
-        
-        DispatchQueue.global().async {
-            message.enumerated().forEach { index, text in
-                Thread.sleep(forTimeInterval: 0.02)
-                DispatchQueue.main.async {
-                    var chars = Array(maskingMessage ?? "")
-                    guard chars.indices.contains(index) else { return }
-                    chars[index] = text
-                    maskingMessage = String(chars)
-                }
-            }
         }
     }
     

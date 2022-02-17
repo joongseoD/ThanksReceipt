@@ -14,7 +14,7 @@ struct ReceiptContentView: View {
     var body: some View {
         VStack {
             ReceiptHeader(date: model.monthText,
-                          label: { Text(Constants.headerText).kerning(1.5) },
+                          label: { AnimateText(Constants.headerText, kerning: 1.5) },
                           didTapMonth: { showMonthPicker = true })
                 .padding(.horizontal, 20)
             
@@ -24,8 +24,10 @@ struct ReceiptContentView: View {
                         scrollToId: model.scrollToId)
             
             ReceiptFooter(totalCount: model.totalCount) {
-                Text(Constants.footerText)
-                    .kerning(1.5)
+                AnimateText([Constants.footerText, Constants.headerText],
+                            kerning: 1.5,
+                            duration: 2,
+                            repeatAnimation: true)
                     .multilineTextAlignment(.center)
             }
             .padding(.horizontal, 20)
