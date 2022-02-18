@@ -13,7 +13,7 @@
 		2575F8A127B7CBF600ED3994 /* ReceiptItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A027B7CBF600ED3994 /* ReceiptItemModel.swift */; };
 		2575F8A327B91C5400ED3994 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A227B91C5400ED3994 /* ToolBar.swift */; };
 		2575F8A527BA5A9300ED3994 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A427BA5A9300ED3994 /* Date+Extensions.swift */; };
-		2575F8A727BA5AB800ED3994 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A627BA5AB800ED3994 /* UIView+Extensions.swift */; };
+		2575F8A727BA5AB800ED3994 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A627BA5AB800ED3994 /* View+Extensions.swift */; };
 		2575F8A927BA5EAC00ED3994 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A827BA5EAC00ED3994 /* DatePickerView.swift */; };
 		2575F8AC27BA885400ED3994 /* SelectionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8AB27BA885400ED3994 /* SelectionButtonStyle.swift */; };
 		25935A0227B24B0B00BD6A98 /* ThanksReceiptApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */; };
@@ -35,6 +35,7 @@
 		25AFC94927BB7C51000FA123 /* CapturePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFC94827BB7C51000FA123 /* CapturePreview.swift */; };
 		25B20B1627BE2E58003E4965 /* ToastViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B20B1527BE2E58003E4965 /* ToastViewModifier.swift */; };
 		25B20B1827BE528A003E4965 /* AnimatedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B20B1727BE528A003E4965 /* AnimatedText.swift */; };
+		25B20B1A27BFDB94003E4965 /* SnapshotDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B20B1927BFDB94003E4965 /* SnapshotDummy.swift */; };
 		25B569A027BD19F7001879DF /* CursorMimicViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B5699F27BD19F7001879DF /* CursorMimicViewModifier.swift */; };
 		25B569A227BD2105001879DF /* ColorPallete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B569A127BD2105001879DF /* ColorPallete.swift */; };
 		25B569A427BD2E2A001879DF /* InputBottomToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B569A327BD2E2A001879DF /* InputBottomToolBar.swift */; };
@@ -79,7 +80,7 @@
 		2575F8A027B7CBF600ED3994 /* ReceiptItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptItemModel.swift; sourceTree = "<group>"; };
 		2575F8A227B91C5400ED3994 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 		2575F8A427BA5A9300ED3994 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		2575F8A627BA5AB800ED3994 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		2575F8A627BA5AB800ED3994 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		2575F8A827BA5EAC00ED3994 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		2575F8AB27BA885400ED3994 /* SelectionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionButtonStyle.swift; sourceTree = "<group>"; };
 		259359FE27B24B0B00BD6A98 /* ThanksReceipt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThanksReceipt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +105,7 @@
 		25AFC94827BB7C51000FA123 /* CapturePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturePreview.swift; sourceTree = "<group>"; };
 		25B20B1527BE2E58003E4965 /* ToastViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModifier.swift; sourceTree = "<group>"; };
 		25B20B1727BE528A003E4965 /* AnimatedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedText.swift; sourceTree = "<group>"; };
+		25B20B1927BFDB94003E4965 /* SnapshotDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotDummy.swift; sourceTree = "<group>"; };
 		25B5699F27BD19F7001879DF /* CursorMimicViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorMimicViewModifier.swift; sourceTree = "<group>"; };
 		25B569A127BD2105001879DF /* ColorPallete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPallete.swift; sourceTree = "<group>"; };
 		25B569A327BD2E2A001879DF /* InputBottomToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBottomToolBar.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 				25B569A127BD2105001879DF /* ColorPallete.swift */,
 				25B569A327BD2E2A001879DF /* InputBottomToolBar.swift */,
 				25B20B1727BE528A003E4965 /* AnimatedText.swift */,
+				25B20B1927BFDB94003E4965 /* SnapshotDummy.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -365,7 +368,7 @@
 			children = (
 				25BC48A427B69EBE0031E0D2 /* Color+Extensions.swift */,
 				2575F8A427BA5A9300ED3994 /* Date+Extensions.swift */,
-				2575F8A627BA5AB800ED3994 /* UIView+Extensions.swift */,
+				2575F8A627BA5AB800ED3994 /* View+Extensions.swift */,
 				253E07A327BBE7C4007F297C /* Array+Extensions.swift */,
 			);
 			path = Extensions;
@@ -643,13 +646,14 @@
 				25BC489C27B5F4010031E0D2 /* ReceiptFooter.swift in Sources */,
 				25B569A227BD2105001879DF /* ColorPallete.swift in Sources */,
 				2575F8AC27BA885400ED3994 /* SelectionButtonStyle.swift in Sources */,
-				2575F8A727BA5AB800ED3994 /* UIView+Extensions.swift in Sources */,
+				2575F8A727BA5AB800ED3994 /* View+Extensions.swift in Sources */,
 				25BC48A527B69EBF0031E0D2 /* Color+Extensions.swift in Sources */,
 				25BC489A27B5F3F80031E0D2 /* ReceiptHeader.swift in Sources */,
 				25AFC94927BB7C51000FA123 /* CapturePreview.swift in Sources */,
 				25BC488D27B3552B0031E0D2 /* CustomFontModifier.swift in Sources */,
 				25935A3B27B25EC200BD6A98 /* ReceiptInputView.swift in Sources */,
 				25B20B1827BE528A003E4965 /* AnimatedText.swift in Sources */,
+				25B20B1A27BFDB94003E4965 /* SnapshotDummy.swift in Sources */,
 				25BC489827B5F1D60031E0D2 /* LineStroke.swift in Sources */,
 				253E07A627BBE9EA007F297C /* CapturePreviewModel.swift in Sources */,
 				2575F8A127B7CBF600ED3994 /* ReceiptItemModel.swift in Sources */,

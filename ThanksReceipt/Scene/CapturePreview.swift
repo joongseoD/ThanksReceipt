@@ -97,10 +97,12 @@ struct CapturePreview: View {
                 }
             }
         }
+        .toast(message: $model.message, duration: 3, anchor: .center, fontSize: 12)
         .onAppear {
             withAnimation(Animation.easeInOut(duration: 0.1)) {
                 scale = 0.87
             }
+            model.onAppear()
         }
         .onChange(of: willDisapper) { newValue in
             guard newValue else { return }
@@ -145,44 +147,20 @@ extension CapturePreview {
         }
     }
     
-    // background, saveImage width height는 동일하게
-    // 영수증 높이 보다 70 더 크게
     private func saveImage() {
-        let snapshot = snapshotView.takeScreenshot(
-            origin: CGPoint(x: 0, y: 0),
-            size: CGSize(width: model.snapshotSize,
-                         height: model.snapshotSize)
-        )
-        UIImageWriteToSavedPhotosAlbum(snapshot, nil, nil, nil)
-    }
-    
-    private var snapshotView: some View {
-        ZStack {
-            model.selectedColor
-                .frame(width: model.snapshotSize, height: model.snapshotSize)
-            
-            VStack {
-                ReceiptHeader(date: receiptModel.monthText) {
-                    Text(headerText)
-                }
-                .padding(.horizontal, 20)
-                
-                ReceiptList(items: model.selectedSections)
-                
-                ReceiptFooter(totalCount: model.totalCount) {
-                    Text(footerText)
-                        .multilineTextAlignment(.center)
-                }
-                .padding(.horizontal, 20)
-            }
-            .padding(.vertical, 15)
-            .background(Color.background)
-            .clipShape(ZigZag())
-            .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
-            .frame(width: 340, height: model.receiptHeight)
-        }
-        .ignoresSafeArea()
-        .colorScheme(.light)
+        let screenWidth = UIScreen.main.bounds.width
+        let padding: CGFloat = 25
+        let dummy = SnapshotDummy(backgroundColor: model.selectedColor,
+                      date: receiptModel.monthText,
+                      headerText: headerText,
+                      receipts: model.selectedSections,
+                      totalCount: model.totalCount,
+                      footerText: footerText,
+                      width: screenWidth - (padding * 2))
+        
+        let snapshotWidth = screenWidth - padding
+        dummy.takeScreenshot(size: .init(width: snapshotWidth,
+                                         height: snapshotWidth))
     }
 }
 

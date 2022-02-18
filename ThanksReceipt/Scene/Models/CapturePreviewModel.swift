@@ -21,36 +21,20 @@ final class CapturePreviewModel: ObservableObject {
     
     var selectedCountText: String { "\(selectedSections.count)/\(maxSelectableCount)" }
     
-    let rowHeight: CGFloat = 30
-    let padding: CGFloat = 10
-    let extraAreaHeight: CGFloat = 260
-    
-    var receiptHeight: CGFloat {
-        let rowHeights = rowHeight * CGFloat(selectedSections.itemsCount)
-        let footerHeight = padding * CGFloat(selectedSections.count)
-        return rowHeights + footerHeight + extraAreaHeight
-    }
-    
-    var snapshotSize: CGFloat { receiptHeight + 70 }
-    
+    // TODO: - 정렬해야됨
     func didSelectSection(_ section: ReceiptSectionModel) {
-        guard selectedSections.count <= maxSelectableCount else {
-            message = "7개 항목까지 선택할 수 있어요."
-            return
-        }
-        
         if let index = selectedSections.firstIndex(of: section) {
             selectedSections.remove(at: index)
         } else {
+            guard selectedSections.count < maxSelectableCount else {
+                message = "7개 항목까지 선택할 수 있어요."
+                return
+            }
             selectedSections.append(section)
         }
     }
     
-    func didTapHeader() {
-        message = "우측 컬러 휠 버튼을 눌러주세요."
-    }
-    
     func onAppear() {
-        message = "헤더와 푸터 영역의 텍스트를 변경할 수 있어요."
+        message = "영수증으로 출력하고자 하는 항목들을 선택하세요."
     }
 }

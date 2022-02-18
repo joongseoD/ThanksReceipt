@@ -76,7 +76,7 @@ struct ReceiptInputView: View {
                                    didTapSave: model.saveReceipt)
                     .ignoresSafeArea(.keyboard, edges: .bottom)
             }
-            
+            .toast(message: $model.message, anchor: .center)
         }
         .onAppear {
             withAnimation(Animation.easeInOut(duration: 0.1)) {

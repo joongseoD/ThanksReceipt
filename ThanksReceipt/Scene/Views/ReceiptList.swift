@@ -15,51 +15,62 @@ struct ReceiptList: View {
     var scrollToId: String?
     var selectedSections: [ReceiptSectionModel]?
     var rowHeight: CGFloat = 30
+    var snapshot: Bool = false
     
     var body: some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(Array(items.enumerated()), id: \.offset) { offset, section in
-                        Section(
-                            header:
-                                Button(action: { didTapRow?(section.header) }) {
-                                    ReceiptItemRow(sectionModel: section)
-                                }
-                                .rowStyle(section.header, height: rowHeight)
-                                .onAppear { didAppearRow?(offset) },
-                            footer: LineStroke()
-                                .foregroundColor(.gray)
-                                .opacity(0.3)
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 5)
-                        ) {
-                            ForEach(Array(section.items.enumerated()), id: \.offset) { offset, item in
-                                Button(action: { didTapRow?(item) }) {
-                                    ReceiptItemRow(text: item.text)
-                                }
-                                .rowStyle(item, height: rowHeight)
-                                .onAppear { didAppearRow?(offset) }
-                            }
-                        }
-                        .background(
-                            selectionColor(section)
-                                .padding(.horizontal, 15)
-                        )
-                        .simultaneousGesture(
-                            TapGesture()
-                                .onEnded { _ in
-                                    didTapSection?(section)
-                                }
-                        )
+                if snapshot {
+                    VStack(spacing: 0) {
+                        contents
                     }
+                } else {
+                    LazyVStack(spacing: 0) {
+                        contents
+                    }
+                    .transition(.move(edge: .bottom))
                 }
-                .transition(.move(edge: .bottom))
             }
             .onChange(of: scrollToId, perform: { newValue in
                 guard let focusID = newValue else { return }
                 scrollProxy.scrollTo(focusID, anchor: .bottom)
             })
+        }
+    }
+    
+    private var contents: some View {
+        ForEach(Array(items.enumerated()), id: \.offset) { offset, section in
+            Section(
+                header:
+                    Button(action: { didTapRow?(section.header) }) {
+                        ReceiptItemRow(sectionModel: section)
+                    }
+                    .rowStyle(section.header, height: rowHeight)
+                    .onAppear { didAppearRow?(offset) },
+                footer: LineStroke()
+                    .foregroundColor(.gray)
+                    .opacity(0.3)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 5)
+            ) {
+                ForEach(Array(section.items.enumerated()), id: \.offset) { offset, item in
+                    Button(action: { didTapRow?(item) }) {
+                        ReceiptItemRow(text: item.text)
+                    }
+                    .rowStyle(item, height: rowHeight)
+                    .onAppear { didAppearRow?(offset) }
+                }
+            }
+            .background(
+                selectionColor(section)
+                    .padding(.horizontal, 15)
+            )
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded { _ in
+                        didTapSection?(section)
+                    }
+            )
         }
     }
     

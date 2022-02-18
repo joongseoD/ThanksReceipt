@@ -28,10 +28,10 @@ protocol ReceiptInputModelListener: AnyObject {
 }
 
 final class ReceiptInputModel: ObservableObject {
-    @Published private(set) var errorMessage: String = ""
     @Published private(set) var textCount: String = ""
     @Published private(set) var dateString: String = ""
     @Published var inputMode: InputMode?
+    @Published var message: String?
     @Published var date: Date {
         didSet {
             dateString = dateFormatter.string(from: date)
@@ -113,7 +113,7 @@ final class ReceiptInputModel: ObservableObject {
             }
             
         } catch {
-            errorMessage = "생성 에러\n\(error.localizedDescription)"
+            message = error.localizedDescription
         }
     }
     
@@ -123,7 +123,7 @@ final class ReceiptInputModel: ObservableObject {
                 try provider.delete(id: id)
                 listener?.didDeleteReceipt(item)
             } catch {
-                errorMessage = error.localizedDescription
+                message = error.localizedDescription
             }
         }
     }
