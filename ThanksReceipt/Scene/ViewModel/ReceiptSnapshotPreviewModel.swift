@@ -80,7 +80,7 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
         snapshotImage = dummy.takeScreenshot(size: .init(width: snapshotWidth,
                                                          height: snapshotWidth))
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
             self?.snapshotImage = nil
             self?.message = "감사영수증이 출력됐어요."
         }

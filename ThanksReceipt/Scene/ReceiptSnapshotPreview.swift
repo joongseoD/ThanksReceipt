@@ -95,9 +95,12 @@ struct ReceiptSnapshotPreview: View {
                         .fixedSize(horizontal: true, vertical: false)
                         .scaleEffect(snapshotScale)
                         .overlay(Color.white.opacity(snapshotOpacity))
-                        .animation(.easeInOut(duration: 0.15), value: snapshotScale)
-                        .animation(.easeInOut(duration: 0.18), value: snapshotOpacity)
-                        .background(model.selectedColor)
+                        .background(
+                            ZStack {
+                                Color.white
+                                model.selectedColor
+                            }
+                        )
                         .onChange(of: snapshotScale) { newValue in
                             guard newValue == 1 else { return }
                             Haptic.trigger(.rigid)
@@ -122,8 +125,12 @@ struct ReceiptSnapshotPreview: View {
             }
         }
         .onChange(of: model.snapshotImage, perform: { newValue in
-            snapshotScale = newValue != nil ? 1 : 2
-            snapshotOpacity = newValue != nil ? 0 : 1
+            withAnimation(.easeInOut(duration: 0.15)) {
+                snapshotScale = newValue != nil ? 1 : 2
+            }
+            withAnimation(.linear(duration: 0.5)) {
+                snapshotOpacity = newValue != nil ? 0 : 1
+            }
         })
         .transition(.opacity)
     }
