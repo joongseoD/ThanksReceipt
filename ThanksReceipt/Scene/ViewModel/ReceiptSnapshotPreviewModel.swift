@@ -32,6 +32,7 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
     }
     
     @Published var selectedCountText: String?
+    @Published var snapshotImage: UIImage?
     
     private var selectedSortedSections: [ReceiptSectionModel] { selectedSections.sorted(by: <) }
     
@@ -76,8 +77,12 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
         )
         
         let snapshotWidth = screenWidth - padding
-        dummy.takeScreenshot(size: .init(width: snapshotWidth,
-                                         height: snapshotWidth))
-        message = "감사영수증이 출력됐어요."
+        snapshotImage = dummy.takeScreenshot(size: .init(width: snapshotWidth,
+                                                         height: snapshotWidth))
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in
+            self?.snapshotImage = nil
+            self?.message = "감사영수증이 출력됐어요."
+        }
     }
 }

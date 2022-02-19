@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func takeScreenshot(size: CGSize) {
+    func takeScreenshot(size: CGSize) -> UIImage {
         let viewController = UIHostingController(rootView: self)
         let ratio = viewController.view.intrinsicContentSize.height / size.width
         let backgroundWidth = size.width * ratio
@@ -21,5 +21,6 @@ extension View {
             viewController.view.drawHierarchy(in: viewController.view.bounds, afterScreenUpdates: true)
         }
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        return image
     }
 }

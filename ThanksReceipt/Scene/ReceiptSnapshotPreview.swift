@@ -15,6 +15,8 @@ struct ReceiptSnapshotPreview: View {
     @State private var scale: CGFloat = 1
     @State private var headerCursor = true
     @State private var footerCursor = true
+    @State private var snapshotScale: CGFloat = 1.23
+    @State private var snapshotOpacity: CGFloat = 1.0
     @FocusState private var focusField: Field?
     
     var body: some View {
@@ -83,6 +85,24 @@ struct ReceiptSnapshotPreview: View {
                     
                     saveButton
                 }
+                
+                if let snapshotImage = model.snapshotImage {
+                    Image(uiImage: snapshotImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: proxy.size.width, alignment: .center)
+                        .frame(maxHeight: .infinity)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .scaleEffect(snapshotScale)
+                        .overlay(Color.white.opacity(snapshotOpacity))
+                        .animation(.easeInOut(duration: 0.15), value: snapshotScale)
+                        .animation(.easeInOut(duration: 0.18), value: snapshotOpacity)
+                        .background(model.selectedColor)
+                        .onChange(of: snapshotScale) { newValue in
+                            guard newValue == 1 else { return }
+                            Haptic.trigger(.rigid)
+                        }
+                }
             }
         }
         .toast(message: $model.message, duration: 3, anchor: .center, fontSize: 12)
@@ -101,6 +121,10 @@ struct ReceiptSnapshotPreview: View {
                 showPreview = false
             }
         }
+        .onChange(of: model.snapshotImage, perform: { newValue in
+            snapshotScale = newValue != nil ? 1 : 2
+            snapshotOpacity = newValue != nil ? 0 : 1
+        })
         .transition(.opacity)
     }
     
