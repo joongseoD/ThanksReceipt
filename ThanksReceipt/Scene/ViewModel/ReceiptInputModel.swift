@@ -32,6 +32,7 @@ final class ReceiptInputModel: ObservableObject {
     @Published private(set) var dateString: String = ""
     @Published var inputMode: InputMode?
     @Published var message: String?
+    @Published var alert: AlertModel?
     @Published var date: Date {
         didSet {
             dateString = dateFormatter.string(from: date)
@@ -118,6 +119,21 @@ final class ReceiptInputModel: ObservableObject {
     }
     
     func deleteReceipt() {
+        alert = AlertModel(
+            message: "Delete?",
+            confirmButton: .init(
+                title: "OK",
+                action: { [weak self] in
+                    self?.delete()
+                }
+            ),
+            cancelButton: .init(
+                title: "Cancel"
+            )
+        )
+    }
+    
+    private func delete() {
         if case let .edit(item) = inputMode, let id = item.id {
             do {
                 try provider.delete(id: id)

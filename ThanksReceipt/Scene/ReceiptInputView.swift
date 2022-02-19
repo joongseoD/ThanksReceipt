@@ -24,7 +24,10 @@ struct ReceiptInputView: View {
                     if showDatePicker {
                         DatePickerView(selection: $model.date,
                                        pickerStyle: GraphicalDatePickerStyle(),
-                                       components: [.date]) { _ in showDatePicker = false }
+                                       components: [.date]) { _ in
+                            showDatePicker = false
+                            focusField = .text
+                        }
                     } else {
                         Group {
                             HStack(spacing: 3) {
@@ -36,6 +39,7 @@ struct ReceiptInputView: View {
                             .customFont(.DungGeunMo, size: 17)
                             .padding(.bottom, 7)
                             .onTapGesture {
+                                focusField = nil
                                 showDatePicker = true
                             }
                             
@@ -44,6 +48,7 @@ struct ReceiptInputView: View {
                                 .padding(.bottom, 15)
                             
                             TextField("", text: $model.text)
+                                .submitLabel(.done)
                                 .customFont(.DungGeunMo, size: 16)
                                 .focused($focusField, equals: .text)
                             
@@ -62,14 +67,15 @@ struct ReceiptInputView: View {
                 .padding(.top, 25)
                 .padding(.bottom, 10)
                 .padding(.horizontal, 25)
-                .background(Color.background)
+                .background(Color.receipt)
                 .cornerRadius(7)
                 .padding(.horizontal, 25)
                 .clipShape(ZigZag())
                 .position(x: proxy.frame(in: .global).width / 2, y: proxy.frame(in: .global).height / 2)
                 .scaleEffect(scale)
-                .animation(.easeInOut(duration: 0.15), value: scale)
+                .animation(.spring(response: 0.19, dampingFraction: 0.7, blendDuration: 1.0))
                 .ignoresSafeArea(.keyboard, edges: .bottom)
+                .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
                 
                 InputBottomToolBar(isEditMode: model.inputMode != .create,
                                    didTapDelete: model.deleteReceipt,
@@ -77,6 +83,7 @@ struct ReceiptInputView: View {
                     .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .toast(message: $model.message, anchor: .center)
+            .alert(model: $model.alert)
         }
         .onAppear {
             withAnimation(Animation.easeInOut(duration: 0.1)) {

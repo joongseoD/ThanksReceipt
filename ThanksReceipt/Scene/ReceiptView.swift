@@ -17,6 +17,8 @@ struct ReceiptView: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
+                Color.background.ignoresSafeArea()
+                
                 VStack {
                     ToolBar(didTapSave: { showPreview = true },
                             didTapAdd: model.addItem)
@@ -24,6 +26,7 @@ struct ReceiptView: View {
                         .padding(.vertical, 10)
                     
                     ReceiptContentView(showMonthPicker: $showMonthPicker)
+                        .padding(.horizontal, 7)
                 }
                 .toast(message: $model.message)
                 

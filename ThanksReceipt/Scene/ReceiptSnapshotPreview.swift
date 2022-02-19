@@ -22,9 +22,6 @@ struct ReceiptSnapshotPreview: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                Color.white
-                    .ignoresSafeArea()
-                
                 model.selectedColor
                     .ignoresSafeArea()
                     .onTapGesture { focusField = nil }
@@ -36,6 +33,7 @@ struct ReceiptSnapshotPreview: View {
                         ReceiptHeader(date: receiptModel.monthText) {
                             VStack {
                                 TextField("", text: $headerText)
+                                    .submitLabel(.done)
                                     .customFont(.DungGeunMo, size: 30)
                                     .focused($focusField, equals: .header)
                                     .multilineTextAlignment(.center)
@@ -56,6 +54,7 @@ struct ReceiptSnapshotPreview: View {
                         ReceiptFooter(totalCount: receiptModel.totalCount) {
                             VStack {
                                 TextField("", text: $footerText)
+                                    .submitLabel(.done)
                                     .customFont(.DungGeunMo, size: 20)
                                     .focused($focusField, equals: .footer)
                                     .multilineTextAlignment(.center)
@@ -85,9 +84,10 @@ struct ReceiptSnapshotPreview: View {
                         )
                     }
                     .padding(.vertical, 15)
-                    .background(Color.background)
+                    .background(Color.receipt)
                     .clipShape(ZigZag())
                     .scaleEffect(scale)
+                    .opacity(scale)
                     .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
                     
                     ColorPallete(selection: $model.selectedColor,
@@ -99,17 +99,17 @@ struct ReceiptSnapshotPreview: View {
         }
         .toast(message: $model.message, duration: 3, anchor: .center, fontSize: 12)
         .onAppear {
-            withAnimation(Animation.easeInOut(duration: 0.1)) {
+            withAnimation(Animation.easeInOut(duration: 0.15)) {
                 scale = 0.87
             }
             model.onAppear()
         }
         .onChange(of: willDisapper) { newValue in
             guard newValue else { return }
-            withAnimation(Animation.easeInOut(duration: 0.1)) {
+            withAnimation(Animation.easeInOut(duration: 0.15)) {
                 scale = 1.0
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 showPreview = false
             }
         }
@@ -139,7 +139,7 @@ extension ReceiptSnapshotPreview {
             Color.black
                 .ignoresSafeArea()
                 .overlay(
-                    Text("이미지 저장")
+                    Text("영수증 출력하기")
                         .customFont(.DungGeunMo, size: 17)
                         .foregroundColor(.white)
                 )
@@ -148,6 +148,10 @@ extension ReceiptSnapshotPreview {
     }
     
     private func saveImage() {
+        guard model.selectedSections.isEmpty == false else {
+            model.message = "영수증으로 출력하고자 하는 항목들을 선택하세요."
+            return
+        }
         let screenWidth = Constants.screenWidth
         let padding: CGFloat = 25
         let dummy = SnapshotDummy(backgroundColor: model.selectedColor,
@@ -161,6 +165,7 @@ extension ReceiptSnapshotPreview {
         let snapshotWidth = screenWidth - padding
         dummy.takeScreenshot(size: .init(width: snapshotWidth,
                                          height: snapshotWidth))
+        model.message = "감사영수증이 출력됐어요."
     }
 }
 
