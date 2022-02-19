@@ -13,4 +13,5 @@ struct Constants {
     static let colorPalette: [Color] = [.white, .black, .blue, .green, .yellow, .orange, .pink, .red, .purple]
     static let screenSize: CGSize = UIScreen.main.bounds.size
     static var screenWidth: CGFloat { screenSize.width }
+    static let snapshotScale: CGFloat = 1.5
 }

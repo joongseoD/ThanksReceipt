@@ -57,7 +57,15 @@ struct ReceiptView: View {
                 }
                 
                 if showPreview {
-                    ReceiptSnapshotPreview(showPreview: $showPreview)
+                    ReceiptSnapshotPreview(
+                        dependency: ReceiptSnapshotPreviewModelComponent(
+                            scrollToId: model.scrollToId,
+                            monthText: model.monthText,
+                            totalCount: model.totalCount,
+                            receiptItems: model.receiptItems
+                        ),
+                        showPreview: $showPreview
+                    )
                 }
             }
             .environmentObject(model)

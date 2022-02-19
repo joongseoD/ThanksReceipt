@@ -8,16 +8,21 @@
 import SwiftUI
 
 struct ReceiptSnapshotPreview: View {
-    @StateObject var model = ReceiptSnapshotPreviewModel()
-    @EnvironmentObject var receiptModel: ReceiptModel
+    @StateObject var model: ReceiptSnapshotPreviewModel
     @Binding var showPreview: Bool
     @State private var willDisapper = false
     @State private var scale: CGFloat = 1
     @State private var headerCursor = true
     @State private var footerCursor = true
+    @State private var snapshotImage: UIImage?
     @State private var snapshotScale: CGFloat = 1.23
     @State private var snapshotOpacity: CGFloat = 1.0
     @FocusState private var focusField: Field?
+    
+    init(dependency: ReceiptSnapshotPreviewModelDependency, showPreview: Binding<Bool>) {
+        _model = StateObject(wrappedValue: ReceiptSnapshotPreviewModel(dependency: dependency))
+        _showPreview = showPreview
+    }
     
     var body: some View {
         GeometryReader { proxy in
@@ -32,10 +37,9 @@ struct ReceiptSnapshotPreview: View {
                 
                 VStack(spacing: 0) {
                     navigationBarView
-                        .toast(message: $model.selectedCountText, animation: false, fontSize: 13)
                     
                     VStack {
-                        ReceiptHeader(date: receiptModel.monthText) {
+                        ReceiptHeader(date: model.dateString) {
                             VStack {
                                 TextField("", text: $model.headerText)
                                     .submitLabel(.done)
@@ -52,11 +56,12 @@ struct ReceiptSnapshotPreview: View {
                         }
                         .padding(.horizontal, 20)
                         
-                        ReceiptList(items: receiptModel.receiptItems,
+                        ReceiptList(items: model.receiptItems,
                                     didTapSection: model.didSelectSection(_:),
+                                    scrollToId: model.scrollToId,
                                     selectedSections: model.selectedSections)
                         
-                        ReceiptFooter(totalCount: receiptModel.totalCount) {
+                        ReceiptFooter(totalCount: model.totalCount) {
                             VStack {
                                 TextField("", text: $model.footerText)
                                     .submitLabel(.done)
@@ -72,6 +77,7 @@ struct ReceiptSnapshotPreview: View {
                             .frame(height: 35)
                         }
                         .padding(.horizontal, 20)
+                        .overlay(selectedCountView)
                     }
                     .padding(.vertical, 15)
                     .background(Color.receipt)
@@ -85,8 +91,10 @@ struct ReceiptSnapshotPreview: View {
                     
                     saveButton
                 }
+                .opacity(snapshotImage == nil ? 1 : 0)
+                .animation(.easeInOut(duration: 0.1), value: snapshotImage)
                 
-                if let snapshotImage = model.snapshotImage {
+                if let snapshotImage = snapshotImage {
                     Image(uiImage: snapshotImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -125,11 +133,24 @@ struct ReceiptSnapshotPreview: View {
             }
         }
         .onChange(of: model.snapshotImage, perform: { newValue in
-            withAnimation(.easeInOut(duration: 0.15)) {
-                snapshotScale = newValue != nil ? 1 : 2
-            }
-            withAnimation(.linear(duration: 0.5)) {
-                snapshotOpacity = newValue != nil ? 0 : 1
+            if let image = newValue {
+                snapshotImage = image
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    snapshotScale = 1
+                }
+                withAnimation(.linear(duration: 0.5)) {
+                    snapshotOpacity = 0
+                }
+            } else {
+                let disappearDuration = 0.1
+                withAnimation(.easeInOut(duration: disappearDuration)) {
+                    snapshotScale = 0
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + disappearDuration) {
+                    snapshotImage = nil
+                    snapshotScale = 2
+                    snapshotOpacity = 1
+                }
             }
         })
         .transition(.opacity)
@@ -152,7 +173,7 @@ struct ReceiptSnapshotPreview: View {
     }
     
     private var saveButton: some View {
-        Button(action: { model.saveImage(receiptModel.monthText) }) {
+        Button(action: model.saveImage) {
             Color.black
                 .ignoresSafeArea()
                 .overlay(
@@ -161,6 +182,22 @@ struct ReceiptSnapshotPreview: View {
                         .foregroundColor(model.receiptsEmpty ? .gray : .white)
                 )
                 .frame(height: 50)
+        }
+    }
+    
+    private var selectedCountView: some View {
+        HStack {
+            VStack {
+                Text(model.selectedCountText)
+                    .customFont(.DungGeunMo, size: 25)
+                    .foregroundColor(.black.opacity(0.3))
+                
+                Spacer()
+            }
+            .padding(.leading, 15)
+            .padding(.top, 15)
+            
+            Spacer()
         }
     }
 }
@@ -174,6 +211,13 @@ extension ReceiptSnapshotPreview {
 
 struct ReceiptSnapshotPreview_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptSnapshotPreview(showPreview: .constant(false))
+        ReceiptSnapshotPreview(
+            dependency: ReceiptSnapshotPreviewModelComponent(
+                scrollToId: nil,
+                monthText: "",
+                totalCount: "",
+                receiptItems: []),
+            showPreview: .constant(false)
+        )
     }
 }
