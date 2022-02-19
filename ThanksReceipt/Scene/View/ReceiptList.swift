@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReceiptList: View {
     var items: [ReceiptSectionModel] = []
-    var didTapRow: ((_ item: ReceiptItemModel) -> Void)?
+    var didTapRow: ((_ item: ReceiptRowModel) -> Void)?
     var didAppearRow: ((_ index: Int) -> Void)?
     var didTapSection: ((_ section: ReceiptSectionModel) -> Void)?
     var scrollToId: String?
@@ -84,7 +84,7 @@ struct ReceiptList: View {
 }
 
 fileprivate extension View {
-    func rowStyle(_ item: ReceiptItemModel, height: CGFloat) -> some View {
+    func rowStyle(_ item: ReceiptRowModel, height: CGFloat) -> some View {
         self.foregroundColor(.black)
             .frame(height: height)
             .padding(.horizontal, 20)

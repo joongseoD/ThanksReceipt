@@ -29,7 +29,7 @@ struct ReceiptInputView: View {
                         Group {
                             HStack(spacing: 3) {
                                 Text(model.dateString)
-                                Image(systemName: "chevron.compact.down")
+                                Image(symbol: .selectDown)
                                     .resizable()
                                     .frame(width: 10, height: 5)
                             }

@@ -1,5 +1,5 @@
 //
-//  ReceiptItemModel.swift
+//  ReceiptRowModel.swift
 //  ThanksReceipt
 //
 //  Created by Damor on 2022/02/12.
@@ -8,18 +8,26 @@
 import SwiftUI
 
 struct ReceiptSectionModel: Equatable {
-    var header: ReceiptItemModel
-    var items: [ReceiptItemModel]
+    var header: ReceiptRowModel
+    var items: [ReceiptRowModel]
     
     var text: String { header.text }
     var countString: String { "\(count).00" }
     var count: Int { items.count + 1 }
-    var date: String { header.date }
+    var dateString: String { header.dateString }
+    var date: Date { header.date }
 }
 
-struct ReceiptItemModel: Hashable {
+extension ReceiptSectionModel: Comparable {
+    static func < (lhs: ReceiptSectionModel, rhs: ReceiptSectionModel) -> Bool {
+        return lhs.date < rhs.date
+    }
+}
+
+struct ReceiptRowModel: Hashable {
     var id: String
-    var date: String
+    var dateString: String
+    var date: Date
     var text: String
     
     private let dateFormatter: DateFormatter = {
@@ -29,23 +37,18 @@ struct ReceiptItemModel: Hashable {
         return dateFormatter
     }()
     
-    init(id: String, date: String, text: String) {
+    init(id: String, dateString: String, date: Date, text: String) {
         self.id = id
-        self.date = date
+        self.dateString = dateString
         self.text = text
-        setup()
+        self.date = date
     }
     
     init(model: ReceiptItem) {
         guard let id = model.id else { fatalError("there's no id.") }
         self.id = id
         self.text = model.text
-        self.date = dateFormatter.string(from: model.date)
-        
-        setup()
-    }
-    
-    private func setup() {
-        
+        self.dateString = dateFormatter.string(from: model.date)
+        self.date = model.date
     }
 }

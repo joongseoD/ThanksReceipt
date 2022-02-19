@@ -17,7 +17,7 @@ struct InputBottomToolBar: View {
             if isEditMode {
                 Button(action: didTapDelete) {
                     VStack(spacing: 2) {
-                        Image(systemName: "trash")
+                        Image(symbol: .delete)
                             .font(.system(size: 18, weight: .bold))
                         
                         Text("Delete?")
@@ -32,7 +32,7 @@ struct InputBottomToolBar: View {
             
             Button(action: didTapSave) {
                 VStack(spacing: 2) {
-                    Image(systemName: "checkmark")
+                    Image(symbol: .check)
                         .font(.system(size: 20, weight: .bold))
                     
                     Text("Thanks?")

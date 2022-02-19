@@ -11,13 +11,13 @@ struct CapturePreview: View {
     @StateObject var model = CapturePreviewModel()
     @EnvironmentObject var receiptModel: ReceiptModel
     @Binding var showPreview: Bool
-    @FocusState private var focusField: Field?
     @State private var willDisapper = false
     @State private var scale: CGFloat = 1
     @State private var headerText: String = Constants.headerText
     @State private var footerText: String = Constants.footerText
     @State private var headerCursor = true
     @State private var footerCursor = true
+    @FocusState private var focusField: Field?
     
     var body: some View {
         GeometryReader { proxy in
@@ -119,7 +119,7 @@ struct CapturePreview: View {
     private var headerView: some View {
         HStack {
             Button(action: { willDisapper = true }) {
-                Image(systemName: "arrow.left")
+                Image(symbol: .back)
                     .font(.system(size: 20, weight: .regular))
             }
             .frame(width: 50, height: 20, alignment: .leading)
@@ -148,7 +148,7 @@ extension CapturePreview {
     }
     
     private func saveImage() {
-        let screenWidth = UIScreen.main.bounds.width
+        let screenWidth = Constants.screenWidth
         let padding: CGFloat = 25
         let dummy = SnapshotDummy(backgroundColor: model.selectedColor,
                       date: receiptModel.monthText,
@@ -164,15 +164,15 @@ extension CapturePreview {
     }
 }
 
-struct CapturePreview_Previews: PreviewProvider {
-    static var previews: some View {
-        CapturePreview(showPreview: .constant(false))
-    }
-}
-
 extension CapturePreview {
     enum Field {
         case header
         case footer
+    }
+}
+
+struct CapturePreview_Previews: PreviewProvider {
+    static var previews: some View {
+        CapturePreview(showPreview: .constant(false))
     }
 }

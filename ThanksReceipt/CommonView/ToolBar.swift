@@ -14,13 +14,13 @@ struct ToolBar: View {
     var body: some View {
         HStack {
             Button(action: didTapSave) {
-                Image(systemName: "printer")
+                Image(symbol: .print)
             }
             
             Spacer()
             
             Button(action: didTapAdd) {
-                Image(systemName: "pencil")
+                Image(symbol: .write)
             }
         }
         .font(.title2)

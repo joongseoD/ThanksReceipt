@@ -33,7 +33,7 @@ struct ReceiptHeader<Label: View>: View {
                         Text(date)
                             .kerning(1.5)
                         if didTapMonth != nil {
-                            Image(systemName: "chevron.compact.down")
+                            Image(symbol: .selectDown)
                                 .resizable()
                                 .frame(width: 10, height: 5)
                         }

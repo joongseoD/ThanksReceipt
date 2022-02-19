@@ -12,7 +12,7 @@ struct ReceiptView: View {
     @StateObject var model = ReceiptModel()
     @State private var showMonthPicker = false
     @State private var showPreview = false
-    // TODO: - Loading, Alert, Toast
+    // TODO: - Loading, Alert
     
     var body: some View {
         GeometryReader { proxy in
@@ -57,10 +57,6 @@ struct ReceiptView: View {
                 }
             }
             .environmentObject(model)
-            .onReceive(model.captureListHeight) {
-                print(model.receiptItems.count, $0)
-                showPreview = true
-            }
         }
     }
 }

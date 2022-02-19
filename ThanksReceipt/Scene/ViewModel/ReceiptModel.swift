@@ -5,9 +5,8 @@
 //  Created by Damor on 2022/02/08.
 //
 
-import Foundation
-import Combine
 import SwiftUI
+import Combine
 
 protocol ReceiptModelDependency {
     var provider: DataProviding { get }
@@ -32,11 +31,9 @@ final class ReceiptModel: ObservableObject {
     private let reload = CurrentValueSubject<Void, Never>(())
     private let selectedItemId = PassthroughSubject<String, Never>()
     private let scrollFocusId = PassthroughSubject<String?, Never>()
-    private let _captureListHeight = PassthroughSubject<CGFloat, Never>()
     private var cancellables = Set<AnyCancellable>()
     private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize) // TODO: - scheduler
     
-    var captureListHeight: AnyPublisher<CGFloat, Never> { _captureListHeight.eraseToAnyPublisher() }
     let pageSize = 100
     
     private let dateFormatter: DateFormatter = {
@@ -76,7 +73,7 @@ final class ReceiptModel: ObservableObject {
             .store(in: &cancellables)
         
         pagingController.pageItems
-            .map { $0.map { ReceiptItemModel(model: $0) } }
+            .map { $0.map { ReceiptRowModel(model: $0) } }
             .map { Array($0.reversed()) }
             .map { $0.mapToSectionModel() }
             .receive(on: RunLoop.main)
@@ -128,10 +125,6 @@ final class ReceiptModel: ObservableObject {
     
     func addItem() {
         inputMode = .create
-    }
-    
-    func saveAsImage() {
-        _captureListHeight.send(CGFloat(receiptItems.count * 30))
     }
     
     func didAppearRow(_ offset: Int) {

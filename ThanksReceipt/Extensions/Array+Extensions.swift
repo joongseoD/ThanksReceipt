@@ -17,11 +17,11 @@ extension Array where Element == ReceiptSectionModel {
     }
 }
 
-extension Array where Element == ReceiptItemModel {
+extension Array where Element == ReceiptRowModel {
     func mapToSectionModel() -> [ReceiptSectionModel] {
         self.reduce([]) { sectionModels, itemModel -> [ReceiptSectionModel] in
             var sectionModels = sectionModels
-            if let index = sectionModels.firstIndex(where: { $0.date == itemModel.date }) {
+            if let index = sectionModels.firstIndex(where: { $0.dateString == itemModel.dateString }) {
                 sectionModels[index].items.append(itemModel)
                 return sectionModels
             } else {

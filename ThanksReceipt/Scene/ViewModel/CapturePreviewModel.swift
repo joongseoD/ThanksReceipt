@@ -11,26 +11,28 @@ final class CapturePreviewModel: ObservableObject {
     private let maxSelectableCount = 7
     @Published var selectedColor: Color = .white
     @Published var message: String?
-    @Published var selectedSections: [ReceiptSectionModel] = []
+    @Published private(set) var selectedSections: [ReceiptSectionModel] = []
+    private var selectedSectionModels: [ReceiptSectionModel] = [] {
+        didSet {
+            selectedSections = selectedSectionModels.sorted(by: <)
+        }
+    }
     
-    var colorList: [Color] = [
-        .white, .black, .blue, .green, .yellow, .orange, .pink, .red, .purple
-    ]
+    let colorList: [Color] = Constants.colorPalette
     
     var totalCount: String { selectedSections.totalCount }
     
     var selectedCountText: String { "\(selectedSections.count)/\(maxSelectableCount)" }
     
-    // TODO: - 정렬해야됨
     func didSelectSection(_ section: ReceiptSectionModel) {
-        if let index = selectedSections.firstIndex(of: section) {
-            selectedSections.remove(at: index)
+        if let index = selectedSectionModels.firstIndex(of: section) {
+            selectedSectionModels.remove(at: index)
         } else {
-            guard selectedSections.count < maxSelectableCount else {
+            guard selectedSectionModels.count < maxSelectableCount else {
                 message = "7개 항목까지 선택할 수 있어요."
                 return
             }
-            selectedSections.append(section)
+            selectedSectionModels.append(section)
         }
     }
     
