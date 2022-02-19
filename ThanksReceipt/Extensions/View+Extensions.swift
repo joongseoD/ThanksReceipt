@@ -8,19 +8,25 @@
 import SwiftUI
 
 extension View {
-    func takeScreenshot(size: CGSize) -> UIImage {
+    func takeScreenshot(size: CGSize) -> UIImage? {
         let viewController = UIHostingController(rootView: self)
         let ratio = viewController.view.intrinsicContentSize.height / size.width
         let backgroundWidth = size.width * ratio
         let backgroundSize = CGSize(width: backgroundWidth, height: backgroundWidth)
         
-        viewController.view.bounds = CGRect(origin: .zero,
-                                            size: backgroundSize)
-        let renderer = UIGraphicsImageRenderer(size: backgroundSize)
-        let image = renderer.image { _ in
-            viewController.view.drawHierarchy(in: viewController.view.bounds, afterScreenUpdates: true)
-        }
+        guard let view = viewController.view else { return nil }
+        
+        view.backgroundColor = .clear
+        view.bounds = CGRect(origin: .zero, size: backgroundSize)
+
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, Constants.snapshotScale)
+        view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
+        
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
+        UIGraphicsEndImageContext()
+        
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        
         return image
     }
 }
