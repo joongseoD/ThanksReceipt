@@ -46,7 +46,12 @@ struct ReceiptList: View {
                         ReceiptItemRow(sectionModel: section)
                     }
                     .rowStyle(section.header, height: rowHeight)
+                    .background(
+                        selectionColor(section)
+                            .padding(.horizontal, 15)
+                    )
                     .onAppear { didAppearRow?(offset) },
+                
                 footer: LineStroke()
                     .foregroundColor(.gray)
                     .opacity(0.3)
@@ -59,12 +64,12 @@ struct ReceiptList: View {
                     }
                     .rowStyle(item, height: rowHeight)
                     .onAppear { didAppearRow?(offset) }
+                    .background(
+                        selectionColor(section)
+                            .padding(.horizontal, 15)
+                    )
                 }
             }
-            .background(
-                selectionColor(section)
-                    .padding(.horizontal, 15)
-            )
             .simultaneousGesture(
                 TapGesture()
                     .onEnded { _ in
@@ -76,7 +81,7 @@ struct ReceiptList: View {
     
     private func selectionColor(_ section: ReceiptSectionModel) -> Color {
         if let sections = selectedSections, sections.contains(section) {
-            return Color.green
+            return Color.gray.opacity(0.2)
         } else {
             return Color.clear
         }

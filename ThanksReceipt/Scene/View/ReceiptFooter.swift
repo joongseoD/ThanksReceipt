@@ -33,9 +33,9 @@ struct ReceiptFooter<Label: View>: View {
             
             HStack {
                 Text("**")
-                Spacer()
+                Spacer(minLength: 1)
                 label()
-                Spacer()
+                Spacer(minLength: 1)
                 Text("**")
             }
             .customFont(.DungGeunMo, size: 19)

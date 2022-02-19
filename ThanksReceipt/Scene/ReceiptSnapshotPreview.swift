@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ReceiptSnapshotPreview: View {
-    @StateObject var model = CapturePreviewModel()
+    @StateObject var model = ReceiptSnapshotPreviewModel()
     @EnvironmentObject var receiptModel: ReceiptModel
     @Binding var showPreview: Bool
     @State private var willDisapper = false

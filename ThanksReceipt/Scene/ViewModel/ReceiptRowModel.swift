@@ -24,7 +24,7 @@ extension ReceiptSectionModel: Comparable {
     }
 }
 
-struct ReceiptRowModel: Hashable {
+struct ReceiptRowModel: Equatable {
     var id: String
     var dateString: String
     var date: Date

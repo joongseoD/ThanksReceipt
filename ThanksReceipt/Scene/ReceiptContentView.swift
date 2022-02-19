@@ -13,9 +13,14 @@ struct ReceiptContentView: View {
     
     var body: some View {
         VStack {
-            ReceiptHeader(date: model.monthText,
-                          label: { AnimateText(Constants.headerText, kerning: 1.5) },
-                          didTapMonth: { showMonthPicker = true })
+            ReceiptHeader(
+                date: model.monthText,
+                label: {
+                    AnimateText(Constants.headerText, kerning: 1.5)
+                        .multilineTextAlignment(.center)
+                },
+                didTapMonth: { showMonthPicker = true }
+            )
                 .padding(.horizontal, 20)
             
             ReceiptList(items: model.receiptItems,

@@ -23,7 +23,7 @@ struct SnapshotDummy: View {
             VStack {
                 ReceiptHeader(date: date) {
                     Text(headerText)
-                        .lineLimit(1)
+                        .multilineTextAlignment(.center)
                 }
                 .padding(.horizontal, 20)
                 
@@ -31,7 +31,6 @@ struct SnapshotDummy: View {
                 
                 ReceiptFooter(totalCount: totalCount) {
                     Text(footerText)
-                        .lineLimit(2)
                         .multilineTextAlignment(.center)
                 }
                 .padding(.horizontal, 20)

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class CapturePreviewModel: ObservableObject {
+final class ReceiptSnapshotPreviewModel: ObservableObject {
     private let maxSelectableCount = 7
     @Published var selectedColor: Color = .white
     @Published var message: String?
