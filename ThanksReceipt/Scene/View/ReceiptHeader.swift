@@ -22,9 +22,7 @@ struct ReceiptHeader<Label: View>: View {
         VStack {
             VStack {
                 HStack(spacing: 10) {
-                    Text("*")
                     label()
-                    Text("*")
                 }
                 .customFont(.DungGeunMo, size: 30)
                 
