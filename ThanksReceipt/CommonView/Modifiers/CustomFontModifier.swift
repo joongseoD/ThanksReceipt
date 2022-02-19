@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CustomFontModifier: ViewModifier {
-    
     enum Font: String {
         case DungGeunMo
     }

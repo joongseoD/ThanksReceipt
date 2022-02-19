@@ -53,7 +53,7 @@ struct ReceiptView: View {
                 }
                 
                 if showPreview {
-                    CapturePreview(showPreview: $showPreview)
+                    ReceiptSnapshotPreview(showPreview: $showPreview)
                 }
             }
             .environmentObject(model)

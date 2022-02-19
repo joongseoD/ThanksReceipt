@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CapturePreview: View {
+struct ReceiptSnapshotPreview: View {
     @StateObject var model = CapturePreviewModel()
     @EnvironmentObject var receiptModel: ReceiptModel
     @Binding var showPreview: Bool
@@ -30,7 +30,7 @@ struct CapturePreview: View {
                     .onTapGesture { focusField = nil }
                 
                 VStack(spacing: 0) {
-                    headerView
+                    navigationBarView
                     
                     VStack {
                         ReceiptHeader(date: receiptModel.monthText) {
@@ -44,7 +44,7 @@ struct CapturePreview: View {
                                 
                                 LineStroke()
                             }
-                            .padding(.horizontal, 35)
+                            .padding(.horizontal, 30)
                             .frame(height: 35)
                         }
                         .padding(.horizontal, 20)
@@ -116,7 +116,7 @@ struct CapturePreview: View {
         .transition(.opacity)
     }
     
-    private var headerView: some View {
+    private var navigationBarView: some View {
         HStack {
             Button(action: { willDisapper = true }) {
                 Image(symbol: .back)
@@ -133,7 +133,7 @@ struct CapturePreview: View {
     }
 }
 
-extension CapturePreview {
+extension ReceiptSnapshotPreview {
     private var saveButton: some View {
         Button(action: saveImage) {
             Color.black
@@ -164,15 +164,15 @@ extension CapturePreview {
     }
 }
 
-extension CapturePreview {
+extension ReceiptSnapshotPreview {
     enum Field {
         case header
         case footer
     }
 }
 
-struct CapturePreview_Previews: PreviewProvider {
+struct ReceiptSnapshotPreview_Previews: PreviewProvider {
     static var previews: some View {
-        CapturePreview(showPreview: .constant(false))
+        ReceiptSnapshotPreview(showPreview: .constant(false))
     }
 }

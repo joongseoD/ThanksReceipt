@@ -19,7 +19,7 @@ struct CursorMimicViewModifier: ViewModifier {
                 if show {
                     RoundedRectangle(cornerRadius: 2)
                         .frame(width: 2, height: proxy.size.height, alignment: .center)
-                        .position(x: proxy.size.width - 12, y: (proxy.size.height / 2) + 3)
+                        .position(x: proxy.size.width, y: (proxy.size.height / 2) + 3)
                         .foregroundColor(Color.blue)
                         .opacity(alpha)
                         .onChange(of: alpha) { newValue in

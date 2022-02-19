@@ -24,10 +24,9 @@ struct ReceiptContentView: View {
                         scrollToId: model.scrollToId)
             
             ReceiptFooter(totalCount: model.totalCount) {
-                AnimateText([Constants.footerText, Constants.headerText],
+                AnimateText([Constants.headerText, Constants.footerText],
                             kerning: 1.5,
-                            duration: 2,
-                            repeatAnimation: true)
+                            duration: 2)
                     .multilineTextAlignment(.center)
             }
             .padding(.horizontal, 20)
