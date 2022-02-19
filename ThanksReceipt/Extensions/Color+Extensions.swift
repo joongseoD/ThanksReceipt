@@ -9,6 +9,7 @@ import SwiftUI
 
 extension Color {
     static let background = Color(hex: "#F4F3EE")
+    static let receipt = Color(red: 236.0 / 255.0, green: 242.0 / 255.0, blue: 244.0 / 255.0)
     static let text = Color.black
     
     init(hex: String) {

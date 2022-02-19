@@ -16,7 +16,8 @@ struct ReceiptContentView: View {
             ReceiptHeader(
                 date: model.monthText,
                 label: {
-                    AnimateText(Constants.headerText, kerning: 1.5)
+                    Text(Constants.headerText)
+                        .kerning(1.5)
                         .multilineTextAlignment(.center)
                 },
                 didTapMonth: { showMonthPicker = true }
@@ -37,7 +38,7 @@ struct ReceiptContentView: View {
             .padding(.horizontal, 20)
         }
         .padding(.vertical, 15)
-        .background(Color.background)
+        .background(Color.receipt)
         .clipShape(ZigZag())
         .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
     }

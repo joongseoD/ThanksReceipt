@@ -39,7 +39,7 @@ struct AnimateText: View {
     }
     
     private func animateMasking(_ message: String) {
-        maskingText = String(message.map { _ in "*" })
+        maskingText = String(message.map { _ in " " })
         
         DispatchQueue.global().async {
             message.enumerated().forEach { index, text in

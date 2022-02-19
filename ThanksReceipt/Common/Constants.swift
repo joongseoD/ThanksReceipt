@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Constants {
-    static let headerText: String = "* Thanks Receipt *"
+    static let headerText: String = "Thanks Receipt"
     static let footerText: String = "THANKS FOR GIVING ME A DAY!"
     static let colorPalette: [Color] = [.white, .black, .blue, .green, .yellow, .orange, .pink, .red, .purple]
     static let screenSize: CGSize = UIScreen.main.bounds.size

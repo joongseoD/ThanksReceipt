@@ -21,8 +21,12 @@ struct ReceiptHeader<Label: View>: View {
     var body: some View {
         VStack {
             VStack {
-                label()
-                    .customFont(.DungGeunMo, size: 30)
+                HStack(spacing: 10) {
+                    Text("*")
+                    label()
+                    Text("*")
+                }
+                .customFont(.DungGeunMo, size: 30)
                 
                 Button(action: { didTapMonth?() }) {
                     HStack {

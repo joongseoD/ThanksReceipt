@@ -25,7 +25,7 @@ struct InputBottomToolBar: View {
                     }
                 }
                 .foregroundColor(.black)
-                .padding(.leading, 25)
+                .padding(.horizontal, 25)
             }
             
             Spacer()
@@ -40,9 +40,9 @@ struct InputBottomToolBar: View {
                 }
             }
             .foregroundColor(.black)
-            .padding(.trailing, 25)
+            .padding(.horizontal, 25)
         }
-        .padding(.bottom, 10)
+        .padding(.vertical, 15)
     }
 }
 
