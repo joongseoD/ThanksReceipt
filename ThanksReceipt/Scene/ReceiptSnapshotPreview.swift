@@ -13,8 +13,6 @@ struct ReceiptSnapshotPreview: View {
     @Binding var showPreview: Bool
     @State private var willDisapper = false
     @State private var scale: CGFloat = 1
-    @State private var headerText: String = Constants.headerText
-    @State private var footerText: String = Constants.footerText
     @State private var headerCursor = true
     @State private var footerCursor = true
     @FocusState private var focusField: Field?
@@ -22,17 +20,22 @@ struct ReceiptSnapshotPreview: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
+                Color.white
+                    .ignoresSafeArea()
+                
                 model.selectedColor
                     .ignoresSafeArea()
+                    .animation(.easeInOut, value: model.selectedColor)
                     .onTapGesture { focusField = nil }
                 
                 VStack(spacing: 0) {
                     navigationBarView
+                        .toast(message: $model.selectedCountText, animation: false, fontSize: 13)
                     
                     VStack {
                         ReceiptHeader(date: receiptModel.monthText) {
                             VStack {
-                                TextField("", text: $headerText)
+                                TextField("", text: $model.headerText)
                                     .submitLabel(.done)
                                     .customFont(.DungGeunMo, size: 30)
                                     .focused($focusField, equals: .header)
@@ -53,7 +56,7 @@ struct ReceiptSnapshotPreview: View {
                         
                         ReceiptFooter(totalCount: receiptModel.totalCount) {
                             VStack {
-                                TextField("", text: $footerText)
+                                TextField("", text: $model.footerText)
                                     .submitLabel(.done)
                                     .customFont(.DungGeunMo, size: 20)
                                     .focused($focusField, equals: .footer)
@@ -67,21 +70,6 @@ struct ReceiptSnapshotPreview: View {
                             .frame(height: 35)
                         }
                         .padding(.horizontal, 20)
-                        .overlay(
-                            HStack {
-                                VStack {
-                                    Text(model.selectedCountText)
-                                        .customFont(.DungGeunMo, size: 25)
-                                        .foregroundColor(.black.opacity(0.3))
-                                    
-                                    Spacer()
-                                }
-                                .padding(.leading, 15)
-                                .padding(.top, 15)
-                                
-                                Spacer()
-                            }
-                        )
                     }
                     .padding(.vertical, 15)
                     .background(Color.receipt)
@@ -131,41 +119,18 @@ struct ReceiptSnapshotPreview: View {
         .padding(.vertical, 15)
         .background(.white.opacity(0.25))
     }
-}
-
-extension ReceiptSnapshotPreview {
+    
     private var saveButton: some View {
-        Button(action: saveImage) {
+        Button(action: { model.saveImage(receiptModel.monthText) }) {
             Color.black
                 .ignoresSafeArea()
                 .overlay(
                     Text("영수증 출력하기")
                         .customFont(.DungGeunMo, size: 17)
-                        .foregroundColor(.white)
+                        .foregroundColor(model.receiptsEmpty ? .gray : .white)
                 )
-                .frame(height: 40)
+                .frame(height: 50)
         }
-    }
-    
-    private func saveImage() {
-        guard model.selectedSections.isEmpty == false else {
-            model.message = "영수증으로 출력하고자 하는 항목들을 선택하세요."
-            return
-        }
-        let screenWidth = Constants.screenWidth
-        let padding: CGFloat = 25
-        let dummy = SnapshotDummy(backgroundColor: model.selectedColor,
-                      date: receiptModel.monthText,
-                      headerText: headerText,
-                      receipts: model.selectedSections,
-                      totalCount: model.totalCount,
-                      footerText: footerText,
-                      width: screenWidth - (padding * 2))
-        
-        let snapshotWidth = screenWidth - padding
-        dummy.takeScreenshot(size: .init(width: snapshotWidth,
-                                         height: snapshotWidth))
-        model.message = "감사영수증이 출력됐어요."
     }
 }
 

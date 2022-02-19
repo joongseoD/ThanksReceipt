@@ -90,6 +90,7 @@ struct ReceiptInputView: View {
                 scale = 1
             }
             focusField = .text
+            Haptic.trigger()
         }
         .onDisappear {
             withAnimation(Animation.easeInOut(duration: 0.1)) {

@@ -18,6 +18,7 @@ struct SnapshotDummy: View {
     
     var body: some View {
         ZStack {
+//            LinearGradient(colors: [backgroundColor, .black], startPoint: .topLeading, endPoint: .bottomTrailing)
             backgroundColor
             
             VStack {
@@ -35,7 +36,8 @@ struct SnapshotDummy: View {
                 }
                 .padding(.horizontal, 20)
             }
-            .padding(.vertical, 15)
+            .padding(.top, 20)
+            .padding(.bottom, 15)
             .background(Color.receipt)
             .clipShape(ZigZag())
             .shadow(color: .black.opacity(0.4), radius: 10, y: 5)

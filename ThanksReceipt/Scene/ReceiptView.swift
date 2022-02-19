@@ -27,6 +27,7 @@ struct ReceiptView: View {
                     
                     ReceiptContentView(showMonthPicker: $showMonthPicker)
                         .padding(.horizontal, 7)
+                        .padding(.bottom, 10)
                 }
                 .toast(message: $model.message)
                 

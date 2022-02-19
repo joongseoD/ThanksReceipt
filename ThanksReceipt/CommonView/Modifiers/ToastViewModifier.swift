@@ -12,6 +12,7 @@ struct ToastViewModifier: ViewModifier {
     @State private var hideWorkItem: DispatchWorkItem?
     @State private var maskingMessage: String?
     @Binding var message: String?
+    var animation: Bool
     var duration: Double
     var anchor: Anchor = .center
     var fontSize: CGFloat = 20
@@ -25,7 +26,7 @@ struct ToastViewModifier: ViewModifier {
                     if anchor == .bottom {
                         Spacer()
                     }
-                    AnimateText(maskingMessage)
+                    text(maskingMessage)
                         .customFont(.DungGeunMo, size: fontSize)
                         .padding(.all, 20)
                         .foregroundColor(.white)
@@ -47,6 +48,10 @@ struct ToastViewModifier: ViewModifier {
             maskingMessage = newValue
             reserveHiding()
         }
+    }
+    
+    private func text(_ message: String) -> AnyView {
+        animation ? AnyView(AnimateText(message)) : AnyView(Text(message))
     }
     
     private func reserveHiding() {
@@ -74,7 +79,7 @@ extension ToastViewModifier {
 }
 
 extension View {
-    func toast(message: Binding<String?>, duration: Double = 2, anchor: ToastViewModifier.Anchor = .center, fontSize: CGFloat = 20) -> some View {
-        self.modifier(ToastViewModifier(message: message, duration: duration, anchor: anchor, fontSize: fontSize))
+    func toast(message: Binding<String?>, animation: Bool = true, duration: Double = 2, anchor: ToastViewModifier.Anchor = .center, fontSize: CGFloat = 20) -> some View {
+        self.modifier(ToastViewModifier(message: message, animation: animation, duration: duration, anchor: anchor, fontSize: fontSize))
     }
 }
