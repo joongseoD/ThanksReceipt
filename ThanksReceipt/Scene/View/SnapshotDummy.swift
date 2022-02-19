@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SnapshotDummy: View {
-    var backgroundColor: Color
+    var background: AnyView
     var date: String
     var headerText: String
     var receipts: [ReceiptSectionModel]
@@ -18,8 +18,7 @@ struct SnapshotDummy: View {
     
     var body: some View {
         ZStack {
-//            LinearGradient(colors: [backgroundColor, .black], startPoint: .topLeading, endPoint: .bottomTrailing)
-            backgroundColor
+            background
             
             VStack {
                 ReceiptHeader(date: date) {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 protocol ReceiptSnapshotPreviewModelDependency {
-    var colorList: [Color] { get }
+    var colorList: [Palette] { get }
     var scrollToId: String? { get }
     var monthText: String { get }
     var totalCount: String { get }
@@ -16,7 +16,7 @@ protocol ReceiptSnapshotPreviewModelDependency {
 }
 
 struct ReceiptSnapshotPreviewModelComponent: ReceiptSnapshotPreviewModelDependency {
-    var colorList: [Color] = Constants.colorPalette
+    var colorList: [Palette] = Constants.paletteColors
     var scrollToId: String?
     var monthText: String
     var totalCount: String
@@ -27,7 +27,7 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
     private let maxSelectableCount = 7
     @Published var snapshotImage: UIImage?
     @Published var scrollToId: String?
-    @Published var selectedColor: Color = .white {
+    @Published var selectedColor: Palette = .single(.white) {
         didSet { Haptic.trigger() }
     }
     @Published var message: String? {
@@ -52,7 +52,7 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
     }
     
     var receiptsEmpty: Bool { selectedSections.isEmpty }
-    var colorList: [Color] { dependency.colorList }
+    var colorList: [Palette] { dependency.colorList }
     var receiptItems: [ReceiptSectionModel] { dependency.receiptItems }
     var totalCount: String { dependency.totalCount }
     var dateString: String { dependency.monthText }
@@ -83,8 +83,9 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
         }
         let screenWidth = Constants.screenWidth
         let padding: CGFloat = 25
+        let background = AnyView(ColorBuilderView(palette: selectedColor))
         let dummy = SnapshotDummy(
-            backgroundColor: selectedColor,
+            background: background,
             date: dateString,
             headerText: headerText,
             receipts: selectedSortedSections,

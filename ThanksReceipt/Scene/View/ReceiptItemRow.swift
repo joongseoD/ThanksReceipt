@@ -23,13 +23,14 @@ struct ReceiptItemRow: View {
     }
     
     var body: some View {
-        HStack(alignment: .center, spacing: 2.5) {
+        HStack(alignment: .top, spacing: 2.5) {
             Text(date)
                 .customFont(.DungGeunMo, size: 13)
                 .frame(width: 60, alignment: .leading)
             
             Text(text)
                 .lineLimit(2)
+                .lineSpacing(2)
                 .multilineTextAlignment(.leading)
                 .customFont(.DungGeunMo, size: 15)
                 .padding(.leading, 10)
@@ -41,6 +42,7 @@ struct ReceiptItemRow: View {
                 .frame(minWidth: 50, alignment: .trailing)
                 .customFont(.DungGeunMo, size: 15)
         }
+        .padding(.vertical, 5)
     }
 }
 

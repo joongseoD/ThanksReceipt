@@ -30,7 +30,7 @@ struct ReceiptSnapshotPreview: View {
                 Color.white
                     .ignoresSafeArea()
                 
-                model.selectedColor
+                ColorBuilderView(palette: model.selectedColor)
                     .ignoresSafeArea()
                     .animation(.easeInOut, value: model.selectedColor)
                     .onTapGesture { focusField = nil }
@@ -86,7 +86,7 @@ struct ReceiptSnapshotPreview: View {
                     .opacity(scale)
                     .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
                     
-                    ColorPallete(selection: $model.selectedColor,
+                    ColorPalette(selection: $model.selectedColor,
                                  colorList: model.colorList)
                     
                     saveButton
@@ -106,7 +106,7 @@ struct ReceiptSnapshotPreview: View {
                         .background(
                             ZStack {
                                 Color.white
-                                model.selectedColor
+                                ColorBuilderView(palette: model.selectedColor)
                             }
                         )
                         .onChange(of: snapshotScale) { newValue in

@@ -14,7 +14,6 @@ struct ReceiptList: View {
     var didTapSection: ((_ section: ReceiptSectionModel) -> Void)?
     var scrollToId: String?
     var selectedSections: [ReceiptSectionModel]?
-    var rowHeight: CGFloat = 30
     var snapshot: Bool = false
     
     var body: some View {
@@ -45,7 +44,7 @@ struct ReceiptList: View {
                     Button(action: { didTapRow?(section.header) }) {
                         ReceiptItemRow(sectionModel: section)
                     }
-                    .rowStyle(section.header, height: rowHeight)
+                    .rowStyle(section.header)
                     .background(
                         selectionColor(section)
                             .padding(.horizontal, 15)
@@ -62,7 +61,7 @@ struct ReceiptList: View {
                     Button(action: { didTapRow?(item) }) {
                         ReceiptItemRow(text: item.text)
                     }
-                    .rowStyle(item, height: rowHeight)
+                    .rowStyle(item)
                     .onAppear { didAppearRow?(offset) }
                     .background(
                         selectionColor(section)
@@ -89,9 +88,9 @@ struct ReceiptList: View {
 }
 
 fileprivate extension View {
-    func rowStyle(_ item: ReceiptRowModel, height: CGFloat) -> some View {
+    func rowStyle(_ item: ReceiptRowModel) -> some View {
         self.foregroundColor(.black)
-            .frame(height: height)
+            .frame(maxHeight: .infinity)
             .padding(.horizontal, 20)
             .id(item.id)
     }
