@@ -120,15 +120,15 @@ final class ReceiptInputModel: ObservableObject {
     
     func deleteReceipt() {
         alert = AlertModel(
-            message: "Delete?",
+            message: "이 감사를 지울까요?",
             confirmButton: .init(
-                title: "OK",
+                title: "네",
                 action: { [weak self] in
                     self?.delete()
                 }
             ),
             cancelButton: .init(
-                title: "Cancel"
+                title: "아니요"
             )
         )
     }

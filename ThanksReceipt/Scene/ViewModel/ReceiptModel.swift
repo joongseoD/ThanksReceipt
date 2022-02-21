@@ -151,19 +151,18 @@ extension ReceiptModel: ReceiptInputModelListener {
         reload.send(())
         closeInputMode()
         scrollFocusId.send(item.id)
-        message = "Thanks."
+        message = "감사합니다 :)"
     }
     
     func didUpdateReceipt(_ item: ReceiptItem) {
         reload.send(())
         closeInputMode()
-        message = "Thanks."
+        message = "감사합니다 :)"
     }
     
     func didDeleteReceipt(_ item: ReceiptItem) {
         reload.send(())
         closeInputMode()
-        message = "Deleted."
     }
     
     private func closeInputMode() {

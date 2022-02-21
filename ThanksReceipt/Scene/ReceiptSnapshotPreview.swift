@@ -116,7 +116,7 @@ struct ReceiptSnapshotPreview: View {
                 }
             }
         }
-        .toast(message: $model.message, duration: 3, anchor: .center, fontSize: 12)
+        .toast(message: $model.message, anchor: .center, fontSize: 12)
         .onAppear {
             withAnimation(Animation.easeInOut(duration: 0.15)) {
                 scale = 0.87

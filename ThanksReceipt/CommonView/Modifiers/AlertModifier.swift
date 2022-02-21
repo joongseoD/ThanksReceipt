@@ -69,7 +69,7 @@ struct AlertView: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(model.message)
-                .customFont(.DungGeunMo, size: 25)
+                .customFont(.DungGeunMo, size: 20)
                 .multilineTextAlignment(.center)
                 .padding()
             
@@ -97,7 +97,7 @@ struct AlertView: View {
                 .buttonStyle(SelectionButtonStyle())
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .customFont(.DungGeunMo, size: 20)
+            .customFont(.DungGeunMo, size: 15)
             .foregroundColor(.text)
             .frame(height: 40)
             .fixedSize(horizontal: false, vertical: true)
