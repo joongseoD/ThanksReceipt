@@ -149,11 +149,6 @@ final class ReceiptModel: ObservableObject {
         closeOverlayView()
     }
     
-    func didChangeMonth(_ date: Date) {
-        selectedMonth = date
-        reload.send(())
-    }
-    
     func didSelectSection(_ section: ReceiptSectionModel) {
         guard selectMode else { return }
         if let index = selectedSections.firstIndex(of: section) {
@@ -201,6 +196,14 @@ extension ReceiptModel: ReceiptInputModelListener {
     
     private func closeOverlayView() {
         viewState = nil
+    }
+}
+
+extension ReceiptModel: MonthPickerModelListener {
+    func didSelectDate(_ date: Date) {
+        selectedMonth = date
+        reload.send(())
+        closeOverlayView()
     }
 }
 

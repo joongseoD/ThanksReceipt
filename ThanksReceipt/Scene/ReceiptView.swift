@@ -6,11 +6,9 @@
 //
 
 import SwiftUI
-import Combine
 
 struct ReceiptView: View {
     @StateObject var model = ReceiptModel()
-    // TODO: - Loading, Alert
     
     var body: some View {
         GeometryReader { proxy in
@@ -32,14 +30,12 @@ struct ReceiptView: View {
                 if let viewState = model.viewState {
                     switch viewState {
                     case .monthPicker:
-                        DatePickerView(
-                            selection: $model.selectedMonth,
-                            pickerStyle: WheelDatePickerStyle(),
-                            components: [.date]
-                        ) { date in
-                            model.didTapBackgroundView()
-                            model.didChangeMonth(date)
-                        }
+                        MonthPicker(
+                            dependency: MonthPickerModelComponents(
+                                currentDate: model.selectedMonth
+                            ),
+                            listener: model
+                        )
                         .backgroundBlur(onTapBackground: model.didTapBackgroundView)
                         .transition(.opacity.animation(.easeInOut))
                     case .input(let inputMode):

@@ -15,6 +15,7 @@ extension Image {
         case selectDown = "chevron.compact.down"
         case delete = "trash"
         case check = "checkmark"
+        case next = "chevron.right"
     }
 
     init(symbol: Symbol) {
