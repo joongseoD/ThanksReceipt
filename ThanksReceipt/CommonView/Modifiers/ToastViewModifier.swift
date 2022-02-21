@@ -114,7 +114,7 @@ extension ToastViewModifier {
 }
 
 extension View {
-    func toast(message: Binding<String?>, animation: Bool = true, duration: Double = 2, anchor: ToastViewModifier.Anchor = .center, fontSize: CGFloat = 20) -> some View {
+    func toast(message: Binding<String?>, animation: Bool = true, duration: Double = 1.3, anchor: ToastViewModifier.Anchor = .center, fontSize: CGFloat = 20) -> some View {
         self.modifier(ToastViewModifier(message: message, animation: animation, duration: duration, anchor: anchor, fontSize: fontSize))
     }
 }
