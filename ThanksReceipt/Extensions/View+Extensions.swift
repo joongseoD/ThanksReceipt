@@ -19,13 +19,11 @@ extension View {
         view.backgroundColor = .clear
         view.bounds = CGRect(origin: .zero, size: backgroundSize)
 
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, Constants.snapshotScale)
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, Constants.snapshotQuality)
         view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
         
         guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
         UIGraphicsEndImageContext()
-        
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
         
         return image
     }

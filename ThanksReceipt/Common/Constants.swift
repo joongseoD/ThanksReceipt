@@ -32,7 +32,9 @@ struct Constants {
     
     static let screenSize: CGSize = UIScreen.main.bounds.size
     static var screenWidth: CGFloat { screenSize.width }
-    static let snapshotScale: CGFloat = 1.9
+    static let snapshotQuality: CGFloat = 1.9
+    static let standardWidth: CGFloat = 375.0
+    static var ratio: CGFloat { screenWidth / standardWidth }
 }
 
 enum Palette: Identifiable, Equatable {

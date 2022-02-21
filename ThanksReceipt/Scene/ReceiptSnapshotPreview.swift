@@ -10,7 +10,6 @@ import SwiftUI
 struct ReceiptSnapshotPreview: View {
     @StateObject var model: ReceiptSnapshotPreviewModel
     var closeSnapshotPreview: (() -> Void)
-    @State private var willDisapper = false
     @State private var scale: CGFloat = 1
     @State private var headerCursor = true
     @State private var footerCursor = true
@@ -36,60 +35,16 @@ struct ReceiptSnapshotPreview: View {
                     .onTapGesture { focusField = nil }
                 
                 VStack(spacing: 0) {
-                    navigationBarView
+                    navigationBarView()
                     
-                    VStack {
-                        ReceiptHeader(date: model.dateString) {
-                            VStack {
-                                TextField("", text: $model.headerText)
-                                    .submitLabel(.done)
-                                    .customFont(.DungGeunMo, size: 30)
-                                    .focused($focusField, equals: .header)
-                                    .multilineTextAlignment(.center)
-                                    .cursor(show: headerCursor)
-                                    .onTapGesture { headerCursor = false }
-                                
-                                LineStroke()
-                            }
-                            .padding(.horizontal, 30)
-                            .frame(height: 35)
-                        }
-                        .padding(.horizontal, 20)
-                        
-                        ReceiptList(items: model.receiptItems,
-                                    didTapSection: model.didSelectSection(_:),
-                                    scrollToId: model.scrollToId,
-                                    selectedSections: model.selectedSections)
-                        
-                        ReceiptFooter(totalCount: model.totalCount) {
-                            VStack {
-                                TextField("", text: $model.footerText)
-                                    .submitLabel(.done)
-                                    .customFont(.DungGeunMo, size: 20)
-                                    .focused($focusField, equals: .footer)
-                                    .multilineTextAlignment(.center)
-                                    .cursor(show: footerCursor)
-                                    .onTapGesture { footerCursor = false }
-                                
-                                LineStroke()
-                            }
-                            .padding(.horizontal, 10)
-                            .frame(height: 35)
-                        }
-                        .padding(.horizontal, 20)
-                        .overlay(selectedCountView)
+                    switch model.state {
+                    case .edit:
+                        editSnapshotView()
+                    case .selectBackground(let image):
+                        selectBackgroundView(image)
                     }
-                    .padding(.vertical, 15)
-                    .background(Color.receipt)
-                    .clipShape(ZigZag())
-                    .scaleEffect(scale)
-                    .opacity(scale)
-                    .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
                     
-                    ColorPalette(selection: $model.selectedColor,
-                                 colorList: model.colorList)
-                    
-                    saveButton
+                    nextButton()
                 }
                 .opacity(snapshotImage == nil ? 1 : 0)
                 .animation(.easeInOut(duration: 0.1), value: snapshotImage)
@@ -123,7 +78,7 @@ struct ReceiptSnapshotPreview: View {
             }
             model.onAppear()
         }
-        .onChange(of: willDisapper) { newValue in
+        .onChange(of: model.willDisappear) { newValue in
             guard newValue else { return }
             withAnimation(Animation.easeInOut(duration: 0.15)) {
                 scale = 1.0
@@ -153,12 +108,78 @@ struct ReceiptSnapshotPreview: View {
                 }
             }
         })
-        .transition(.opacity)
     }
     
-    private var navigationBarView: some View {
+    private func editSnapshotView() -> some View {
+        VStack {
+            ReceiptHeader(date: model.dateString) {
+                VStack {
+                    TextField("", text: $model.headerText)
+                        .submitLabel(.done)
+                        .customFont(.DungGeunMo, size: 30)
+                        .focused($focusField, equals: .header)
+                        .multilineTextAlignment(.center)
+                        .cursor(show: headerCursor)
+                        .onTapGesture { headerCursor = false }
+                    
+                    LineStroke()
+                }
+                .padding(.horizontal, 30)
+                .frame(height: 35)
+            }
+            .padding(.horizontal, 20)
+            
+            ReceiptList(items: model.receiptItems,
+                        didTapSection: model.didSelectSection(_:),
+                        scrollToId: model.scrollToId,
+                        selectedSections: model.selectedSections)
+            
+            ReceiptFooter(totalCount: model.totalCount) {
+                VStack {
+                    TextField("", text: $model.footerText)
+                        .submitLabel(.done)
+                        .customFont(.DungGeunMo, size: 20)
+                        .focused($focusField, equals: .footer)
+                        .multilineTextAlignment(.center)
+                        .cursor(show: footerCursor)
+                        .onTapGesture { footerCursor = false }
+                    
+                    LineStroke()
+                }
+                .padding(.horizontal, 10)
+                .frame(height: 35)
+            }
+            .padding(.horizontal, 20)
+            .overlay(selectedCountView())
+        }
+        .padding(.vertical, 15)
+        .background(Color.receipt)
+        .clipShape(ZigZag())
+        .scaleEffect(scale)
+        .opacity(scale)
+        .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
+    }
+    
+    private func selectBackgroundView(_ image: UIImage) -> some View {
+        Group {
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .scaleEffect(model.selectedSections.itemsCount > 10 ? 1.5 : 1) // TODO: - ratio
+                   
+            ColorPalette(selection: $model.selectedColor,
+                         colorList: model.colorList)
+                .transition(.move(edge: .bottom))
+                .animation(.easeOut(duration: 0.1), value: model.state)
+        }
+    }
+}
+
+extension ReceiptSnapshotPreview {
+    private func navigationBarView() -> some View {
         HStack {
-            Button(action: { willDisapper = true }) {
+            Button(action: model.didTapBackStep) {
                 Image(symbol: .back)
                     .font(.system(size: 20, weight: .regular))
             }
@@ -172,12 +193,12 @@ struct ReceiptSnapshotPreview: View {
         .background(.white.opacity(0.25))
     }
     
-    private var saveButton: some View {
-        Button(action: model.saveImage) {
+    private func nextButton() -> some View {
+        Button(action: model.nextStep) {
             Color.black
                 .ignoresSafeArea()
                 .overlay(
-                    Text("영수증 출력하기")
+                    Text(model.state.buttonTitle)
                         .customFont(.DungGeunMo, size: 17)
                         .foregroundColor(model.receiptsEmpty ? .gray : .white)
                 )
@@ -185,7 +206,7 @@ struct ReceiptSnapshotPreview: View {
         }
     }
     
-    private var selectedCountView: some View {
+    private func selectedCountView() -> some View {
         HStack {
             VStack {
                 Text(model.selectedCountText)

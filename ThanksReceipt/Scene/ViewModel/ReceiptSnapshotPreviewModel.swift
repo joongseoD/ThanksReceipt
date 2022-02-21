@@ -27,23 +27,30 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
     private let maxSelectableCount = 7
     @Published var snapshotImage: UIImage?
     @Published var scrollToId: String?
+    @Published var selectedSections: [ReceiptSectionModel] = []
+    @Published var willDisappear: Bool = false
+    @Published var state: ViewState = .edit {
+        didSet { Haptic.trigger() }
+    }
+    
     @Published var selectedColor: Palette = .single(.white) {
         didSet { Haptic.trigger() }
     }
+    
+    @Published var headerText: String = Constants.headerText {
+        didSet { Haptic.trigger(.soft) }
+    }
+    
+    @Published var footerText: String = Constants.footerText {
+        didSet { Haptic.trigger(.soft) }
+    }
+    
     @Published var message: String? {
         didSet {
             guard message != nil else { return }
             Haptic.trigger()
         }
     }
-    @Published var headerText: String = Constants.headerText {
-        didSet { Haptic.trigger(.soft) }
-    }
-    @Published var footerText: String = Constants.footerText {
-        didSet { Haptic.trigger(.soft) }
-    }
-    
-    @Published var selectedSections: [ReceiptSectionModel] = []
     
     private let dependency: ReceiptSnapshotPreviewModelDependency
     
@@ -58,6 +65,12 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
     var dateString: String { dependency.monthText }
     var selectedCountText: String { "\(selectedSections.count)/\(maxSelectableCount)" }
     
+    deinit {
+        print("\(String(describing: self)) deinit")
+    }
+}
+
+extension ReceiptSnapshotPreviewModel {
     func didSelectSection(_ section: ReceiptSectionModel) {
         if let index = selectedSections.firstIndex(of: section) {
             selectedSections.remove(at: index)
@@ -76,16 +89,41 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
         scrollToId = dependency.scrollToId
     }
     
-    func saveImage() {
-        guard receiptsEmpty == false else {
-            printDefaultMessage()
-            return
+    func nextStep() {
+        switch state {
+        case .edit:
+            guard receiptsEmpty == false else {
+                printDefaultMessage()
+                return
+            }
+            
+            if let image = renderImage(AnyView(Color.clear)) {
+                state = .selectBackground(image)
+            } else {
+                printErrorMessage()
+            }
+        case .selectBackground:
+            let background = AnyView(ColorBuilderView(palette: selectedColor))
+            guard let image = renderImage(background) else {
+                printErrorMessage()
+                return
+            }
+            
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            snapshotImage = image
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
+                self?.snapshotImage = nil
+                self?.message = "감사영수증이 출력됐어요."
+            }
         }
+    }
+    
+    private func renderImage(_ backgroundView: AnyView) -> UIImage? {
         let screenWidth = Constants.screenWidth
         let padding: CGFloat = 25
-        let background = AnyView(ColorBuilderView(palette: selectedColor))
         let dummy = SnapshotDummy(
-            background: background,
+            background: backgroundView,
             date: dateString,
             headerText: headerText,
             receipts: selectedSortedSections,
@@ -95,26 +133,62 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
         )
         
         let snapshotWidth = screenWidth - padding
-        guard let snapshot = dummy.takeScreenshot(size: .init(width: snapshotWidth, height: snapshotWidth)) else {
-            message = "잠시후 다시 시도해 주세요."
-            return
-        }
-        
-        snapshotImage = snapshot
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
-            self?.snapshotImage = nil
-            self?.message = "감사영수증이 출력됐어요."
-            self?.selectedSections = []
-        }
+        return dummy.takeScreenshot(size: .init(width: snapshotWidth, height: snapshotWidth))
     }
     
     private var selectedSortedSections: [ReceiptSectionModel] { selectedSections.sorted(by: <) }
     
-    private func printDefaultMessage() {
-        message = "영수증으로 출력하고자 하는 항목들을 선택하세요."
+    private func printErrorMessage() {
+        message = "잠시 후 다시 시도해주세요"
     }
     
-    deinit {
-        print("\(String(describing: self)) deinit")
+    private func printDefaultMessage() {
+        message = "감사 항목을 선택해주세요!"
+    }
+    
+    func didTapBackStep() {
+        switch state {
+        case .edit:
+            willDisappear = true
+        case .selectBackground:
+            state = .edit
+        }
     }
 }
+
+extension ReceiptSnapshotPreviewModel {
+    enum ViewState: Equatable {
+        case edit
+        case selectBackground(_ image: UIImage)
+        
+        var buttonTitle: String {
+            switch self {
+            case .edit: return "배경 선택하기"
+            case .selectBackground: return "영수증 출력하기"
+            }
+        }
+    }
+}
+
+/*
+protocol ListSelectable: AnyObject {
+    associatedtype Item: Equatable
+    var maxSelectableCount: Int { get }
+    var selectableList: [Item] { get set }
+}
+
+extension ListSelectable {
+    func didSelect(_ item: Item) {
+        if let index = selectableList.firstIndex(of: item) {
+            selectableList.remove(at: index)
+        } else {
+            guard selectableList.count < maxSelectableCount else {
+//                message = "7개 항목까지 선택할 수 있어요."
+                return
+            }
+            selectableList.append(item)
+        }
+        Haptic.trigger()
+    }
+}
+*/
