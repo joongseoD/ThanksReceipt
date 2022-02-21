@@ -38,10 +38,11 @@ struct ReceiptFooter<Label: View>: View {
                 Spacer(minLength: 1)
                 Text("**")
             }
-            .customFont(.DungGeunMo, size: 19)
+            .customFont(.DungGeunMo, size: 16)
             .padding(.top, 5)
         }
         .padding(.vertical, 10)
+        .padding(.bottom, 5)
     }
 }
 

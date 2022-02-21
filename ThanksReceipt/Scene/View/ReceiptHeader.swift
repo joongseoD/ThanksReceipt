@@ -20,7 +20,7 @@ struct ReceiptHeader<Label: View>: View {
     
     var body: some View {
         VStack {
-            VStack {
+            VStack(spacing: 5) {
                 HStack(spacing: 10) {
                     label()
                 }
@@ -41,7 +41,7 @@ struct ReceiptHeader<Label: View>: View {
                 .foregroundColor(.black)
                 .disabled(didTapMonth == nil)
             }
-            .padding(.bottom, 20)
+            .padding(.vertical, 15)
             
             LineStroke()
             
