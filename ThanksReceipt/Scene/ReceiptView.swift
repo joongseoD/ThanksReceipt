@@ -10,8 +10,6 @@ import Combine
 
 struct ReceiptView: View {
     @StateObject var model = ReceiptModel()
-    @State private var showMonthPicker = false
-    @State private var showPreview = false
     // TODO: - Loading, Alert
     
     var body: some View {
@@ -20,52 +18,53 @@ struct ReceiptView: View {
                 Color.background.ignoresSafeArea()
                 
                 VStack {
-                    ToolBar(didTapSave: { showPreview = true },
+                    ToolBar(didTapSave: model.didTapSave,
                             didTapAdd: model.addItem)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 10)
                     
-                    ReceiptContentView(showMonthPicker: $showMonthPicker)
+                    ReceiptContentView()
                         .padding(.horizontal, 7)
                         .padding(.bottom, 10)
                 }
                 .toast(message: $model.message)
                 
-                if let inputMode = model.inputMode {
-                    ReceiptInputView(
-                        dependency: ReceiptInputModelComponents(
-                            mode: inputMode,
-                            date: model.selectedMonth
-                        ),
-                        listener: model
-                    )
-                    .backgroundBlur(onTapBackground: model.didTapBackgroundView)
-                    .transition(.opacity.animation(.easeInOut))
-                }
-                
-                if showMonthPicker {
-                    DatePickerView(
-                        selection: $model.selectedMonth,
-                        pickerStyle: WheelDatePickerStyle(),
-                        components: [.date]
-                    ) { date in
-                        showMonthPicker = false
-                        model.didChangeMonth(date)
+                if let viewState = model.viewState {
+                    switch viewState {
+                    case .monthPicker:
+                        DatePickerView(
+                            selection: $model.selectedMonth,
+                            pickerStyle: WheelDatePickerStyle(),
+                            components: [.date]
+                        ) { date in
+                            model.didTapBackgroundView()
+                            model.didChangeMonth(date)
+                        }
+                        .backgroundBlur(onTapBackground: model.didTapBackgroundView)
+                        .transition(.opacity.animation(.easeInOut))
+                    case .input(let inputMode):
+                        ReceiptInputView(
+                            dependency: ReceiptInputModelComponents(
+                                mode: inputMode,
+                                date: model.selectedMonth
+                            ),
+                            listener: model
+                        )
+                        .backgroundBlur(onTapBackground: model.didTapBackgroundView)
+                        .transition(.opacity.animation(.easeInOut))
+                    case .snapshotPreview:
+                        ReceiptSnapshotPreview(
+                            dependency: ReceiptSnapshotPreviewModelComponent(
+                                scrollToId: model.scrollToId,
+                                monthText: model.monthText,
+                                totalCount: model.totalCount,
+                                receiptItems: model.receiptItems
+                            ),
+                            closeSnapshotPreview: model.didTapBackgroundView
+                        )
+                    case .bottomSheet:
+                        EmptyView()
                     }
-                    .backgroundBlur(onTapBackground: model.didTapBackgroundView)
-                    .transition(.opacity.animation(.easeInOut))
-                }
-                
-                if showPreview {
-                    ReceiptSnapshotPreview(
-                        dependency: ReceiptSnapshotPreviewModelComponent(
-                            scrollToId: model.scrollToId,
-                            monthText: model.monthText,
-                            totalCount: model.totalCount,
-                            receiptItems: model.receiptItems
-                        ),
-                        showPreview: $showPreview
-                    )
                 }
             }
             .environmentObject(model)

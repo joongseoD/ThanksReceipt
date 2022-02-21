@@ -22,16 +22,24 @@ final class ReceiptModel: ObservableObject {
     @Published private(set) var totalCount: String = "0.00"
     @Published private(set) var monthText: String = ""
     @Published var message: String?
-    @Published var inputMode: ReceiptInputModel.InputMode?
     @Published var scrollToId: String?
     @Published var selectedMonth: Date = Date()
-
+    @Published var selectedSections: [ReceiptSectionModel] = []
+    @Published var viewState: ViewState?
+    
     private var provider: DataProviding
     private let items = PassthroughSubject<[ReceiptItem], Never>()
     private let reload = CurrentValueSubject<Void, Never>(())
     private let selectedItemId = PassthroughSubject<String, Never>()
     private let scrollFocusId = PassthroughSubject<String?, Never>()
     private var cancellables = Set<AnyCancellable>()
+    private var selectMode: Bool = false {
+        didSet {
+            guard !selectMode else { return }
+            selectedSections = []
+        }
+    }
+    
     private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize) // TODO: - scheduler
     
     let pageSize = 100
@@ -120,11 +128,11 @@ final class ReceiptModel: ObservableObject {
     }
     
     func editItem(_ item: ReceiptItem) {
-        inputMode = .edit(item)
+        viewState = .input(.edit(item))
     }
     
     func addItem() {
-        inputMode = .create
+        viewState = .input(.create)
     }
     
     func didAppearRow(_ offset: Int) {
@@ -133,39 +141,74 @@ final class ReceiptModel: ObservableObject {
     }
     
     func didTapRow(_ id: String) {
+        guard !selectMode else { return }
         selectedItemId.send(id)
     }
     
     func didTapBackgroundView() {
-        closeInputMode()
+        closeOverlayView()
     }
     
     func didChangeMonth(_ date: Date) {
         selectedMonth = date
         reload.send(())
     }
+    
+    func didSelectSection(_ section: ReceiptSectionModel) {
+        guard selectMode else { return }
+        if let index = selectedSections.firstIndex(of: section) {
+            selectedSections.remove(at: index)
+        } else {
+            selectedSections.append(section)
+        }
+        Haptic.trigger()
+        
+        selectMode = !selectedSections.isEmpty
+    }
+    
+    func didLongPressSection(_ section: ReceiptSectionModel) {
+        selectMode.toggle()
+        didSelectSection(section)
+    }
+    
+    func didTapSave() {
+        viewState = .snapshotPreview
+    }
+    
+    func didTapMonth() {
+        viewState = .monthPicker
+    }
 }
 
 extension ReceiptModel: ReceiptInputModelListener {
     func didSaveRecipt(_ item: ReceiptItem) {
         reload.send(())
-        closeInputMode()
+        closeOverlayView()
         scrollFocusId.send(item.id)
         message = "감사합니다 :)"
     }
     
     func didUpdateReceipt(_ item: ReceiptItem) {
         reload.send(())
-        closeInputMode()
+        closeOverlayView()
         message = "감사합니다 :)"
     }
     
     func didDeleteReceipt(_ item: ReceiptItem) {
         reload.send(())
-        closeInputMode()
+        closeOverlayView()
     }
     
-    private func closeInputMode() {
-        inputMode = nil
+    private func closeOverlayView() {
+        viewState = nil
+    }
+}
+
+extension ReceiptModel {
+    enum ViewState {
+        case monthPicker
+        case input(_: ReceiptInputModel.InputMode)
+        case snapshotPreview
+        case bottomSheet
     }
 }

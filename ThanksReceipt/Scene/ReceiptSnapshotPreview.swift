@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReceiptSnapshotPreview: View {
     @StateObject var model: ReceiptSnapshotPreviewModel
-    @Binding var showPreview: Bool
+    var closeSnapshotPreview: (() -> Void)
     @State private var willDisapper = false
     @State private var scale: CGFloat = 1
     @State private var headerCursor = true
@@ -19,9 +19,9 @@ struct ReceiptSnapshotPreview: View {
     @State private var snapshotOpacity: CGFloat = 1.0
     @FocusState private var focusField: Field?
     
-    init(dependency: ReceiptSnapshotPreviewModelDependency, showPreview: Binding<Bool>) {
+    init(dependency: ReceiptSnapshotPreviewModelDependency, closeSnapshotPreview: @escaping (() -> Void)) {
         _model = StateObject(wrappedValue: ReceiptSnapshotPreviewModel(dependency: dependency))
-        _showPreview = showPreview
+        self.closeSnapshotPreview = closeSnapshotPreview
     }
     
     var body: some View {
@@ -129,7 +129,7 @@ struct ReceiptSnapshotPreview: View {
                 scale = 1.0
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                showPreview = false
+                closeSnapshotPreview()
             }
         }
         .onChange(of: model.snapshotImage, perform: { newValue in
@@ -217,7 +217,7 @@ struct ReceiptSnapshotPreview_Previews: PreviewProvider {
                 monthText: "",
                 totalCount: "",
                 receiptItems: []),
-            showPreview: .constant(false)
+            closeSnapshotPreview: { }
         )
     }
 }

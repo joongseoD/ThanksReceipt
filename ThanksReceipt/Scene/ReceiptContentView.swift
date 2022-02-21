@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ReceiptContentView: View {
     @EnvironmentObject var model: ReceiptModel
-    @Binding var showMonthPicker: Bool
     
     var body: some View {
         VStack {
@@ -20,14 +19,19 @@ struct ReceiptContentView: View {
                         .kerning(1.5)
                         .multilineTextAlignment(.center)
                 },
-                didTapMonth: { showMonthPicker = true }
+                didTapMonth: model.didTapMonth
             )
                 .padding(.horizontal, 20)
             
-            ReceiptList(items: model.receiptItems,
-                        didTapRow: { model.didTapRow($0.id) },
-                        didAppearRow: { model.didAppearRow($0) },
-                        scrollToId: model.scrollToId)
+            ReceiptList(
+                items: model.receiptItems,
+                didTapRow: { model.didTapRow($0.id) },
+                didAppearRow: { model.didAppearRow($0) },
+                didTapSection: { model.didSelectSection($0) },
+                didLongPressSection: { model.didLongPressSection($0) },
+                scrollToId: model.scrollToId,
+                selectedSections: model.selectedSections
+            )
             
             ReceiptFooter(totalCount: model.totalCount) {
                 AnimateText([Constants.headerText, Constants.footerText],
@@ -46,6 +50,6 @@ struct ReceiptContentView: View {
 
 struct ReceiptContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptContentView(showMonthPicker: .constant(false))
+        ReceiptContentView()
     }
 }
