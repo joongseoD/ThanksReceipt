@@ -15,7 +15,20 @@ struct MonthPicker: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .trailing, spacing: 15) {
+            Button(action: model.reset) {
+                HStack(spacing: 2) {
+                    Text("today")
+                        .customFont(.DungGeunMo, size: 17)
+                    
+                    Image(symbol: .next)
+                        .font(.system(size: 10))
+                        .offset(y: 1.5)
+                        .padding(.trailing, 5)
+                }
+            }
+            .foregroundColor(.black)
+            
             Group {
                 switch model.state {
                 case .month:
@@ -29,7 +42,6 @@ struct MonthPicker: View {
             .fixedSize(horizontal: false, vertical: true)
             .background(Color.receipt)
             .clipShape(ZigZag())
-            .padding()
             
             Button(action: model.didTapComplete) {
                 Text("완료")
@@ -40,9 +52,9 @@ struct MonthPicker: View {
                     .foregroundColor(.white)
                     .background(Color.black)
                     .cornerRadius(7)
-                    .padding(.horizontal)
             }
         }
+        .padding()
         .animation(.easeInOut(duration: 0.15), value: model.state)
     }
     

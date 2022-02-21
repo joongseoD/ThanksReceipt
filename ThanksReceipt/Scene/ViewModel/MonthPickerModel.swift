@@ -98,6 +98,10 @@ final class MonthPickerModel: ObservableObject {
         currentDate = yearFormatter.date(from: year) ?? Date()
     }
     
+    func reset() {
+        listener?.didSelectDate(Date())
+    }
+    
     func didTapComplete() {
         listener?.didSelectDate(currentDate)
     }
