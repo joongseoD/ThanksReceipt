@@ -13,6 +13,7 @@ protocol ReceiptSnapshotPreviewModelDependency {
     var monthText: String { get }
     var totalCount: String { get }
     var receiptItems: [ReceiptSectionModel] { get }
+    var imageManager: ImageManagerProtocol { get }
 }
 
 struct ReceiptSnapshotPreviewModelComponent: ReceiptSnapshotPreviewModelDependency {
@@ -21,6 +22,7 @@ struct ReceiptSnapshotPreviewModelComponent: ReceiptSnapshotPreviewModelDependen
     var monthText: String
     var totalCount: String
     var receiptItems: [ReceiptSectionModel]
+    var imageManager: ImageManagerProtocol = ImageManager()
 }
 
 final class ReceiptSnapshotPreviewModel: ObservableObject {
@@ -53,9 +55,11 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
     }
     
     private let dependency: ReceiptSnapshotPreviewModelDependency
+    private let imageManager: ImageManagerProtocol
     
     init(dependency: ReceiptSnapshotPreviewModelDependency) {
         self.dependency = dependency
+        self.imageManager = dependency.imageManager
     }
     
     var receiptsEmpty: Bool { selectedSections.isEmpty }
@@ -109,13 +113,7 @@ extension ReceiptSnapshotPreviewModel {
                 return
             }
             
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-            snapshotImage = image
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
-                self?.snapshotImage = nil
-                self?.message = "감사영수증이 출력됐어요."
-            }
+            saveImage(image)
         }
     }
     
@@ -137,6 +135,21 @@ extension ReceiptSnapshotPreviewModel {
     }
     
     private var selectedSortedSections: [ReceiptSectionModel] { selectedSections.sorted(by: <) }
+    
+    private func saveImage(_ image: UIImage) {
+        imageManager.save(image: image) { [weak self] result in
+            switch result {
+            case .success(_):
+                self?.snapshotImage = image
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self?.snapshotImage = nil
+                    self?.message = "감사영수증이 출력됐어요."
+                }
+            case .failure(_):
+                self?.message = "사진 저장 권한을 확인해주세요."
+            }
+        }
+    }
     
     private func printErrorMessage() {
         message = "잠시 후 다시 시도해주세요"
