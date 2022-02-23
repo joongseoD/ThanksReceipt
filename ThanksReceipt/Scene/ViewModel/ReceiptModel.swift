@@ -10,10 +10,12 @@ import Combine
 
 protocol ReceiptModelDependency {
     var provider: DataProviding { get }
+    var pageSize: Int { get }
 }
 
 struct ReceiptModelComponents: ReceiptModelDependency {
     var provider: DataProviding = DataProvider()
+    var pageSize: Int = 100
     // TODO: - Scheduler
 }
 
@@ -27,7 +29,7 @@ final class ReceiptModel: ObservableObject {
     @Published var selectedSections: [ReceiptSectionModel] = []
     @Published var viewState: ViewState?
     
-    private var provider: DataProviding
+    private let pageSize: Int
     private let items = PassthroughSubject<[ReceiptItem], Never>()
     private let reload = CurrentValueSubject<Void, Never>(())
     private let selectedItemId = PassthroughSubject<String, Never>()
@@ -42,8 +44,6 @@ final class ReceiptModel: ObservableObject {
     
     private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize) // TODO: - scheduler
     
-    let pageSize = 100
-    
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM"
@@ -51,9 +51,11 @@ final class ReceiptModel: ObservableObject {
         return formatter
     }()
     
+    let provider: DataProviding
     
     init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
         self.provider = dependency.provider
+        self.pageSize = dependency.pageSize
         
         setup()
     }

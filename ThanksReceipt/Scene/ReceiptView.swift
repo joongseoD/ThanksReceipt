@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct ReceiptView: View {
-    @StateObject var model = ReceiptModel()
+    @StateObject var model: ReceiptModel
+    
+    init(dependency: ReceiptModelDependency) {
+        _model = StateObject(wrappedValue: ReceiptModel(dependency: dependency))
+    }
     
     var body: some View {
         GeometryReader { proxy in
@@ -41,6 +45,7 @@ struct ReceiptView: View {
                     case .input(let inputMode):
                         ReceiptInputView(
                             dependency: ReceiptInputModelComponents(
+                                provider: model.provider,
                                 mode: inputMode,
                                 date: model.selectedMonth
                             ),
@@ -70,6 +75,6 @@ struct ReceiptView: View {
 
 struct ReceiptView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptView()
+        ReceiptView(dependency: ReceiptModelComponents())
     }
 }

@@ -56,6 +56,8 @@
 		25BC48A527B69EBF0031E0D2 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC48A427B69EBE0031E0D2 /* Color+Extensions.swift */; };
 		25BC48A727B6A0960031E0D2 /* ZigZag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC48A627B6A0960031E0D2 /* ZigZag.swift */; };
 		25DC31ED27C513FF003D24EB /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC31EC27C513FF003D24EB /* ImageManager.swift */; };
+		25DC31EF27C5C6D9003D24EB /* MockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC31EE27C5C6D9003D24EB /* MockDataProvider.swift */; };
+		25DC31F127C5CA9E003D24EB /* UserDefaultsWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC31F027C5CA9E003D24EB /* UserDefaultsWrapper.swift */; };
 		711AA35CFACCAE8042336750 /* Pods_ThanksReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB26A82CE44CC4D1D95902A8 /* Pods_ThanksReceipt.framework */; };
 		A50A90776502B4F8D58AD388 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30161CA9D1F807C6C5674087 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework */; };
 		D6A0CCE215229ED14CF4D4D5 /* Pods_ThanksReceiptTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E76E38ADD6D2A15681FD8C23 /* Pods_ThanksReceiptTests.framework */; };
@@ -132,6 +134,8 @@
 		25BC48A427B69EBE0031E0D2 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		25BC48A627B6A0960031E0D2 /* ZigZag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZigZag.swift; sourceTree = "<group>"; };
 		25DC31EC27C513FF003D24EB /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
+		25DC31EE27C5C6D9003D24EB /* MockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataProvider.swift; sourceTree = "<group>"; };
+		25DC31F027C5CA9E003D24EB /* UserDefaultsWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsWrapper.swift; sourceTree = "<group>"; };
 		2779DE4EF50BB24ABB0A6B72 /* Pods-ThanksReceipt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThanksReceipt.release.xcconfig"; path = "Target Support Files/Pods-ThanksReceipt/Pods-ThanksReceipt.release.xcconfig"; sourceTree = "<group>"; };
 		30161CA9D1F807C6C5674087 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ThanksReceipt_ThanksReceiptUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B9255E90E596ED5E92489A /* Pods-ThanksReceiptTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThanksReceiptTests.debug.xcconfig"; path = "Target Support Files/Pods-ThanksReceiptTests/Pods-ThanksReceiptTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -271,6 +275,7 @@
 				25BC488E27B3EA640031E0D2 /* Data */,
 				25935A3127B25A8C00BD6A98 /* Protocol */,
 				25935A2F27B25A8500BD6A98 /* DataProvider.swift */,
+				25DC31EE27C5C6D9003D24EB /* MockDataProvider.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -381,6 +386,7 @@
 				25DC31EC27C513FF003D24EB /* ImageManager.swift */,
 				25BC489F27B6582E0031E0D2 /* Haptic.swift */,
 				253E07A127BBD421007F297C /* Constants.swift */,
+				25DC31F027C5CA9E003D24EB /* UserDefaultsWrapper.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -647,6 +653,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25B569A427BD2E2A001879DF /* InputBottomToolBar.swift in Sources */,
+				25DC31F127C5CA9E003D24EB /* UserDefaultsWrapper.swift in Sources */,
 				25BC48A027B6582E0031E0D2 /* Haptic.swift in Sources */,
 				2575F8A527BA5A9300ED3994 /* Date+Extensions.swift in Sources */,
 				25ABCA7927C388B600D09000 /* MonthPicker.swift in Sources */,
@@ -674,6 +681,7 @@
 				2575F8AC27BA885400ED3994 /* SelectionButtonStyle.swift in Sources */,
 				2575F8A727BA5AB800ED3994 /* View+Extensions.swift in Sources */,
 				25ABCA7B27C3A8EF00D09000 /* MonthPickerModel.swift in Sources */,
+				25DC31EF27C5C6D9003D24EB /* MockDataProvider.swift in Sources */,
 				25BC48A527B69EBF0031E0D2 /* Color+Extensions.swift in Sources */,
 				25BC489A27B5F3F80031E0D2 /* ReceiptHeader.swift in Sources */,
 				25AFC94927BB7C51000FA123 /* ReceiptSnapshotPreview.swift in Sources */,

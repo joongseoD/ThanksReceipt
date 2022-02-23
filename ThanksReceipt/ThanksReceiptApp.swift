@@ -11,7 +11,12 @@ import SwiftUI
 struct ThanksReceiptApp: App {
     var body: some Scene {
         WindowGroup {
-            ReceiptView()
+            ReceiptView(
+                dependency: ReceiptModelComponents(
+                    provider: DataProvider(),
+                    pageSize: 100
+                )
+            )
                 .preferredColorScheme(.light)
         }
     }
