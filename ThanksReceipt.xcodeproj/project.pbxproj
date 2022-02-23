@@ -19,7 +19,6 @@
 		2542499727C665BF00F9B35D /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 2542499627C665BF00F9B35D /* FirebaseFunctions */; };
 		2542499927C665BF00F9B35D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 2542499827C665BF00F9B35D /* FirebaseMessaging */; };
 		2542499B27C665BF00F9B35D /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2542499A27C665BF00F9B35D /* FirebaseRemoteConfig */; };
-		2542499D27C665D200F9B35D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2542499C27C665D200F9B35D /* GoogleService-Info.plist */; };
 		2542499F27C6703A00F9B35D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542499E27C6703A00F9B35D /* Logger.swift */; };
 		2575F8A127B7CBF600ED3994 /* ReceiptRowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A027B7CBF600ED3994 /* ReceiptRowModel.swift */; };
 		2575F8A327B91C5400ED3994 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A227B91C5400ED3994 /* ToolBar.swift */; };
@@ -96,7 +95,6 @@
 		253E07A327BBE7C4007F297C /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		253E07A527BBE9EA007F297C /* ReceiptSnapshotPreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptSnapshotPreviewModel.swift; sourceTree = "<group>"; };
 		2542498827C6342F00F9B35D /* ReceiptModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptModelTests.swift; sourceTree = "<group>"; };
-		2542499C27C665D200F9B35D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2542499E27C6703A00F9B35D /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		2575F8A027B7CBF600ED3994 /* ReceiptRowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptRowModel.swift; sourceTree = "<group>"; };
 		2575F8A227B91C5400ED3994 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
@@ -252,7 +250,6 @@
 				25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */,
 				25935A0527B24B0D00BD6A98 /* Assets.xcassets */,
 				25BC488A27B3547F0031E0D2 /* Info.plist */,
-				2542499C27C665D200F9B35D /* GoogleService-Info.plist */,
 				25BC488727B354070031E0D2 /* Font */,
 				25935A0727B24B0D00BD6A98 /* Preview Content */,
 			);
@@ -562,7 +559,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				25935A0927B24B0D00BD6A98 /* Preview Assets.xcassets in Resources */,
-				2542499D27C665D200F9B35D /* GoogleService-Info.plist in Resources */,
 				25BC488927B354210031E0D2 /* DungGeunMo.otf in Resources */,
 				25935A0627B24B0D00BD6A98 /* Assets.xcassets in Resources */,
 			);
