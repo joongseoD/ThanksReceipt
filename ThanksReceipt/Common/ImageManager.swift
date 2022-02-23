@@ -7,29 +7,28 @@
 
 import UIKit
 
+protocol ImageManagerProtocol: AnyObject {
+    func save(image: UIImage) async throws -> UIImage
+}
+
 final class ImageManager: NSObject, ImageManagerProtocol, UIImagePickerControllerDelegate {
+    private var continuation: CheckedContinuation<UIImage, Error>?
     
-    var completion: ((Result<UIImage, Error>) -> Void)?
-    
-    func save(image: UIImage, completion: ((Result<UIImage, Error>) -> Void)?) {
-        self.completion = completion
-        
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    func save(image: UIImage) async throws -> UIImage {
+        return try await withCheckedThrowingContinuation { [weak self] continuation in
+            self?.continuation = continuation
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        }
     }
     
     @objc
     func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         guard let error = error else {
-            completion?(.success(image))
+            continuation?.resume(returning: image)
+            continuation = nil
             return
         }
-
-        completion?(.failure(error))
+        continuation?.resume(throwing: error)
+        continuation = nil
     }
-}
-
-protocol ImageManagerProtocol: AnyObject {
-    var completion: ((Result<UIImage, Error>) -> Void)? { get }
-    
-    func save(image: UIImage, completion: ((Result<UIImage, Error>) -> Void)?)
 }

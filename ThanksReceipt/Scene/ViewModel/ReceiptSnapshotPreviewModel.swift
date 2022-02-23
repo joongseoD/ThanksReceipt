@@ -137,18 +137,27 @@ extension ReceiptSnapshotPreviewModel {
     private var selectedSortedSections: [ReceiptSectionModel] { selectedSections.sorted(by: <) }
     
     private func saveImage(_ image: UIImage) {
-        imageManager.save(image: image) { [weak self] result in
-            switch result {
-            case .success(_):
-                self?.snapshotImage = image
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                    self?.snapshotImage = nil
-                    self?.message = "감사영수증이 출력됐어요."
-                }
-            case .failure(_):
-                self?.message = "사진 저장 권한을 확인해주세요."
+        Task {
+            do {
+                let _ = try await imageManager.save(image: image)
+                await setSnapshotImage(image)
+                try await Task.sleep(nanoseconds: 700_000_000)
+                await setSnapshotImage(nil)
+                await printMessage("감사영수증이 출력")
+            } catch {
+                await printMessage("사진 저장 권한을 확인해주세요.")
             }
         }
+    }
+    
+    @MainActor
+    private func setSnapshotImage(_ image: UIImage?) {
+        self.snapshotImage = image
+    }
+        
+    @MainActor
+    private func printMessage(_ message: String) {
+        self.message = message
     }
     
     private func printErrorMessage() {
@@ -182,26 +191,3 @@ extension ReceiptSnapshotPreviewModel {
         }
     }
 }
-
-/*
-protocol ListSelectable: AnyObject {
-    associatedtype Item: Equatable
-    var maxSelectableCount: Int { get }
-    var selectableList: [Item] { get set }
-}
-
-extension ListSelectable {
-    func didSelect(_ item: Item) {
-        if let index = selectableList.firstIndex(of: item) {
-            selectableList.remove(at: index)
-        } else {
-            guard selectableList.count < maxSelectableCount else {
-//                message = "7개 항목까지 선택할 수 있어요."
-                return
-            }
-            selectableList.append(item)
-        }
-        Haptic.trigger()
-    }
-}
-*/
