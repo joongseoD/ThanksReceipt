@@ -143,7 +143,7 @@ extension ReceiptSnapshotPreviewModel {
                 await setSnapshotImage(image)
                 try await Task.sleep(nanoseconds: 700_000_000)
                 await setSnapshotImage(nil)
-                await printMessage("감사영수증이 출력")
+                await printMessage("감사영수증이 출력됐어요.")
             } catch {
                 await printMessage("사진 저장 권한을 확인해주세요.")
             }
