@@ -46,7 +46,6 @@ class ThanksReceiptTests: XCTestCase {
         
         XCTAssertEqual(sut.pageCount, 2)
         XCTAssertEqual(pageItems.count, 10)
-        sut.next()
         XCTAssertEqual(pageItems.count, 11)
     }
 

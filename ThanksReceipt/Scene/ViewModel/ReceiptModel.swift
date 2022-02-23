@@ -7,16 +7,18 @@
 
 import SwiftUI
 import Combine
+import CombineSchedulers
 
 protocol ReceiptModelDependency {
     var provider: DataProviding { get }
     var pageSize: Int { get }
+    var scheduler: AnySchedulerOf<DispatchQueue> { get }
 }
 
 struct ReceiptModelComponents: ReceiptModelDependency {
     var provider: DataProviding = DataProvider()
     var pageSize: Int = 100
-    // TODO: - Scheduler
+    var scheduler: AnySchedulerOf<DispatchQueue> = .main
 }
 
 final class ReceiptModel: ObservableObject {
@@ -42,7 +44,7 @@ final class ReceiptModel: ObservableObject {
         }
     }
     
-    private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize) // TODO: - scheduler
+    private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize)
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -52,12 +54,16 @@ final class ReceiptModel: ObservableObject {
     }()
     
     let provider: DataProviding
+    private let scheduler: AnySchedulerOf<DispatchQueue>
     
     init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
         self.provider = dependency.provider
+        self.scheduler = dependency.scheduler
         self.pageSize = dependency.pageSize
         
         setup()
+        
+        Logger.shared.sendScreenLog(viewName: "ReceiptView")
     }
     
     deinit {
@@ -86,7 +92,7 @@ final class ReceiptModel: ObservableObject {
             .map { $0.map { ReceiptRowModel(model: $0) } }
             .map { Array($0.reversed()) }
             .map { $0.mapToSectionModel() }
-            .receive(on: RunLoop.main)
+            .receive(on: scheduler)
             .assign(to: \.receiptItems, on: self)
             .store(in: &cancellables)
         
@@ -104,8 +110,8 @@ final class ReceiptModel: ObservableObject {
         let focusId = $receiptItems
             .withLatestFrom(scrollFocusId)
         
-        Publishers.Zip(reload, Publishers.Merge(lastItemIdWhenFirstLoaded, focusId))
-            .debounce(for: 0.05, scheduler: RunLoop.main)
+        Publishers.Zip(reload.print("#3"), Publishers.Merge(lastItemIdWhenFirstLoaded, focusId))
+            .debounce(for: 0.05, scheduler: scheduler)
             .compactMap { $1 }
             .assign(to: \.scrollToId, on: self)
             .store(in: &cancellables)
@@ -183,17 +189,32 @@ extension ReceiptModel: ReceiptInputModelListener {
         closeOverlayView()
         scrollFocusId.send(item.id)
         message = "감사합니다 :)"
+        
+        Logger.shared.send(
+            name: "didSaveReceipt",
+            parameters: item.asDictionary()
+        )
     }
     
     func didUpdateReceipt(_ item: ReceiptItem) {
         reload.send(())
         closeOverlayView()
         message = "감사합니다 :)"
+        
+        Logger.shared.send(
+            name: "didUpdateReceipt",
+            parameters: item.asDictionary()
+        )
     }
     
     func didDeleteReceipt(_ item: ReceiptItem) {
         reload.send(())
         closeOverlayView()
+        
+        Logger.shared.send(
+            name: "didDeleteReceipt",
+            parameters: item.asDictionary()
+        )
     }
     
     private func closeOverlayView() {
@@ -210,7 +231,7 @@ extension ReceiptModel: MonthPickerModelListener {
 }
 
 extension ReceiptModel {
-    enum ViewState {
+    enum ViewState: Equatable {
         case monthPicker
         case input(_: ReceiptInputModel.InputMode)
         case snapshotPreview

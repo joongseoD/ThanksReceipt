@@ -25,3 +25,17 @@ struct ReceiptItem: Identifiable, Codable, Equatable {
         self.date = date
     }
 }
+
+extension ReceiptItem: CustomStringConvertible {
+    func asDictionary() -> [String:Any] {
+        return [
+            "id" : id ?? "",
+            "text" : text,
+            "date" : date
+        ]
+    }
+    
+    var description: String {
+        "id: \(id ?? ""), text: \(text), date: \(date)"
+    }
+}
