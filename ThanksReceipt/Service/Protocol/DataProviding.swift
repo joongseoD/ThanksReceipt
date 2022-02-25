@@ -16,4 +16,6 @@ protocol DataProviding {
     func update(_ item: ReceiptItem) throws
     
     func delete(id: String) throws
+    
+    func delete(date: Date) throws
 }

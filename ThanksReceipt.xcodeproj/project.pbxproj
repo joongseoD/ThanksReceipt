@@ -20,6 +20,7 @@
 		2542499927C665BF00F9B35D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 2542499827C665BF00F9B35D /* FirebaseMessaging */; };
 		2542499B27C665BF00F9B35D /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 2542499A27C665BF00F9B35D /* FirebaseRemoteConfig */; };
 		2542499F27C6703A00F9B35D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542499E27C6703A00F9B35D /* Logger.swift */; };
+		254249A127C6786F00F9B35D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 254249A027C6786F00F9B35D /* GoogleService-Info.plist */; };
 		2575F8A127B7CBF600ED3994 /* ReceiptRowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A027B7CBF600ED3994 /* ReceiptRowModel.swift */; };
 		2575F8A327B91C5400ED3994 /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A227B91C5400ED3994 /* ToolBar.swift */; };
 		2575F8A527BA5A9300ED3994 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2575F8A427BA5A9300ED3994 /* Date+Extensions.swift */; };
@@ -39,6 +40,8 @@
 		25935A3927B25E0900BD6A98 /* ReceiptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3827B25E0900BD6A98 /* ReceiptModel.swift */; };
 		25935A3B27B25EC200BD6A98 /* ReceiptInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3A27B25EC200BD6A98 /* ReceiptInputView.swift */; };
 		25935A3D27B25ECE00BD6A98 /* ReceiptInputModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25935A3C27B25ECE00BD6A98 /* ReceiptInputModel.swift */; };
+		25A45F2127C86AF300BAAAA8 /* SectionModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A45F2027C86AF300BAAAA8 /* SectionModelService.swift */; };
+		25A45F2327C885AF00BAAAA8 /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25A45F2227C885AF00BAAAA8 /* DateFormatter+Extensions.swift */; };
 		25ABCA7927C388B600D09000 /* MonthPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ABCA7827C388B600D09000 /* MonthPicker.swift */; };
 		25ABCA7B27C3A8EF00D09000 /* MonthPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25ABCA7A27C3A8EF00D09000 /* MonthPickerModel.swift */; };
 		25AFC94327BB7595000FA123 /* ReceiptList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFC94227BB7595000FA123 /* ReceiptList.swift */; };
@@ -96,6 +99,7 @@
 		253E07A527BBE9EA007F297C /* ReceiptSnapshotPreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptSnapshotPreviewModel.swift; sourceTree = "<group>"; };
 		2542498827C6342F00F9B35D /* ReceiptModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptModelTests.swift; sourceTree = "<group>"; };
 		2542499E27C6703A00F9B35D /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		254249A027C6786F00F9B35D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2575F8A027B7CBF600ED3994 /* ReceiptRowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptRowModel.swift; sourceTree = "<group>"; };
 		2575F8A227B91C5400ED3994 /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 		2575F8A427BA5A9300ED3994 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
@@ -118,6 +122,8 @@
 		25935A3827B25E0900BD6A98 /* ReceiptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptModel.swift; sourceTree = "<group>"; };
 		25935A3A27B25EC200BD6A98 /* ReceiptInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptInputView.swift; sourceTree = "<group>"; };
 		25935A3C27B25ECE00BD6A98 /* ReceiptInputModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptInputModel.swift; sourceTree = "<group>"; };
+		25A45F2027C86AF300BAAAA8 /* SectionModelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModelService.swift; sourceTree = "<group>"; };
+		25A45F2227C885AF00BAAAA8 /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 		25ABCA7827C388B600D09000 /* MonthPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthPicker.swift; sourceTree = "<group>"; };
 		25ABCA7A27C3A8EF00D09000 /* MonthPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthPickerModel.swift; sourceTree = "<group>"; };
 		25AFC94227BB7595000FA123 /* ReceiptList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptList.swift; sourceTree = "<group>"; };
@@ -133,7 +139,7 @@
 		25B569A127BD2105001879DF /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		25B569A327BD2E2A001879DF /* InputBottomToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBottomToolBar.swift; sourceTree = "<group>"; };
 		25BC488827B354210031E0D2 /* DungGeunMo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DungGeunMo.otf; sourceTree = "<group>"; };
-		25BC488A27B3547F0031E0D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		25BC488A27B3547F0031E0D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		25BC488C27B3552B0031E0D2 /* CustomFontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFontModifier.swift; sourceTree = "<group>"; };
 		25BC489027B3EA900031E0D2 /* Receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
 		25BC489227B3F60A0031E0D2 /* PagingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingController.swift; sourceTree = "<group>"; };
@@ -208,6 +214,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		254249A227C67A6300F9B35D /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				25BC488A27B3547F0031E0D2 /* Info.plist */,
+				254249A027C6786F00F9B35D /* GoogleService-Info.plist */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
 		2575F8AA27BA884700ED3994 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,7 +264,7 @@
 				25935A3427B25DD900BD6A98 /* Scene */,
 				25935A0127B24B0B00BD6A98 /* ThanksReceiptApp.swift */,
 				25935A0527B24B0D00BD6A98 /* Assets.xcassets */,
-				25BC488A27B3547F0031E0D2 /* Info.plist */,
+				254249A227C67A6300F9B35D /* Supporting */,
 				25BC488727B354070031E0D2 /* Font */,
 				25935A0727B24B0D00BD6A98 /* Preview Content */,
 			);
@@ -297,6 +312,7 @@
 				25935A3127B25A8C00BD6A98 /* Protocol */,
 				25935A2F27B25A8500BD6A98 /* DataProvider.swift */,
 				25DC31EE27C5C6D9003D24EB /* MockDataProvider.swift */,
+				25A45F2027C86AF300BAAAA8 /* SectionModelService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -421,6 +437,7 @@
 				2575F8A627BA5AB800ED3994 /* View+Extensions.swift */,
 				253E07A327BBE7C4007F297C /* Array+Extensions.swift */,
 				25B20B1B27C08A2A003E4965 /* Image+Extensions.swift */,
+				25A45F2227C885AF00BAAAA8 /* DateFormatter+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -559,6 +576,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25935A0927B24B0D00BD6A98 /* Preview Assets.xcassets in Resources */,
+				254249A127C6786F00F9B35D /* GoogleService-Info.plist in Resources */,
 				25BC488927B354210031E0D2 /* DungGeunMo.otf in Resources */,
 				25935A0627B24B0D00BD6A98 /* Assets.xcassets in Resources */,
 			);
@@ -706,6 +724,7 @@
 				253E07A427BBE7C4007F297C /* Array+Extensions.swift in Sources */,
 				2575F8A927BA5EAC00ED3994 /* DatePickerView.swift in Sources */,
 				25BC489327B3F60A0031E0D2 /* PagingController.swift in Sources */,
+				25A45F2127C86AF300BAAAA8 /* SectionModelService.swift in Sources */,
 				25AFC94327BB7595000FA123 /* ReceiptList.swift in Sources */,
 				25BC48A227B658590031E0D2 /* Blur.swift in Sources */,
 				25935A3627B25DF600BD6A98 /* ReceiptView.swift in Sources */,
@@ -725,6 +744,7 @@
 				25BC488D27B3552B0031E0D2 /* CustomFontModifier.swift in Sources */,
 				25B20B1F27C0A6E5003E4965 /* AlertModifier.swift in Sources */,
 				25935A3B27B25EC200BD6A98 /* ReceiptInputView.swift in Sources */,
+				25A45F2327C885AF00BAAAA8 /* DateFormatter+Extensions.swift in Sources */,
 				25B20B1827BE528A003E4965 /* AnimatedText.swift in Sources */,
 				25B20B1A27BFDB94003E4965 /* SnapshotDummy.swift in Sources */,
 				25BC489827B5F1D60031E0D2 /* LineStroke.swift in Sources */,
@@ -900,7 +920,7 @@
 				DEVELOPMENT_TEAM = 3TH3PN3T66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ThanksReceipt/Info.plist;
+				INFOPLIST_FILE = ThanksReceipt/Supporting/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "감사영수증";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "감사 영수증을 사진첩에 저장합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -935,7 +955,7 @@
 				DEVELOPMENT_TEAM = 3TH3PN3T66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ThanksReceipt/Info.plist;
+				INFOPLIST_FILE = ThanksReceipt/Supporting/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "감사영수증";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "감사 영수증을 사진첩에 저장합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

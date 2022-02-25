@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ReceiptItemRow: View {
+    private var sectionModel: ReceiptSectionModel?
     var date: String = ""
     var text: String = ""
     var count: String = ""
+    var didTapDate: ((_ date: Date) -> Void)?
     
     init(sectionModel: ReceiptSectionModel) {
+        self.sectionModel = sectionModel
         self.date = sectionModel.dateString
         self.text = sectionModel.text
         self.count = sectionModel.countString
@@ -24,9 +27,11 @@ struct ReceiptItemRow: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 2.5) {
-            Text(date)
-                .customFont(.DungGeunMo, size: 13)
-                .frame(width: 60, alignment: .leading)
+            Button(action: { sectionModel?.didTapDate() }) {
+                Text(date)
+                    .customFont(.DungGeunMo, size: 13)
+            }
+            .frame(width: 60, alignment: .leading)
             
             Text(text)
                 .lineLimit(2)

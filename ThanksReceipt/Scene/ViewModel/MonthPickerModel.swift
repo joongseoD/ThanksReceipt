@@ -37,20 +37,9 @@ final class MonthPickerModel: ObservableObject {
         }
     }
     
-    private let yearFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy"
-        formatter.locale = Locale(identifier: "En")
-        return formatter
-    }()
-    
-    private let monthFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM"
-        formatter.locale = Locale(identifier: "En")
-        return formatter
-    }()
-    
+    private let yearFormatter = DateFormatter(format: .year)
+    private let monthFormatter = DateFormatter(format: .shortMonth)
+        
     private weak var listener: MonthPickerModelListener?
     
     init(dependency: MonthPickerModelDependency, listener: MonthPickerModelListener?) {

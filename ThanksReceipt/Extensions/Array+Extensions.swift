@@ -18,14 +18,14 @@ extension Array where Element == ReceiptSectionModel {
 }
 
 extension Array where Element == ReceiptRowModel {
-    func mapToSectionModel() -> [ReceiptSectionModel] {
+    func mapToSectionModel(dependency: ReceiptSectionModelDependency = ReceiptSectionModelComponents()) -> [ReceiptSectionModel] {
         self.reduce([]) { sectionModels, itemModel -> [ReceiptSectionModel] in
             var sectionModels = sectionModels
             if let index = sectionModels.firstIndex(where: { $0.dateString == itemModel.dateString }) {
                 sectionModels[index].items.append(itemModel)
                 return sectionModels
             } else {
-                sectionModels.append(ReceiptSectionModel(header: itemModel, items: []))
+                sectionModels.append(ReceiptSectionModel(header: itemModel, items: [], dependency: dependency))
             }
             return sectionModels
         }

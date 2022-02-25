@@ -57,12 +57,7 @@ final class ReceiptInputModel: ObservableObject {
     private let maxCount: Int = 20
     private var cancellables = Set<AnyCancellable>()
     
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "M월 d일 (E)"
-        formatter.locale = Locale(identifier: "Ko")
-        return formatter
-    }()
+    private let dateFormatter = DateFormatter(format: .longMonthDayWeek)
     
     private weak var listener: ReceiptInputModelListener?
     

@@ -28,7 +28,6 @@ struct ReceiptContentView: View {
                 didTapRow: { model.didTapRow($0.id) },
                 didAppearRow: { model.didAppearRow($0) },
                 didTapSection: { model.didSelectSection($0) },
-                didLongPressSection: { model.didLongPressSection($0) },
                 scrollToId: model.scrollToId,
                 selectedSections: model.selectedSections
             )

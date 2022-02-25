@@ -82,4 +82,14 @@ final class DataProvider: DataProviding {
             realm.delete(realm.objects(Receipt.self).filter("id=%@", id))
         }
     }
+    
+    func delete(date: Date) throws {
+        let realm = try Realm()
+        try realm.write {
+            realm.delete(
+                realm.objects(Receipt.self)
+                    .filter("date BETWEEN {%@, %@}", date.startOfDay, date.endOfDay)
+            )
+        }
+    }
 }

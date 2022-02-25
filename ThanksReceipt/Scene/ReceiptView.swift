@@ -30,6 +30,7 @@ struct ReceiptView: View {
                         .padding(.bottom, 10)
                 }
                 .toast(message: $model.message)
+                .alert(model: $model.alert)
                 
                 if let viewState = model.viewState {
                     switch viewState {

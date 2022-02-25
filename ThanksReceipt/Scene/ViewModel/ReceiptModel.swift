@@ -12,13 +12,13 @@ import CombineSchedulers
 protocol ReceiptModelDependency {
     var provider: DataProviding { get }
     var pageSize: Int { get }
-    var scheduler: AnySchedulerOf<DispatchQueue> { get }
+    var mainScheduler: AnySchedulerOf<DispatchQueue> { get }
 }
 
 struct ReceiptModelComponents: ReceiptModelDependency {
     var provider: DataProviding = DataProvider()
     var pageSize: Int = 100
-    var scheduler: AnySchedulerOf<DispatchQueue> = .main
+    var mainScheduler: AnySchedulerOf<DispatchQueue> = .main
 }
 
 final class ReceiptModel: ObservableObject {
@@ -26,15 +26,14 @@ final class ReceiptModel: ObservableObject {
     @Published private(set) var totalCount: String = "0.00"
     @Published private(set) var monthText: String = ""
     @Published var message: String?
+    @Published var alert: AlertModel?
     @Published var scrollToId: String?
     @Published var selectedMonth: Date = Date()
     @Published var selectedSections: [ReceiptSectionModel] = []
     @Published var viewState: ViewState?
     
     private let pageSize: Int
-    private let items = PassthroughSubject<[ReceiptItem], Never>()
     private let reload = CurrentValueSubject<Void, Never>(())
-    private let selectedItemId = PassthroughSubject<String, Never>()
     private let scrollFocusId = PassthroughSubject<String?, Never>()
     private var cancellables = Set<AnyCancellable>()
     private var selectMode: Bool = false {
@@ -44,21 +43,28 @@ final class ReceiptModel: ObservableObject {
         }
     }
     
-    private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize)
+    let provider: DataProviding
+    private let mainScheduler: AnySchedulerOf<DispatchQueue>
+    private let deletingDate = PassthroughSubject<Date, Never>()
     
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM"
-        formatter.locale = Locale(identifier: "En")
-        return formatter
+    private lazy var service: ReceiptModelServicing = {
+        ReceiptModelService(
+            dependency: ReceiptModelServiceComponents(
+                provider: provider,
+                pageSize: pageSize,
+                scheduler: mainScheduler, // TODO: - background
+                selectedDate: $selectedMonth.eraseToAnyPublisher(),
+                deletingDate: deletingDate,
+                reload: reload.eraseToAnyPublisher()
+            )
+        )
     }()
     
-    let provider: DataProviding
-    private let scheduler: AnySchedulerOf<DispatchQueue>
+    private let dateFormatter = DateFormatter(format: .longMonth)
     
     init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
         self.provider = dependency.provider
-        self.scheduler = dependency.scheduler
+        self.mainScheduler = dependency.mainScheduler
         self.pageSize = dependency.pageSize
         
         setup()
@@ -71,56 +77,41 @@ final class ReceiptModel: ObservableObject {
     }
     
     private func setup() {
-        reload
-            .withLatestFrom($selectedMonth)
-            .flatMap { [weak self] month -> AnyPublisher<[ReceiptItem], Never> in
-                guard let self = self else { return Just([]).eraseToAnyPublisher() }
-                return self.provider.receiptItemList(in: month)
-                    .subscribe(on: DispatchQueue.global())
-                    .catch { [weak self] error -> AnyPublisher<[ReceiptItem], Never> in
-                        DispatchQueue.main.async {
-                            self?.message = error.localizedDescription
-                        }
-                        return Just([]).eraseToAnyPublisher()
-                    }
-                    .eraseToAnyPublisher()
-            }
-            .sink { [weak self] in self?.items.send($0) }
-            .store(in: &cancellables)
+        let sectionModels = service.sectionModels
+            .receive(on: mainScheduler)
         
-        pagingController.pageItems
-            .map { $0.map { ReceiptRowModel(model: $0) } }
-            .map { Array($0.reversed()) }
-            .map { $0.mapToSectionModel() }
-            .receive(on: scheduler)
+        sectionModels
             .assign(to: \.receiptItems, on: self)
             .store(in: &cancellables)
         
-        $receiptItems
+        sectionModels
             .map { $0.totalCount }
             .assign(to: \.totalCount, on: self)
             .store(in: &cancellables)
         
-        let lastItemIdWhenFirstLoaded = $receiptItems
+        let lastItemIdWhenFirstLoaded = sectionModels
             .filter { !$0.isEmpty }
             .first()
             .map { $0.last?.items.last ?? $0.last?.header }
             .map { $0?.id }
             
-        let focusId = $receiptItems
+        let focusId = sectionModels
             .withLatestFrom(scrollFocusId)
         
         Publishers.Zip(reload.print("#3"), Publishers.Merge(lastItemIdWhenFirstLoaded, focusId))
-            .debounce(for: 0.05, scheduler: scheduler)
+            .debounce(for: 0.05, scheduler: mainScheduler)
             .compactMap { $1 }
             .assign(to: \.scrollToId, on: self)
             .store(in: &cancellables)
         
-        selectedItemId
-            .withLatestFrom(items) { ($0, $1) }
-            .compactMap { id, items in
-                return items.first(where: { $0.id == id })
-            }
+        service.errorPublisher
+            .map { $0.localizedDescription }
+            .receive(on: mainScheduler)
+            .assign(to: \.message, on: self)
+            .store(in: &cancellables)
+        
+        service.foundReceiptItem
+            .receive(on: mainScheduler)
             .sink { [weak self]  in self?.editItem($0) }
             .store(in: &cancellables)
         
@@ -133,6 +124,41 @@ final class ReceiptModel: ObservableObject {
                 self?.message = "Hello, \(date)."
             }
             .store(in: &cancellables)
+        
+        deletingDate
+            .sink { [weak self] in self?.deleteReceipt(in: $0) }
+            .store(in: &cancellables)
+    }
+    
+    func deleteReceipt(in date: Date) {
+        let dateformatter = DateFormatter(format: .shortMonthDayWeek)
+        let dateString = dateformatter.string(from: date)
+        alert = AlertModel(
+            message: "\(dateString) 감사를 지울까요?",
+            confirmButton: .init(
+                title: "네",
+                action: { [weak self] in
+                    self?.delete(date)
+                }
+            ),
+            cancelButton: .init(
+                title: "아니요"
+            )
+        )
+    }
+    
+    private func delete(_ date: Date) {
+        do {
+            try provider.delete(date: date)
+            reload.send(())
+            
+            Logger.shared.send(
+                name: "didDeleteReceipt",
+                parameters: ["date" : date.description]
+            )
+        } catch {
+            message = error.localizedDescription
+        }
     }
     
     func editItem(_ item: ReceiptItem) {
@@ -145,12 +171,12 @@ final class ReceiptModel: ObservableObject {
     
     func didAppearRow(_ offset: Int) {
         guard receiptItems.count >= pageSize, offset == 0 else { return }
-        pagingController.fetchNext()
+        service.fetchNextPage()
     }
     
     func didTapRow(_ id: String) {
         guard !selectMode else { return }
-        selectedItemId.send(id)
+        service.findReceiptItem(by: id)
     }
     
     func didTapBackgroundView() {

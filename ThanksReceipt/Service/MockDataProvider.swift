@@ -37,4 +37,8 @@ final class MockDataProvider: DataProviding {
     func delete(id: String) throws {
         throw DataError.custom("not supported")
     }
+    
+    func delete(date: Date) throws {
+        throw DataError.custom("not supported")
+    }
 }
