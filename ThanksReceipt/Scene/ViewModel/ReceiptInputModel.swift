@@ -99,7 +99,7 @@ final class ReceiptInputModel: ObservableObject {
             }
             
         } catch {
-            message = error.localizedDescription
+            message = error.dataErrorDescription
         }
     }
     
@@ -124,7 +124,7 @@ final class ReceiptInputModel: ObservableObject {
                 try provider.delete(id: id)
                 listener?.didDeleteReceipt(item)
             } catch {
-                message = error.localizedDescription
+                message = error.dataErrorDescription
             }
         }
     }

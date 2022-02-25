@@ -113,7 +113,7 @@ final class ReceiptModel: ObservableObject {
             .store(in: &cancellables)
         
         service.errorPublisher
-            .map { $0.localizedDescription }
+            .map { $0.dataErrorDescription }
             .receive(on: mainScheduler)
             .sink(receiveValue: { [weak self] in self?.message = $0 })
             .store(in: &cancellables)
@@ -163,7 +163,7 @@ final class ReceiptModel: ObservableObject {
                 parameters: ["date" : date.description]
             )
         } catch {
-            message = error.localizedDescription
+            message = error.dataErrorDescription
         }
     }
     

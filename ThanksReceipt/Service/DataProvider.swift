@@ -9,9 +9,23 @@ import Combine
 import CombineExt
 import RealmSwift
 
-enum DataError: Error {
+enum DataError: Error, CustomStringConvertible {
     case realm
     case custom(_ message: String)
+    
+    var description: String {
+        switch self {
+        case .realm: return "데이터 읽기에 실패했습니다."
+        case let .custom(message): return message
+        }
+    }
+}
+
+extension Error {
+    var dataErrorDescription: String {
+        guard let error = self as? DataError else { return localizedDescription }
+        return error.description
+    }
 }
 
 final class DataProvider: DataProviding {
