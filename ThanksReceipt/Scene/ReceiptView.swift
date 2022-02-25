@@ -34,38 +34,25 @@ struct ReceiptView: View {
                 
                 if let viewState = model.viewState {
                     switch viewState {
-                    case .monthPicker:
+                    case let .monthPicker(dependency):
                         MonthPicker(
-                            dependency: MonthPickerModelComponents(
-                                currentDate: model.selectedMonth
-                            ),
+                            dependency: dependency,
                             listener: model
                         )
                         .backgroundBlur(onTapBackground: model.didTapBackgroundView)
                         .transition(.opacity.animation(.easeInOut))
-                    case .input(let inputMode):
+                    case let .input(dependency):
                         ReceiptInputView(
-                            dependency: ReceiptInputModelComponents(
-                                provider: model.provider,
-                                mode: inputMode,
-                                date: model.selectedMonth
-                            ),
+                            dependency: dependency,
                             listener: model
                         )
                         .backgroundBlur(onTapBackground: model.didTapBackgroundView)
                         .transition(.opacity.animation(.easeInOut))
-                    case .snapshotPreview:
+                    case let .snapshotPreview(dependency):
                         ReceiptSnapshotPreview(
-                            dependency: ReceiptSnapshotPreviewModelComponent(
-                                scrollToId: model.scrollToId,
-                                monthText: model.monthText,
-                                totalCount: model.totalCount,
-                                receiptItems: model.receiptItems
-                            ),
+                            dependency: dependency,
                             closeSnapshotPreview: model.didTapBackgroundView
                         )
-                    case .bottomSheet:
-                        EmptyView()
                     }
                 }
             }
@@ -76,6 +63,6 @@ struct ReceiptView: View {
 
 struct ReceiptView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptView(dependency: ReceiptModelComponents())
+        ReceiptView(dependency: AppRootComponents())
     }
 }

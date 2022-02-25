@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
+import CombineSchedulers
 
 @main
 struct ThanksReceiptApp: App {
+    
     var body: some Scene {
         WindowGroup {
             ReceiptView(
-                dependency: ReceiptModelComponents(
-                    provider: DataProvider(),
-                    pageSize: 100
-                )
+                dependency: AppRootComponents()
             )
-                .preferredColorScheme(.light)
+            .preferredColorScheme(.light)
         }
     }
+}
+
+struct AppRootComponents: ReceiptModelDependency {
+    var provider: DataProviding = DataProvider()
+    var pageSize: Int = 100
+    var mainScheduler: AnySchedulerOf<DispatchQueue> = .main
 }

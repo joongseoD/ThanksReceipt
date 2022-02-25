@@ -11,18 +11,19 @@ import CombineSchedulers
 @testable import ThanksReceipt
 
 final class MockReceiptModelComponents: ReceiptModelDependency {
+    var mainScheduler: AnySchedulerOf<DispatchQueue>
     var provider: DataProviding
-    var scheduler: AnySchedulerOf<DispatchQueue>
     var pageSize: Int
     
-    init(provider: DataProviding, scheduler: AnySchedulerOf<DispatchQueue>, pageSize: Int) {
+    init(provider: DataProviding, mainScheduler: AnySchedulerOf<DispatchQueue>, pageSize: Int) {
         self.provider = provider
-        self.scheduler = scheduler
+        self.mainScheduler = mainScheduler
         self.pageSize = pageSize
     }
 }
 
 final class TestMockDataProvider: DataProviding {
+    
     let receiptItems = CurrentValueSubject<[ReceiptItem], Error>([])
     
     var receiptItemListCallCount = 0
@@ -43,6 +44,10 @@ final class TestMockDataProvider: DataProviding {
     func delete(id: String) throws {
      
     }
+    
+    func delete(date: Date) throws {
+     
+    }
 }
 
 final class ReceiptModelTests: XCTestCase {
@@ -59,7 +64,7 @@ final class ReceiptModelTests: XCTestCase {
         scheduler = .immediate
         dependency = MockReceiptModelComponents(
             provider: provider,
-            scheduler: scheduler,
+            mainScheduler: scheduler,
             pageSize: 100
         )
         sut = ReceiptModel(dependency: dependency)

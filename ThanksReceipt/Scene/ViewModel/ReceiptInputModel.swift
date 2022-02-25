@@ -14,13 +14,6 @@ protocol ReceiptInputModelDependency {
     var date: Date { get }
 }
 
-struct ReceiptInputModelComponents: ReceiptInputModelDependency {
-    var provider: DataProviding = DataProvider()
-    var mode: ReceiptInputModel.InputMode
-    var date: Date = Date()
-    // TODO: - Scheduler
-}
-
 protocol ReceiptInputModelListener: AnyObject {
     func didSaveRecipt(_ item: ReceiptItem)
     func didUpdateReceipt(_ item: ReceiptItem)
@@ -61,10 +54,7 @@ final class ReceiptInputModel: ObservableObject {
     
     private weak var listener: ReceiptInputModelListener?
     
-    init(
-        dependency: ReceiptInputModelDependency = ReceiptInputModelComponents(mode: .create),
-        listener: ReceiptInputModelListener?
-    ) {
+    init(dependency: ReceiptInputModelDependency, listener: ReceiptInputModelListener?) {
         self.provider = dependency.provider
         self.inputMode = dependency.mode
         self.date = dependency.date

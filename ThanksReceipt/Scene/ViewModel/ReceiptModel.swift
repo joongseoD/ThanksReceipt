@@ -15,10 +15,26 @@ protocol ReceiptModelDependency {
     var mainScheduler: AnySchedulerOf<DispatchQueue> { get }
 }
 
-struct ReceiptModelComponents: ReceiptModelDependency {
-    var provider: DataProviding = DataProvider()
-    var pageSize: Int = 100
-    var mainScheduler: AnySchedulerOf<DispatchQueue> = .main
+struct ReceiptInputModelComponents: ReceiptInputModelDependency {
+    let dependency: ReceiptModelDependency
+    var provider: DataProviding { dependency.provider }
+    var mainScheduler: AnySchedulerOf<DispatchQueue> { dependency.mainScheduler }
+    
+    var mode: ReceiptInputModel.InputMode
+    var date: Date = Date()
+}
+
+struct ReceiptSnapshotPreviewModelComponent: ReceiptSnapshotPreviewModelDependency {
+    var colorList: [Palette] = Constants.paletteColors
+    var scrollToId: String?
+    var monthText: String
+    var totalCount: String
+    var receiptItems: [ReceiptSectionModel]
+    var imageManager: ImageManagerProtocol = ImageManager()
+}
+
+struct MonthPickerModelComponents: MonthPickerModelDependency {
+    var currentDate: Date
 }
 
 final class ReceiptModel: ObservableObject {
@@ -36,8 +52,9 @@ final class ReceiptModel: ObservableObject {
     private let scrollFocusId = PassthroughSubject<String?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
-    let provider: DataProviding
-    private let mainScheduler: AnySchedulerOf<DispatchQueue>
+    private let dependency: ReceiptModelDependency
+    private var provider: DataProviding { dependency.provider }
+    private var mainScheduler: AnySchedulerOf<DispatchQueue> { dependency.mainScheduler }
     private let deletingDate = PassthroughSubject<Date, Never>()
     
     private lazy var service: ReceiptModelServicing = {
@@ -53,11 +70,8 @@ final class ReceiptModel: ObservableObject {
         )
     }()
     
-    private let dateFormatter = DateFormatter(format: .longMonth)
-    
-    init(dependency: ReceiptModelDependency = ReceiptModelComponents()) {
-        self.provider = dependency.provider
-        self.mainScheduler = dependency.mainScheduler
+    init(dependency: ReceiptModelDependency) {
+        self.dependency = dependency
         self.pageSize = dependency.pageSize
         
         setup()
@@ -109,9 +123,7 @@ final class ReceiptModel: ObservableObject {
             .store(in: &cancellables)
         
         $selectedMonth
-            .compactMap { [weak self] date in
-                self?.dateFormatter.string(from: date)
-            }
+            .compactMap { DateFormatter(format: .longMonth).string(from: $0) }
             .sink { [weak self] date in
                 self?.monthText = date
                 self?.message = "Hello, \(date)."
@@ -155,11 +167,23 @@ final class ReceiptModel: ObservableObject {
     }
     
     func editItem(_ item: ReceiptItem) {
-        viewState = .input(.edit(item))
+        viewState = .input(
+            ReceiptInputModelComponents(
+                dependency: dependency,
+                mode: .edit(item),
+                date: selectedMonth
+            )
+        )
     }
     
     func addItem() {
-        viewState = .input(.create)
+        viewState = .input(
+            ReceiptInputModelComponents(
+                dependency: dependency,
+                mode: .create,
+                date: selectedMonth
+            )
+        )
     }
     
     func didAppearRow(_ offset: Int) {
@@ -176,11 +200,22 @@ final class ReceiptModel: ObservableObject {
     }
     
     func didTapSave() {
-        viewState = .snapshotPreview
+        viewState = .snapshotPreview(
+            ReceiptSnapshotPreviewModelComponent(
+                scrollToId: scrollToId,
+                monthText: monthText,
+                totalCount: totalCount,
+                receiptItems: receiptItems
+            )
+        )
     }
     
     func didTapMonth() {
-        viewState = .monthPicker
+        viewState = .monthPicker(
+            MonthPickerModelComponents(
+                currentDate: selectedMonth
+            )
+        )
     }
 }
 
@@ -232,10 +267,9 @@ extension ReceiptModel: MonthPickerModelListener {
 }
 
 extension ReceiptModel {
-    enum ViewState: Equatable {
-        case monthPicker
-        case input(_: ReceiptInputModel.InputMode)
-        case snapshotPreview
-        case bottomSheet
+    enum ViewState {
+        case monthPicker(_: MonthPickerModelDependency)
+        case input(_: ReceiptInputModelDependency)
+        case snapshotPreview(_: ReceiptSnapshotPreviewModelDependency)
     }
 }

@@ -108,6 +108,12 @@ extension ReceiptInputView {
 
 struct ReceiptInputView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptInputView(dependency: ReceiptInputModelComponents(mode: .create), listener: nil)
+        ReceiptInputView(
+            dependency: ReceiptInputModelComponents(
+                dependency: AppRootComponents(),
+                mode: .create
+            ),
+            listener: nil
+        )
     }
 }

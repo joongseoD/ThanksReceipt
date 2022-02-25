@@ -15,10 +15,6 @@ protocol MonthPickerModelDependency {
     var currentDate: Date { get }
 }
 
-struct MonthPickerModelComponents: MonthPickerModelDependency {
-    var currentDate: Date
-}
-
 final class MonthPickerModel: ObservableObject {
     enum ViewState {
         case month

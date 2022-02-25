@@ -16,15 +16,6 @@ protocol ReceiptSnapshotPreviewModelDependency {
     var imageManager: ImageManagerProtocol { get }
 }
 
-struct ReceiptSnapshotPreviewModelComponent: ReceiptSnapshotPreviewModelDependency {
-    var colorList: [Palette] = Constants.paletteColors
-    var scrollToId: String?
-    var monthText: String
-    var totalCount: String
-    var receiptItems: [ReceiptSectionModel]
-    var imageManager: ImageManagerProtocol = ImageManager()
-}
-
 final class ReceiptSnapshotPreviewModel: ObservableObject {
     private let maxSelectableCount = 7
     @Published var snapshotImage: UIImage?
