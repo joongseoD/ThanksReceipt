@@ -41,10 +41,6 @@ final class MonthPickerModel: ObservableObject {
     init(dependency: MonthPickerModelDependency, listener: MonthPickerModelListener?) {
         self.currentDate = dependency.currentDate
         self.listener = listener
-        
-        changeSelectedDate()
-        setupMonth()
-        setupYear()
     }
     
     deinit {
@@ -93,5 +89,11 @@ final class MonthPickerModel: ObservableObject {
     
     func toggleViewState() {
         state = state == .month ? .year : .month
+    }
+    
+    func didAppear() {
+        changeSelectedDate()
+        setupMonth()
+        setupYear()
     }
 }
