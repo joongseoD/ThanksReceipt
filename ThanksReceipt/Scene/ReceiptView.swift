@@ -40,7 +40,6 @@ struct ReceiptView: View {
                             listener: model
                         )
                         .backgroundBlur(onTapBackground: model.didTapBackgroundView)
-                        .transition(.opacity.animation(.easeInOut))
                     case let .input(dependency):
                         ReceiptInputView(
                             dependency: dependency,

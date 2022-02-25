@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MonthPicker: View {
     @StateObject var model: MonthPickerModel
+    @State private var scale: CGFloat = 0
     
     init(dependency: MonthPickerModelDependency, listener: MonthPickerModelListener?) {
         _model = StateObject(wrappedValue: MonthPickerModel(dependency: dependency, listener: listener))
@@ -43,7 +44,12 @@ struct MonthPicker: View {
             .background(Color.receipt)
             .clipShape(ZigZag())
             
-            Button(action: model.didTapComplete) {
+            Button(action: {
+                scale = 0
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    model.didTapComplete()
+                }
+            }) {
                 Text("완료")
                     .customFont(.DungGeunMo, size: 18)
                     .padding()
@@ -55,7 +61,13 @@ struct MonthPicker: View {
             }
         }
         .padding()
-        .animation(.easeInOut(duration: 0.15), value: model.state)
+        .onAppear {
+            Haptic.trigger()
+            scale = 1
+        }
+        .transition(.opacity.animation(.easeInOut))
+        .scaleEffect(y: scale)
+        .animation(.spring(response: 0.2, dampingFraction: 0.6, blendDuration: 1.0), value: scale)
     }
     
     private func yearPicker() -> some View {

@@ -42,12 +42,13 @@ struct ReceiptSnapshotPreview: View {
                         editSnapshotView()
                     case .selectBackground(let image):
                         selectBackgroundView(image)
+                            .transition(.stripes())
                     }
                     
                     nextButton()
                 }
                 .opacity(snapshotImage == nil ? 1 : 0)
-                .animation(.easeInOut(duration: 0.1), value: snapshotImage)
+                .animation(.easeInOut(duration: 0.2))
                 
                 if let snapshotImage = snapshotImage {
                     Image(uiImage: snapshotImage)
@@ -171,7 +172,11 @@ struct ReceiptSnapshotPreview: View {
             ColorPalette(selection: $model.selectedColor,
                          colorList: model.colorList)
                 .transition(.move(edge: .bottom))
-                .animation(.easeOut(duration: 0.1), value: model.state)
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.2), value: model.state)
+                .padding(.vertical, 15)
+                .padding(.bottom, 10)
+                .background(Color.background.opacity(0.5))
         }
     }
 }

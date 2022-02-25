@@ -18,26 +18,24 @@ struct ColorPalette: View {
                 HStack {
                     ColorPicker("", selection: $pickerColor)
                         .frame(width: 30, height: 30)
-                        .padding(.trailing, 2)
+                        .padding(.horizontal, 5)
                     
-                    ForEach(colorList, id: \.id) { color in
+                    ForEach(Array(colorList.enumerated()), id: \.offset) { offset, color in
                         Button(action: { selection = color }) {
                             ColorBuilderView(palette: color)
                                 .clipShape(Circle())
-                                .frame(width: 30, height: 30)
+                                .frame(width: 35, height: 35)
                                 .shadow(color: .black.opacity(0.3), radius: 2, x: 0.5, y: 0.5)
-                                .padding(.vertical, 5)
                         }
                         .buttonStyle(SelectionButtonStyle())
+                        .frame(width: 40, height: 40)
                     }
                 }
+                .padding(.leading, 10)
             }
             .frame(width: proxy.size.width)
         }
-        .frame(height: 35)
-        .padding(.horizontal, 15)
-        .padding(.vertical, 15)
-        .background(Color.background)
+        .frame(height: 40)
         .onChange(of: pickerColor) { newValue in
             selection = .single(newValue)
         }
