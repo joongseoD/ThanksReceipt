@@ -9,20 +9,20 @@ import Foundation
 
 @propertyWrapper
 struct UserDefaultsWrapper<Value> {
-    let key: String
     private let storage = UserDefaults.standard
+    let key: UserDefaultsKey
+    var defaultValue: Value
     
-    var wrappedValue: Value? {
+    var wrappedValue: Value {
         get {
-            return storage.object(forKey: key) as? Value
+            return storage.object(forKey: key.rawValue) as? Value ?? defaultValue
         }
         set {
-            if let newValue = newValue {
-                storage.set(newValue, forKey: key)
-            } else {
-                storage.removeObject(forKey: key)
-            }
+            storage.set(newValue, forKey: key.rawValue)
         }
     }
 }
 
+enum UserDefaultsKey: String {
+    case mock
+}

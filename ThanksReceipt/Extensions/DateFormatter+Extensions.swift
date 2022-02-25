@@ -14,6 +14,7 @@ extension DateFormatter {
         case longMonthDayWeek
         case shortMonthDayWeek
         case year
+        case yearMonthDay
         
         var string: String {
             switch self {
@@ -22,6 +23,7 @@ extension DateFormatter {
             case .longMonthDayWeek: return "M월 d일 (E)"
             case .shortMonthDayWeek: return "M/d(E)"
             case .year: return "yyyy"
+            case .yearMonthDay: return "yyyy.MM.dd"
             }
         }
         
@@ -30,8 +32,9 @@ extension DateFormatter {
             case .longMonth: return "En"
             case .shortMonth: return "En"
             case .longMonthDayWeek: return "Ko"
-            case .shortMonthDayWeek: return "ko"
+            case .shortMonthDayWeek: return "Ko"
             case .year: return "En"
+            case .yearMonthDay: return "Ko"
             }
         }
     }

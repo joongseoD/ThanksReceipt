@@ -21,7 +21,25 @@ struct ThanksReceiptApp: App {
 }
 
 struct AppRootComponents: ReceiptModelDependency {
-    var provider: DataProviding = DataProvider()
-    var pageSize: Int = 100
-    var mainScheduler: AnySchedulerOf<DispatchQueue> = .main
+    @UserDefaultsWrapper(key: .mock, defaultValue: false) var mock: Bool
+    
+    var provider: DataProviding
+    var pageSize: Int
+    var mainScheduler: AnySchedulerOf<DispatchQueue>
+    
+    init(
+        provider: DataProviding = DataProvider(),
+        pageSize: Int = 100,
+        mainScheduler: AnySchedulerOf<DispatchQueue> = .main
+    ) {
+        self.provider = provider
+        self.pageSize = pageSize
+        self.mainScheduler = mainScheduler
+        
+        #if DEBUG
+        if mock {
+            self.provider = MockDataProvider()
+        }
+        #endif
+    }
 }

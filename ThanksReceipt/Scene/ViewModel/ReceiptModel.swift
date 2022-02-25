@@ -10,6 +10,7 @@ import Combine
 import CombineSchedulers
 
 protocol ReceiptModelDependency {
+    var mock: Bool { get set }
     var provider: DataProviding { get }
     var pageSize: Int { get }
     var mainScheduler: AnySchedulerOf<DispatchQueue> { get }
@@ -52,7 +53,7 @@ final class ReceiptModel: ObservableObject {
     private let scrollFocusId = PassthroughSubject<String?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
-    private let dependency: ReceiptModelDependency
+    private var dependency: ReceiptModelDependency
     private var provider: DataProviding { dependency.provider }
     private var mainScheduler: AnySchedulerOf<DispatchQueue> { dependency.mainScheduler }
     private let deletingDate = PassthroughSubject<Date, Never>()
@@ -216,6 +217,13 @@ final class ReceiptModel: ObservableObject {
                 currentDate: selectedMonth
             )
         )
+    }
+    
+    func didLongPressHeader() {
+        #if DEBUG
+        dependency.mock.toggle()
+        message = dependency.mock == true ? "Mockup" : "Live"
+        #endif
     }
 }
 
