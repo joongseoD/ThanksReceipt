@@ -88,12 +88,12 @@ final class ReceiptModel: ObservableObject {
             .receive(on: mainScheduler)
         
         sectionModels
-            .assign(to: \.receiptItems, on: self)
+            .sink(receiveValue: { [weak self] in self?.receiptItems = $0 })
             .store(in: &cancellables)
         
         sectionModels
             .map { $0.totalCount }
-            .assign(to: \.totalCount, on: self)
+            .sink(receiveValue: { [ weak self] in self?.totalCount = $0 })
             .store(in: &cancellables)
         
         let lastItemIdWhenFirstLoaded = sectionModels
@@ -105,16 +105,16 @@ final class ReceiptModel: ObservableObject {
         let focusId = sectionModels
             .withLatestFrom(scrollFocusId)
         
-        Publishers.Zip(reload.print("#3"), Publishers.Merge(lastItemIdWhenFirstLoaded, focusId))
+        Publishers.Zip(reload, Publishers.Merge(lastItemIdWhenFirstLoaded, focusId))
             .debounce(for: 0.05, scheduler: mainScheduler)
             .compactMap { $1 }
-            .assign(to: \.scrollToId, on: self)
+            .sink(receiveValue: { [weak self] in self?.scrollToId = $0 })
             .store(in: &cancellables)
         
         service.errorPublisher
             .map { $0.localizedDescription }
             .receive(on: mainScheduler)
-            .assign(to: \.message, on: self)
+            .sink(receiveValue: { [weak self] in self?.message = $0 })
             .store(in: &cancellables)
         
         service.foundReceiptItem

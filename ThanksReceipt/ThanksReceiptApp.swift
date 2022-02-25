@@ -10,7 +10,6 @@ import CombineSchedulers
 
 @main
 struct ThanksReceiptApp: App {
-    
     var body: some Scene {
         WindowGroup {
             ReceiptView(

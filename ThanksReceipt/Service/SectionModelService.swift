@@ -65,6 +65,10 @@ final class ReceiptModelService: ReceiptModelServicing {
         setup()
     }
     
+    deinit {
+        print("\(String(describing: self)) deinit")
+    }
+    
     private func setup() {
         reload
             .withLatestFrom(selectedDate)
