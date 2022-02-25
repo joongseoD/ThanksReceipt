@@ -12,7 +12,6 @@ struct ReceiptItemRow: View {
     var date: String = ""
     var text: String = ""
     var count: String = ""
-    var didTapDate: ((_ date: Date) -> Void)?
     
     init(sectionModel: ReceiptSectionModel) {
         self.sectionModel = sectionModel

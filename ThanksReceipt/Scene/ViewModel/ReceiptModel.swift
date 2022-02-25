@@ -29,19 +29,12 @@ final class ReceiptModel: ObservableObject {
     @Published var alert: AlertModel?
     @Published var scrollToId: String?
     @Published var selectedMonth: Date = Date()
-    @Published var selectedSections: [ReceiptSectionModel] = []
     @Published var viewState: ViewState?
     
     private let pageSize: Int
     private let reload = CurrentValueSubject<Void, Never>(())
     private let scrollFocusId = PassthroughSubject<String?, Never>()
     private var cancellables = Set<AnyCancellable>()
-    private var selectMode: Bool = false {
-        didSet {
-            guard !selectMode else { return }
-            selectedSections = []
-        }
-    }
     
     let provider: DataProviding
     private let mainScheduler: AnySchedulerOf<DispatchQueue>
@@ -175,29 +168,11 @@ final class ReceiptModel: ObservableObject {
     }
     
     func didTapRow(_ id: String) {
-        guard !selectMode else { return }
         service.findReceiptItem(by: id)
     }
     
     func didTapBackgroundView() {
         closeOverlayView()
-    }
-    
-    func didSelectSection(_ section: ReceiptSectionModel) {
-        guard selectMode else { return }
-        if let index = selectedSections.firstIndex(of: section) {
-            selectedSections.remove(at: index)
-        } else {
-            selectedSections.append(section)
-        }
-        Haptic.trigger()
-        
-        selectMode = !selectedSections.isEmpty
-    }
-    
-    func didLongPressSection(_ section: ReceiptSectionModel) {
-        selectMode.toggle()
-        didSelectSection(section)
     }
     
     func didTapSave() {
