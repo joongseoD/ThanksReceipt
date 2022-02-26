@@ -31,7 +31,7 @@ struct AppRootComponents: ReceiptModelDependency, ReceiptModelServiceDependency 
     var provider: DataProviding
     var mainScheduler: AnySchedulerOf<DispatchQueue>
     var backgroundScheduler: AnySchedulerOf<DispatchQueue>
-    var deletingDate: PassthroughSubject<Date, Never>
+    var deletionDate: PassthroughSubject<Date, Never>
     var reload: CurrentValueSubject<Void, Never>
     var selectedDate: CurrentValueSubject<Date, Never>
     
@@ -39,14 +39,14 @@ struct AppRootComponents: ReceiptModelDependency, ReceiptModelServiceDependency 
         provider: DataProviding = DataProvider(),
         mainScheduler: AnySchedulerOf<DispatchQueue> = .main,
         backgroundScheduler: AnySchedulerOf<DispatchQueue> = .main,
-        deletingDate: PassthroughSubject<Date, Never> = .init(),
+        deletionDate: PassthroughSubject<Date, Never> = .init(),
         reload: CurrentValueSubject<Void, Never> = .init(()),
         selectedDate: CurrentValueSubject<Date, Never> = .init(Date())
     ) {
         self.provider = provider
         self.mainScheduler = mainScheduler
         self.backgroundScheduler = backgroundScheduler
-        self.deletingDate = deletingDate
+        self.deletionDate = deletionDate
         self.reload = reload
         self.selectedDate = selectedDate
         

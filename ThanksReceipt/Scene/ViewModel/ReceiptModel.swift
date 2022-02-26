@@ -13,30 +13,8 @@ protocol ReceiptModelDependency {
     var mock: Bool { get set }
     var provider: DataProviding { get }
     var mainScheduler: AnySchedulerOf<DispatchQueue> { get }
-    var deletingDate: PassthroughSubject<Date, Never> { get }
+    var deletionDate: PassthroughSubject<Date, Never> { get }
     var reload: CurrentValueSubject<Void, Never> { get }
-}
-
-struct ReceiptInputModelComponents: ReceiptInputModelDependency {
-    let dependency: ReceiptModelDependency
-    var provider: DataProviding { dependency.provider }
-    var mainScheduler: AnySchedulerOf<DispatchQueue> { dependency.mainScheduler }
-    
-    var mode: ReceiptInputModel.InputMode
-    var date: Date = Date()
-}
-
-struct ReceiptSnapshotPreviewModelComponent: ReceiptSnapshotPreviewModelDependency {
-    var colorList: [Palette] = Constants.paletteColors
-    var scrollToId: String?
-    var monthText: String
-    var totalCount: String
-    var receiptItems: [ReceiptSectionModel]
-    var imageManager: ImageManagerProtocol = ImageManager()
-}
-
-struct MonthPickerModelComponents: MonthPickerModelDependency {
-    var currentDate: Date
 }
 
 final class ReceiptModel: ObservableObject {
@@ -57,7 +35,7 @@ final class ReceiptModel: ObservableObject {
     
     private var mainScheduler: AnySchedulerOf<DispatchQueue> { dependency.mainScheduler }
     private var reload: CurrentValueSubject<Void, Never> { dependency.reload }
-    private var deletingDate: PassthroughSubject<Date, Never> { dependency.deletingDate }
+    private var deletionDate: PassthroughSubject<Date, Never> { dependency.deletionDate }
     
     init(dependency: ReceiptModelDependency, service: ReceiptModelServicing) {
         self.dependency = dependency
@@ -119,7 +97,7 @@ final class ReceiptModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        deletingDate
+        deletionDate
             .sink { [weak self] in self?.deleteReceipt(in: $0) }
             .store(in: &cancellables)
     }
@@ -264,4 +242,26 @@ extension ReceiptModel {
         case input(_: ReceiptInputModelDependency)
         case snapshotPreview(_: ReceiptSnapshotPreviewModelDependency)
     }
+}
+
+struct ReceiptInputModelComponents: ReceiptInputModelDependency {
+    let dependency: ReceiptModelDependency
+    var provider: DataProviding { dependency.provider }
+    var mainScheduler: AnySchedulerOf<DispatchQueue> { dependency.mainScheduler }
+    
+    var mode: ReceiptInputModel.InputMode
+    var date: Date = Date()
+}
+
+struct ReceiptSnapshotPreviewModelComponent: ReceiptSnapshotPreviewModelDependency {
+    var colorList: [Palette] = Constants.paletteColors
+    var scrollToId: String?
+    var monthText: String
+    var totalCount: String
+    var receiptItems: [ReceiptSectionModel]
+    var imageManager: ImageManagerProtocol = ImageManager()
+}
+
+struct MonthPickerModelComponents: MonthPickerModelDependency {
+    var currentDate: Date
 }

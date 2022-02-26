@@ -12,7 +12,7 @@ import CombineSchedulers
 protocol ReceiptModelServiceDependency {
     var provider: DataProviding { get }
     var backgroundScheduler: AnySchedulerOf<DispatchQueue> { get }
-    var deletingDate: PassthroughSubject<Date, Never> { get }
+    var deletionDate: PassthroughSubject<Date, Never> { get }
     var reload: CurrentValueSubject<Void, Never> { get }
     var selectedDate: CurrentValueSubject<Date, Never> { get }
 }
@@ -91,7 +91,7 @@ final class ReceiptModelService: ReceiptModelServicing {
             .map { [weak self] in
                 $0.mapToSectionModel(
                     dependency: ReceiptSectionModelComponents(
-                        tappedDateSubject: self?.dependency.deletingDate
+                        tappedDateSubject: self?.dependency.deletionDate
                     )
                 )
             }
