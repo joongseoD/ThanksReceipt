@@ -16,11 +16,6 @@ protocol MonthPickerModelDependency {
 }
 
 final class MonthPickerModel: ObservableObject {
-    enum ViewState {
-        case month
-        case year
-    }
-    
     @Published var state: ViewState = .month
     @Published var selectedMonth: String = ""
     @Published var months: [String] = []
@@ -45,28 +40,6 @@ final class MonthPickerModel: ObservableObject {
     
     deinit {
         print("\(String(describing: self)) deinit")
-    }
-    
-    private func changeSelectedDate() {
-        selectedYear = yearFormatter.string(from: currentDate)
-        selectedMonth = monthFormatter.string(from: currentDate)
-    }
-    
-    private func setupMonth() {
-        months = Array((1...12))
-            .map { "\($0)" }
-            .compactMap {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "M"
-                return formatter.date(from: $0)
-            }
-            .compactMap { monthFormatter.string(from: $0) }
-    }
-    
-    private func setupYear() {
-        years = Array((0..<12))
-            .compactMap { Calendar.current.date(byAdding: .year, value: $0 * -1, to: Date()) }
-            .compactMap { yearFormatter.string(from: $0) }
     }
     
     func didSelectMonth(_ month: String) {
@@ -95,5 +68,34 @@ final class MonthPickerModel: ObservableObject {
         changeSelectedDate()
         setupMonth()
         setupYear()
+    }
+    
+    private func changeSelectedDate() {
+        selectedYear = yearFormatter.string(from: currentDate)
+        selectedMonth = monthFormatter.string(from: currentDate)
+    }
+    
+    private func setupMonth() {
+        months = Array((1...12))
+            .map { "\($0)" }
+            .compactMap {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "M"
+                return formatter.date(from: $0)
+            }
+            .compactMap { monthFormatter.string(from: $0) }
+    }
+    
+    private func setupYear() {
+        years = Array((0..<12))
+            .compactMap { Calendar.current.date(byAdding: .year, value: $0 * -1, to: Date()) }
+            .compactMap { yearFormatter.string(from: $0) }
+    }
+}
+
+extension MonthPickerModel {
+    enum ViewState {
+        case month
+        case year
     }
 }

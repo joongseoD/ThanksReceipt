@@ -133,6 +133,10 @@ final class ReceiptModel: ObservableObject {
         }
     }
     
+    func didTapRow(_ id: String) {
+        service.findReceiptItem(by: id)
+    }
+    
     func editItem(_ item: ReceiptItem) {
         viewState = .input(
             ReceiptInputModelComponents(
@@ -153,14 +157,6 @@ final class ReceiptModel: ObservableObject {
         )
     }
     
-    func didTapRow(_ id: String) {
-        service.findReceiptItem(by: id)
-    }
-    
-    func didTapBackgroundView() {
-        closeOverlayView()
-    }
-    
     func didTapSave() {
         viewState = .snapshotPreview(
             ReceiptSnapshotPreviewModelComponent(
@@ -179,7 +175,7 @@ final class ReceiptModel: ObservableObject {
             )
         )
     }
-    
+
     func didLongPressHeader() {
         #if DEBUG
         dependency.mock.toggle()
@@ -220,6 +216,10 @@ extension ReceiptModel: ReceiptInputModelListener {
             name: "didDeleteReceipt",
             parameters: item.asDictionary()
         )
+    }
+    
+    func didTapBackgroundView() {
+        closeOverlayView()
     }
     
     private func closeOverlayView() {

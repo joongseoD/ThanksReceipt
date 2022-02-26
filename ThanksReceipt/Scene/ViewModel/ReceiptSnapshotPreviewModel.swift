@@ -46,13 +46,12 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
     }
     
     private let dependency: ReceiptSnapshotPreviewModelDependency
-    private let imageManager: ImageManagerProtocol
     
     init(dependency: ReceiptSnapshotPreviewModelDependency) {
         self.dependency = dependency
-        self.imageManager = dependency.imageManager
     }
     
+    private var imageManager: ImageManagerProtocol { dependency.imageManager }
     var receiptsEmpty: Bool { selectedSections.isEmpty }
     var colorList: [Palette] { dependency.colorList }
     var receiptItems: [ReceiptSectionModel] { dependency.receiptItems }
