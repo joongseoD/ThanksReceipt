@@ -12,8 +12,9 @@ import CombineSchedulers
 protocol ReceiptModelDependency {
     var mock: Bool { get set }
     var provider: DataProviding { get }
-    var pageSize: Int { get }
     var mainScheduler: AnySchedulerOf<DispatchQueue> { get }
+    var deletingDate: PassthroughSubject<Date, Never> { get }
+    var reload: CurrentValueSubject<Void, Never> { get }
 }
 
 struct ReceiptInputModelComponents: ReceiptInputModelDependency {
@@ -48,32 +49,19 @@ final class ReceiptModel: ObservableObject {
     @Published var selectedMonth: Date = Date()
     @Published var viewState: ViewState?
     
-    private let pageSize: Int
-    private let reload = CurrentValueSubject<Void, Never>(())
     private let scrollFocusId = PassthroughSubject<String?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private var dependency: ReceiptModelDependency
-    private var provider: DataProviding { dependency.provider }
+    private let service: ReceiptModelServicing
+    
     private var mainScheduler: AnySchedulerOf<DispatchQueue> { dependency.mainScheduler }
-    private let deletingDate = PassthroughSubject<Date, Never>()
+    private var reload: CurrentValueSubject<Void, Never> { dependency.reload }
+    private var deletingDate: PassthroughSubject<Date, Never> { dependency.deletingDate }
     
-    private lazy var service: ReceiptModelServicing = {
-        ReceiptModelService(
-            dependency: ReceiptModelServiceComponents(
-                provider: provider,
-                pageSize: pageSize,
-                scheduler: mainScheduler, // TODO: - background
-                selectedDate: $selectedMonth.eraseToAnyPublisher(),
-                deletingDate: deletingDate,
-                reload: reload.eraseToAnyPublisher()
-            )
-        )
-    }()
-    
-    init(dependency: ReceiptModelDependency) {
+    init(dependency: ReceiptModelDependency, service: ReceiptModelServicing) {
         self.dependency = dependency
-        self.pageSize = dependency.pageSize
+        self.service = service
         
         setup()
         
@@ -155,8 +143,8 @@ final class ReceiptModel: ObservableObject {
     
     private func delete(_ date: Date) {
         do {
-            try provider.delete(date: date)
-            reload.send(())
+            try service.delete(date)
+            service.reload()
             
             Logger.shared.send(
                 name: "didDeleteReceipt",
@@ -185,11 +173,6 @@ final class ReceiptModel: ObservableObject {
                 date: selectedMonth
             )
         )
-    }
-    
-    func didAppearRow(_ offset: Int) {
-        guard receiptItems.count >= pageSize, offset == 0 else { return }
-        service.fetchNextPage()
     }
     
     func didTapRow(_ id: String) {
@@ -229,7 +212,7 @@ final class ReceiptModel: ObservableObject {
 
 extension ReceiptModel: ReceiptInputModelListener {
     func didSaveRecipt(_ item: ReceiptItem) {
-        reload.send(())
+        service.reload()
         closeOverlayView()
         scrollFocusId.send(item.id)
         message = "감사합니다 :)"
@@ -241,7 +224,7 @@ extension ReceiptModel: ReceiptInputModelListener {
     }
     
     func didUpdateReceipt(_ item: ReceiptItem) {
-        reload.send(())
+        service.reload()
         closeOverlayView()
         message = "감사합니다 :)"
         
@@ -252,7 +235,7 @@ extension ReceiptModel: ReceiptInputModelListener {
     }
     
     func didDeleteReceipt(_ item: ReceiptItem) {
-        reload.send(())
+        service.reload()
         closeOverlayView()
         
         Logger.shared.send(
@@ -269,7 +252,8 @@ extension ReceiptModel: ReceiptInputModelListener {
 extension ReceiptModel: MonthPickerModelListener {
     func didSelectDate(_ date: Date) {
         selectedMonth = date
-        reload.send(())
+        service.didChangedDate(date)
+        service.reload()
         closeOverlayView()
     }
 }

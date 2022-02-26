@@ -10,8 +10,8 @@ import SwiftUI
 struct ReceiptView: View {
     @StateObject var model: ReceiptModel
     
-    init(dependency: ReceiptModelDependency) {
-        _model = StateObject(wrappedValue: ReceiptModel(dependency: dependency))
+    init(dependency: ReceiptModelDependency, service: ReceiptModelServicing) {
+        _model = StateObject(wrappedValue: ReceiptModel(dependency: dependency, service: service))
     }
     
     var body: some View {
@@ -62,6 +62,12 @@ struct ReceiptView: View {
 
 struct ReceiptView_Previews: PreviewProvider {
     static var previews: some View {
-        ReceiptView(dependency: AppRootComponents())
+        let components = AppRootComponents()
+        ReceiptView(
+            dependency: components,
+            service: ReceiptModelService(
+                dependency: components
+            )
+        )
     }
 }

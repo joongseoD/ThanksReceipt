@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: - CreatedDate 넣어야 할듯 
 struct ReceiptItem: Identifiable, Codable, Equatable {
     var id: String?
     var text: String

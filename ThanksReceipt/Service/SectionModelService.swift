@@ -11,20 +11,10 @@ import CombineSchedulers
 
 protocol ReceiptModelServiceDependency {
     var provider: DataProviding { get }
-    var pageSize: Int { get }
-    var scheduler: AnySchedulerOf<DispatchQueue> { get }
-    var selectedDate: AnyPublisher<Date, Never> { get }
+    var backgroundScheduler: AnySchedulerOf<DispatchQueue> { get }
     var deletingDate: PassthroughSubject<Date, Never> { get }
-    var reload: AnyPublisher<Void, Never> { get}
-}
-
-struct ReceiptModelServiceComponents: ReceiptModelServiceDependency {
-    var provider: DataProviding = DataProvider()
-    var pageSize: Int = 100
-    var scheduler: AnySchedulerOf<DispatchQueue> = .main
-    var selectedDate: AnyPublisher<Date, Never>
-    var deletingDate: PassthroughSubject<Date, Never>
-    var reload: AnyPublisher<Void, Never>
+    var reload: CurrentValueSubject<Void, Never> { get }
+    var selectedDate: CurrentValueSubject<Date, Never> { get }
 }
 
 protocol ReceiptModelServicing: AnyObject {
@@ -32,14 +22,14 @@ protocol ReceiptModelServicing: AnyObject {
     var errorPublisher: AnyPublisher<Error, Never> { get }
     var foundReceiptItem: AnyPublisher<ReceiptItem, Never> { get }
     
-    func fetchNextPage()
     func findReceiptItem(by id: String)
+    func reload()
+    func didChangedDate(_ date: Date)
+    func delete(_ date: Date) throws
 }
 
 final class ReceiptModelService: ReceiptModelServicing {
-    private let pageSize: Int
     private let items = PassthroughSubject<[ReceiptItem], Never>()
-    private lazy var pagingController = PagingController<ReceiptItem>(items: items.eraseToAnyPublisher(), size: pageSize)
     private var cancellables = Set<AnyCancellable>()
     
     private let _errorPublisher = PassthroughSubject<Error, Never>()
@@ -47,20 +37,28 @@ final class ReceiptModelService: ReceiptModelServicing {
         _errorPublisher.eraseToAnyPublisher()
     }
     
-    private var selectedDate: AnyPublisher<Date, Never> { dependency.selectedDate }
+    private let findReceiptItemId = PassthroughSubject<String, Never>()
+    lazy var foundReceiptItem: AnyPublisher<ReceiptItem, Never> = {
+        findReceiptItemId
+            .withLatestFrom(items) { ($0, $1) }
+            .compactMap { id, items in
+                return items.first(where: { $0.id == id })
+            }
+            .eraseToAnyPublisher()
+    }()
     
-    private var reload: AnyPublisher<Void, Never> { dependency.reload }
+    private var selectedDate: CurrentValueSubject<Date, Never> { dependency.selectedDate }
     
-    private var scheduler: AnySchedulerOf<DispatchQueue> { dependency.scheduler }
+    private var reloadSubject: CurrentValueSubject<Void, Never> { dependency.reload }
+    
+    private var backgroundScheduler: AnySchedulerOf<DispatchQueue> { dependency.backgroundScheduler }
+    
+    private var provider: DataProviding { dependency.provider }
     
     private let dependency: ReceiptModelServiceDependency
     
-    private let provider: DataProviding
-    
     init(dependency: ReceiptModelServiceDependency) {
         self.dependency = dependency
-        self.provider = dependency.provider
-        self.pageSize = dependency.pageSize
         
         setup()
     }
@@ -70,12 +68,12 @@ final class ReceiptModelService: ReceiptModelServicing {
     }
     
     private func setup() {
-        reload
+        reloadSubject
             .withLatestFrom(selectedDate)
             .flatMap { [weak self] month -> AnyPublisher<[ReceiptItem], Never> in
                 guard let self = self else { return Just([]).eraseToAnyPublisher() }
                 return self.provider.receiptItemList(in: month)
-                    .subscribe(on: self.scheduler)
+                    .subscribe(on: self.backgroundScheduler)
                     .catch { [weak self] error -> AnyPublisher<[ReceiptItem], Never> in
                         self?._errorPublisher.send(error)
                         return Just([]).eraseToAnyPublisher()
@@ -87,7 +85,7 @@ final class ReceiptModelService: ReceiptModelServicing {
     }
     
     lazy var sectionModels: AnyPublisher<[ReceiptSectionModel], Never> = {
-        pagingController.pageItems
+        items
             .map { $0.map { ReceiptRowModel(model: $0) } }
             .map { Array($0.reversed()) }
             .map { [weak self] in
@@ -101,21 +99,19 @@ final class ReceiptModelService: ReceiptModelServicing {
             .eraseToAnyPublisher()
     }()
     
-    private let findReceiptItemId = PassthroughSubject<String, Never>()
-    lazy var foundReceiptItem: AnyPublisher<ReceiptItem, Never> = {
-        findReceiptItemId
-            .withLatestFrom(items) { ($0, $1) }
-            .compactMap { id, items in
-                return items.first(where: { $0.id == id })
-            }
-            .eraseToAnyPublisher()
-    }()
-    
     func findReceiptItem(by id: String) {
         findReceiptItemId.send(id)
     }
     
-    func fetchNextPage() {
-        pagingController.fetchNext()
+    func reload() {
+        reloadSubject.send(())
+    }
+    
+    func didChangedDate(_ date: Date) {
+        selectedDate.send(date)
+    }
+    
+    func delete(_ date: Date) throws {
+        try provider.delete(date: date)
     }
 }

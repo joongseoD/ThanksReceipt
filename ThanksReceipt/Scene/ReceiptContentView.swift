@@ -27,7 +27,6 @@ struct ReceiptContentView: View {
             ReceiptList(
                 items: model.receiptItems,
                 didTapRow: { model.didTapRow($0.id) },
-                didAppearRow: { model.didAppearRow($0) },
                 scrollToId: model.scrollToId
             )
             

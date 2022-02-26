@@ -134,6 +134,7 @@ struct ReceiptSnapshotPreview: View {
                         didTapSection: model.didSelectSection(_:),
                         scrollToId: model.scrollToId,
                         selectedSections: model.selectedSections)
+                .animation(nil)
             
             ReceiptFooter(totalCount: model.totalCount) {
                 VStack {

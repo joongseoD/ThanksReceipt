@@ -3,7 +3,7 @@
 //  ThanksReceipt
 //
 //  Created by Damor on 2022/02/09.
-//
+//  - Legacy -
 
 import Foundation
 import Combine

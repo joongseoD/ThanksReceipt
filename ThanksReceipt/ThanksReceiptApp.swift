@@ -6,35 +6,49 @@
 //
 
 import SwiftUI
+import Combine
 import CombineSchedulers
 
 @main
 struct ThanksReceiptApp: App {
+    private let components = AppRootComponents()
     var body: some Scene {
         WindowGroup {
             ReceiptView(
-                dependency: AppRootComponents()
+                dependency: components,
+                service: ReceiptModelService(
+                    dependency: components
+                )
             )
             .preferredColorScheme(.light)
         }
     }
 }
 
-struct AppRootComponents: ReceiptModelDependency {
+struct AppRootComponents: ReceiptModelDependency, ReceiptModelServiceDependency {
     @UserDefaultsWrapper(key: .mock, defaultValue: false) var mock: Bool
     
     var provider: DataProviding
-    var pageSize: Int
     var mainScheduler: AnySchedulerOf<DispatchQueue>
+    var backgroundScheduler: AnySchedulerOf<DispatchQueue>
+    var deletingDate: PassthroughSubject<Date, Never>
+    var reload: CurrentValueSubject<Void, Never>
+    var selectedDate: CurrentValueSubject<Date, Never>
     
     init(
         provider: DataProviding = DataProvider(),
-        pageSize: Int = 100,
-        mainScheduler: AnySchedulerOf<DispatchQueue> = .main
+        mainScheduler: AnySchedulerOf<DispatchQueue> = .main,
+        backgroundScheduler: AnySchedulerOf<DispatchQueue> = .main,
+        deletingDate: PassthroughSubject<Date, Never> = .init(),
+        reload: CurrentValueSubject<Void, Never> = .init(()),
+        selectedDate: CurrentValueSubject<Date, Never> = .init(Date())
     ) {
         self.provider = provider
-        self.pageSize = pageSize
         self.mainScheduler = mainScheduler
+        self.backgroundScheduler = backgroundScheduler
+        self.deletingDate = deletingDate
+        self.reload = reload
+        self.selectedDate = selectedDate
         
         #if DEBUG
         if mock {
