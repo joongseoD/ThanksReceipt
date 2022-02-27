@@ -28,7 +28,7 @@ struct ReceiptItemRow: View {
         HStack(alignment: .top, spacing: 2.5) {
             Button(action: { sectionModel?.didTapDate() }) {
                 Text(date)
-                    .customFont(.DungGeunMo, size: 13)
+                    .customFont(.DungGeunMo, size: 12)
             }
             .frame(width: 60, alignment: .leading)
             
@@ -36,15 +36,15 @@ struct ReceiptItemRow: View {
                 .lineLimit(2)
                 .lineSpacing(2)
                 .multilineTextAlignment(.leading)
-                .customFont(.DungGeunMo, size: 15)
+                .customFont(.DungGeunMo, size: 13.2)
                 .padding(.leading, 10)
             
             Spacer()
             
             Text(count)
                 .kerning(1.5)
-                .frame(minWidth: 50, alignment: .trailing)
-                .customFont(.DungGeunMo, size: 15)
+                .frame(minWidth: 38, alignment: .trailing)
+                .customFont(.DungGeunMo, size: 13)
         }
         .padding(.vertical, 5)
     }

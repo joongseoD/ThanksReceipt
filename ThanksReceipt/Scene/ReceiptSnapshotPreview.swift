@@ -166,9 +166,10 @@ struct ReceiptSnapshotPreview: View {
         Group {
             Image(uiImage: image)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .scaleEffect(model.selectedSections.itemsCount > 10 ? 1.5 : 1) // TODO: - ratio
+                .clipped()
+                .scaleEffect(model.receiptScale)
                    
             ColorPalette(selection: $model.selectedColor,
                          colorList: model.colorList)

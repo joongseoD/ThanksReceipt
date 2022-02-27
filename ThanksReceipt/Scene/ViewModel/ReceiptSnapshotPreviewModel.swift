@@ -59,6 +59,16 @@ final class ReceiptSnapshotPreviewModel: ObservableObject {
     var dateString: String { dependency.monthText }
     var selectedCountText: String { "\(selectedSections.count)/\(maxSelectableCount)" }
     
+    var receiptScale: CGFloat {
+        if selectedSections.itemsCount > 5 {
+            return 1.2
+        } else if selectedSections.itemsCount > 10 {
+            return 1.5
+        } else {
+            return 1
+        }
+    }
+    
     deinit {
         print("\(String(describing: self)) deinit")
     }
