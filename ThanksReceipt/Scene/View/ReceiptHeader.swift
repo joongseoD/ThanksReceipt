@@ -24,7 +24,7 @@ struct ReceiptHeader<Label: View>: View {
                 HStack(spacing: 10) {
                     label()
                 }
-                .customFont(.DungGeunMo, size: 30)
+                .customFont(.DungGeunMo, size: 27)
                 
                 Button(action: { didTapMonth?() }) {
                     HStack {
@@ -52,7 +52,7 @@ struct ReceiptHeader<Label: View>: View {
                 Spacer()
                 Text("COUNT").kerning(1.5)
             }
-            .customFont(.DungGeunMo, size: 18)
+            .customFont(.DungGeunMo, size: 17)
             
             LineStroke()
         }

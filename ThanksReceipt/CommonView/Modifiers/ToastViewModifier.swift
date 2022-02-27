@@ -13,7 +13,7 @@ struct ToastViewModifier: ViewModifier {
     var animation: Bool
     var duration: Double
     var anchor: Anchor = .center
-    var fontSize: CGFloat = 20
+    var fontSize: CGFloat = 15.5
     
     init(message: Binding<String?>, animation: Bool, duration: Double, anchor: Anchor, fontSize: CGFloat) {
         _model = StateObject(wrappedValue: ToastModel(duration: duration))
@@ -35,6 +35,7 @@ struct ToastViewModifier: ViewModifier {
                     }
                     text(maskingMessage)
                         .customFont(.DungGeunMo, size: fontSize)
+                        .multilineTextAlignment(.center)
                         .padding(.all, 20)
                         .foregroundColor(.white)
                         .background(Color.black)
@@ -114,7 +115,7 @@ extension ToastViewModifier {
 }
 
 extension View {
-    func toast(message: Binding<String?>, animation: Bool = true, duration: Double = 1.3, anchor: ToastViewModifier.Anchor = .center, fontSize: CGFloat = 20) -> some View {
+    func toast(message: Binding<String?>, animation: Bool = true, duration: Double = 1.3, anchor: ToastViewModifier.Anchor = .center, fontSize: CGFloat = 15.5) -> some View {
         self.modifier(ToastViewModifier(message: message, animation: animation, duration: duration, anchor: anchor, fontSize: fontSize))
     }
 }

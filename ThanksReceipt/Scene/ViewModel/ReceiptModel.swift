@@ -106,7 +106,7 @@ final class ReceiptModel: ObservableObject {
         let dateformatter = DateFormatter(format: .shortMonthDayWeek)
         let dateString = dateformatter.string(from: date)
         alert = AlertModel(
-            message: "\(dateString) 감사를 지울까요?",
+            message: "\(dateString) 항목을 지울까요?",
             confirmButton: .init(
                 title: "네",
                 action: { [weak self] in
@@ -189,7 +189,7 @@ extension ReceiptModel: ReceiptInputModelListener {
         service.reload()
         closeOverlayView()
         scrollFocusId.send(item.id)
-        message = "감사합니다 :)"
+        message = "감사가 기록됐어요."
         
         Logger.shared.send(
             name: "didSaveReceipt",
@@ -200,7 +200,7 @@ extension ReceiptModel: ReceiptInputModelListener {
     func didUpdateReceipt(_ item: ReceiptItem) {
         service.reload()
         closeOverlayView()
-        message = "감사합니다 :)"
+        message = "감사가 기록됐어요."
         
         Logger.shared.send(
             name: "didUpdateReceipt",

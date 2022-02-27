@@ -63,8 +63,8 @@ struct MonthPicker: View {
         .padding()
         .onAppear {
             Haptic.trigger()
-            scale = 1
             model.didAppear()
+            scale = 1
         }
         .transition(.opacity.animation(.easeInOut))
         .scaleEffect(y: scale)

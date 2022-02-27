@@ -23,7 +23,7 @@ struct ToolBar: View {
                 Image(symbol: .write)
             }
         }
-        .font(.title2)
+        .font(.system(size: 20))
         .foregroundColor(Color.text)
     }
 }

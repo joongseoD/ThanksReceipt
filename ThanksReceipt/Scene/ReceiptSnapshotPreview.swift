@@ -117,7 +117,7 @@ struct ReceiptSnapshotPreview: View {
                 VStack {
                     TextField("", text: $model.headerText)
                         .submitLabel(.done)
-                        .customFont(.DungGeunMo, size: 30)
+                        .customFont(.DungGeunMo, size: 27)
                         .focused($focusField, equals: .header)
                         .multilineTextAlignment(.center)
                         .cursor(show: headerCursor)
@@ -140,7 +140,7 @@ struct ReceiptSnapshotPreview: View {
                 VStack {
                     TextField("", text: $model.footerText)
                         .submitLabel(.done)
-                        .customFont(.DungGeunMo, size: 20)
+                        .customFont(.DungGeunMo, size: 16)
                         .focused($focusField, equals: .footer)
                         .multilineTextAlignment(.center)
                         .cursor(show: footerCursor)
@@ -217,7 +217,7 @@ extension ReceiptSnapshotPreview {
         HStack {
             VStack {
                 Text(model.selectedCountText)
-                    .customFont(.DungGeunMo, size: 25)
+                    .customFont(.DungGeunMo, size: 22)
                     .foregroundColor(.black.opacity(0.3))
                 
                 Spacer()

@@ -29,7 +29,7 @@ struct ReceiptFooter<Label: View>: View {
                 
                 Text(totalCount)
             }
-            .customFont(.DungGeunMo, size: 20)
+            .customFont(.DungGeunMo, size: 18)
             
             HStack {
                 Text("**")

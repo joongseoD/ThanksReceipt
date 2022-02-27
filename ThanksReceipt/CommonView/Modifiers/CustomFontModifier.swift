@@ -18,7 +18,7 @@ struct CustomFontModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .font(.custom(font.rawValue, size: adjustedSize))
+            .font(.custom(font.rawValue, fixedSize: adjustedSize))
     }
     
     private var adjustedSize: CGFloat {

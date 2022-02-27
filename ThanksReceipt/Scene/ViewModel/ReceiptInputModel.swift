@@ -105,7 +105,7 @@ final class ReceiptInputModel: ObservableObject {
     
     func deleteReceipt() {
         alert = AlertModel(
-            message: "이 감사를 지울까요?",
+            message: "이 항목을 지울까요?",
             confirmButton: .init(
                 title: "네",
                 action: { [weak self] in

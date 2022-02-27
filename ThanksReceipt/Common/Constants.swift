@@ -35,6 +35,7 @@ struct Constants {
     static let snapshotQuality: CGFloat = 1.9
     static let standardWidth: CGFloat = 375.0
     static var ratio: CGFloat { screenWidth / standardWidth }
+    static let emptyMessage: String = "하루 한 가지, 감사한 마음을 기록해 보아요."
 }
 
 enum Palette: Identifiable, Equatable {
