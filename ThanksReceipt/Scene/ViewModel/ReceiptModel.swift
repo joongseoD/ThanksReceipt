@@ -98,6 +98,7 @@ final class ReceiptModel: ObservableObject {
             .store(in: &cancellables)
         
         deletionDate
+            .filter { [weak self] _ in self?.viewState == nil }
             .sink { [weak self] in self?.deleteReceipt(in: $0) }
             .store(in: &cancellables)
     }
