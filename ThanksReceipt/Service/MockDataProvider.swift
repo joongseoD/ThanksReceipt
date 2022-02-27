@@ -57,14 +57,17 @@ final class MockDataProvider: DataProviding {
     }
     
     func update(_ item: ReceiptItem) throws {
-        throw DataError.custom("not supported")
+        guard let index = receiptList.value.firstIndex(where: { $0.id == item.id }) else { throw DataError.custom("not supported") }
+        var newList = receiptList.value
+        newList[index] = item
+        receiptList.send(newList)
     }
     
     func delete(id: String) throws {
-        throw DataError.custom("not supported")
+        receiptList.send(receiptList.value.filter { $0.id != id })
     }
     
     func delete(date: Date) throws {
-        throw DataError.custom("not supported")
+        receiptList.send(receiptList.value.filter { $0.date != date })
     }
 }
