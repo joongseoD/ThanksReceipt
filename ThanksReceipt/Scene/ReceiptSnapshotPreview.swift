@@ -117,7 +117,7 @@ struct ReceiptSnapshotPreview: View {
                 VStack {
                     TextField("", text: $model.headerText)
                         .submitLabel(.done)
-                        .customFont(.DungGeunMo, size: 27)
+                        .customFont(.DungGeunMo, size: 23)
                         .focused($focusField, equals: .header)
                         .multilineTextAlignment(.center)
                         .cursor(show: headerCursor)
