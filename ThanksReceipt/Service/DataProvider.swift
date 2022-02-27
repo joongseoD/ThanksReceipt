@@ -61,8 +61,8 @@ final class DataProvider: DataProviding {
         return AnyPublisher<[ReceiptItem], Error>.create { subscriber in
             do {
                 let realm = try Realm()
-                let sortProperties = [SortDescriptor(keyPath: "date", ascending: false),
-                                      SortDescriptor(keyPath: "createdDate", ascending: false)]
+                let sortProperties = [SortDescriptor(keyPath: "date", ascending: true),
+                                      SortDescriptor(keyPath: "createdDate", ascending: true)]
                 
                 let items = Array(realm.objects(Receipt.self)
                                     .filter("date BETWEEN {%@, %@}", date.startOfMonth, date.endOfMonth)
@@ -84,16 +84,20 @@ final class DataProvider: DataProviding {
     
     func update(_ item: ReceiptItem) throws {
         let realm = try Realm()
-        let receipt = Receipt(model: item)
+        guard let id = item.id, let updatingModel = realm.objects(Receipt.self).filter("id = %@", id).first else {
+            throw DataError.custom("삭제할 대상이 잘못되었습니다.")
+        }
+        
         try realm.write {
-            realm.add(receipt, update: .modified)
+            updatingModel.text = item.text
+            updatingModel.date = item.date
         }
     }
     
     func delete(id: String) throws {
         let realm = try Realm()
         try realm.write {
-            realm.delete(realm.objects(Receipt.self).filter("id=%@", id))
+            realm.delete(realm.objects(Receipt.self).filter("id = %@", id))
         }
     }
     

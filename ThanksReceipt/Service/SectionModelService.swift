@@ -87,7 +87,6 @@ final class ReceiptModelService: ReceiptModelServicing {
     lazy var sectionModels: AnyPublisher<[ReceiptSectionModel], Never> = {
         items
             .map { $0.map { ReceiptRowModel(model: $0) } }
-            .map { Array($0.reversed()) }
             .map { [weak self] in
                 $0.mapToSectionModel(
                     dependency: ReceiptSectionModelComponents(
