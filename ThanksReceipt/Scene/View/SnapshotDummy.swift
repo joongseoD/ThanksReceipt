@@ -35,7 +35,7 @@ struct SnapshotDummy: View {
                 }
                 .padding(.horizontal, 20)
             }
-            .padding(.top, 20)
+            .padding(.top, 15)
             .padding(.bottom, 15)
             .background(Color.receipt)
             .clipShape(ZigZag())

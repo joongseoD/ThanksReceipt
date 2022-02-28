@@ -20,6 +20,7 @@ struct ThanksReceiptApp: App {
                     dependency: components
                 )
             )
+            .environment(\.contentsScale, 1)
             .preferredColorScheme(.light)
         }
     }

@@ -32,10 +32,11 @@ struct Constants {
     
     static let screenSize: CGSize = UIScreen.main.bounds.size
     static var screenWidth: CGFloat { screenSize.width }
-    static let snapshotQuality: CGFloat = 1.9
+    static let snapshotQuality: CGFloat = 2.0
     static let standardWidth: CGFloat = 375.0
     static var ratio: CGFloat { screenWidth / standardWidth }
     static let emptyMessage: String = "하루 한 가지, 감사한 마음을 기록해 보아요."
+    static let inputMaxLength: Int = 20
 }
 
 enum Palette: Identifiable, Equatable {

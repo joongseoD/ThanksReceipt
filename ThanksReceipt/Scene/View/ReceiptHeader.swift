@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ReceiptHeader<Label: View>: View {
+    @Environment(\.contentsScale) private var contentsScale: CGFloat
     var date: String
     var label: (() -> Label)
     var didTapMonth: (() -> Void)?
@@ -46,11 +47,11 @@ struct ReceiptHeader<Label: View>: View {
             LineStroke()
             
             HStack {
-                Text("DATE").kerning(1.5)
+                Text("DATE").kerning(1.5).scaleEffect(contentsScale)
                 Spacer()
-                Text("ITEM").kerning(1.5)
+                Text("ITEM").kerning(1.5).scaleEffect(contentsScale)
                 Spacer()
-                Text("COUNT").kerning(1.5)
+                Text("COUNT").kerning(1.5).scaleEffect(contentsScale)
             }
             .customFont(.DungGeunMo, size: 17)
             

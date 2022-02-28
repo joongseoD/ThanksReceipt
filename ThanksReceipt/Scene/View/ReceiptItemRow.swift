@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ReceiptItemRow: View {
+    @Environment(\.contentsScale) private var contentsScale: CGFloat
     private var sectionModel: ReceiptSectionModel?
     var date: String = ""
     var text: String = ""
@@ -25,28 +26,28 @@ struct ReceiptItemRow: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 2.5) {
+        HStack(alignment: .top) {
             Button(action: { sectionModel?.didTapDate() }) {
                 Text(date)
-                    .customFont(.DungGeunMo, size: 12)
+                    .customFont(.DungGeunMo, size: 13 * contentsScale)
             }
-            .frame(width: 60, alignment: .leading)
+            .frame(maxWidth: 55 * contentsScale, alignment: .leading)
             
             Text(text)
-                .lineLimit(2)
                 .lineSpacing(2)
                 .multilineTextAlignment(.leading)
-                .customFont(.DungGeunMo, size: 13.2)
-                .padding(.leading, 10)
+                .customFont(.DungGeunMo, size: 13 * contentsScale)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
             
             Spacer()
             
             Text(count)
                 .kerning(1.5)
                 .frame(minWidth: 38, alignment: .trailing)
-                .customFont(.DungGeunMo, size: 13)
+                .customFont(.DungGeunMo, size: 13 * contentsScale)
         }
         .padding(.vertical, 5)
+        .offset(y: -2)
     }
 }
 

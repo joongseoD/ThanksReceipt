@@ -61,14 +61,14 @@ struct MonthPicker: View {
             }
         }
         .padding()
+        .transition(.opacity.animation(.easeInOut))
+        .scaleEffect(y: scale)
+        .animation(.spring(response: 0.2, dampingFraction: 0.6, blendDuration: 1.0), value: scale)
         .onAppear {
             Haptic.trigger()
             scale = 1
             model.didAppear()
         }
-        .transition(.opacity.animation(.easeInOut))
-        .scaleEffect(y: scale)
-        .animation(.spring(response: 0.2, dampingFraction: 0.6, blendDuration: 1.0), value: scale)
     }
     
     private func yearPicker() -> some View {

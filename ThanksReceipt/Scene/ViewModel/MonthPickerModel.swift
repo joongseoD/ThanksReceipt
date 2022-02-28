@@ -65,9 +65,9 @@ final class MonthPickerModel: ObservableObject {
     }
     
     func didAppear() {
-        changeSelectedDate()
         setupMonth()
         setupYear()
+        changeSelectedDate()
     }
     
     private func changeSelectedDate() {

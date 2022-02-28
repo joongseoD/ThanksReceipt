@@ -120,6 +120,8 @@ extension ReceiptSnapshotPreviewModel {
     private func renderImage(_ backgroundView: AnyView) -> UIImage? {
         let screenWidth = Constants.screenWidth
         let padding: CGFloat = 25
+        let receiptWidth = screenWidth - (padding * 2)
+        let scaleRatio = receiptWidth / screenWidth
         let dummy = SnapshotDummy(
             background: backgroundView,
             date: dateString,
@@ -127,8 +129,9 @@ extension ReceiptSnapshotPreviewModel {
             receipts: selectedSortedSections,
             totalCount: selectedSections.totalCount,
             footerText: footerText,
-            width: screenWidth - (padding * 2)
+            width: receiptWidth
         )
+        .environment(\.contentsScale, scaleRatio)
         
         let snapshotWidth = screenWidth - padding
         return dummy.takeScreenshot(size: .init(width: snapshotWidth, height: snapshotWidth))

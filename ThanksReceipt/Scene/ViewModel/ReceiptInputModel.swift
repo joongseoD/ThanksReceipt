@@ -47,7 +47,7 @@ final class ReceiptInputModel: ObservableObject {
     }
     
     private var provider: DataProviding
-    private let maxCount: Int = 20
+    private let maxCount: Int = Constants.inputMaxLength
     private var cancellables = Set<AnyCancellable>()
     
     private let dateFormatter = DateFormatter(format: .longMonthDayWeek)

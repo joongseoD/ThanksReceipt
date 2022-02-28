@@ -31,7 +31,7 @@ struct ColorPalette: View {
                         .frame(width: 40, height: 40)
                     }
                 }
-                .padding(.leading, 10)
+                .padding(.horizontal, 10)
             }
             .frame(width: proxy.size.width)
         }
