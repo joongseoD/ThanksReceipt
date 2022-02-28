@@ -10,7 +10,7 @@ import Combine
 
 final class MockDataProvider: DataProviding {
     
-    private lazy var receiptList: CurrentValueSubject<[ReceiptItem], Error> = {
+    lazy var receiptList: CurrentValueSubject<[ReceiptItem], Error> = {
         CurrentValueSubject(
             [
                 .init(id: UUID().uuidString, text: "휴가를 다녀왔다.🌴", date: makeDate("2022.03.07")),

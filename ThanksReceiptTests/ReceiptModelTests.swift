@@ -10,78 +10,9 @@ import Combine
 import CombineSchedulers
 @testable import ThanksReceipt
 
-final class MockRootComponents: ReceiptModelDependency, ReceiptModelServiceDependency {
-    var mock: Bool = false
-    var mainScheduler: AnySchedulerOf<DispatchQueue>
-    var provider: DataProviding
-    var deletionDate: PassthroughSubject<Date, Never>
-    var reload: CurrentValueSubject<Void, Never>
-    var backgroundScheduler: AnySchedulerOf<DispatchQueue>
-    var selectedDate: CurrentValueSubject<Date, Never>
-    
-    init(
-        provider: DataProviding,
-        mainScheduler: AnySchedulerOf<DispatchQueue>,
-        backgroundScheduler: AnySchedulerOf<DispatchQueue>,
-        deletionDate: PassthroughSubject<Date, Never> = .init(),
-        reload: CurrentValueSubject<Void, Never> = .init(()),
-        selectedDate: CurrentValueSubject<Date, Never> = .init(Date())
-    ) {
-        self.provider = provider
-        self.mainScheduler = mainScheduler
-        self.backgroundScheduler = backgroundScheduler
-        self.deletionDate = deletionDate
-        self.reload = reload
-        self.selectedDate = selectedDate
-    }
-}
-
-final class TestMockDataProvider: DataProviding {
-    let receiptItems = CurrentValueSubject<[ReceiptItem], Error>([])
-    var createCallCount = 0
-    var receiptItemListCallCount = 0
-    var updateCallCount = 0
-    var deleteIdCallCount = 0
-    var deleteDateCallCount = 0
-    
-    func create(receiptItem: ReceiptItem) throws -> String? {
-        createCallCount += 1
-        var items = receiptItems.value
-        var newItem = receiptItem
-        newItem.id = newItem.text
-        items.append(newItem)
-        receiptItems.send(items)
-        
-        return receiptItem.id
-    }
-    
-    func receiptItemList(in date: Date) -> AnyPublisher<[ReceiptItem], Error> {
-        receiptItemListCallCount += 1
-        return receiptItems.eraseToAnyPublisher()
-    }
-    
-    func update(_ item: ReceiptItem) throws {
-        updateCallCount += 1
-        guard let index = receiptItems.value.firstIndex(where: { $0.id == item.id }) else { throw DataError.custom("not supported") }
-        var newList = receiptItems.value
-        newList[index] = item
-        receiptItems.send(newList)
-    }
-    
-    func delete(id: String) throws {
-        deleteIdCallCount += 1
-        receiptItems.send(receiptItems.value.filter { $0.id != id })
-    }
-    
-    func delete(date: Date) throws {
-        deleteDateCallCount += 1
-        receiptItems.send(receiptItems.value.filter { $0.date != date })
-    }
-}
-
 final class ReceiptModelTests: XCTestCase {
     private var provider: TestMockDataProvider!
-    private var dependency: MockRootComponents!
+    private var dependency: TestMockRootComponents!
     private var service: ReceiptModelService!
     private var sut: ReceiptModel!
     private var scheduler: AnySchedulerOf<DispatchQueue>!
@@ -92,7 +23,7 @@ final class ReceiptModelTests: XCTestCase {
         
         provider = TestMockDataProvider()
         scheduler = .immediate
-        dependency = MockRootComponents(
+        dependency = TestMockRootComponents(
             provider: provider,
             mainScheduler: scheduler,
             backgroundScheduler: scheduler
@@ -110,6 +41,9 @@ final class ReceiptModelTests: XCTestCase {
         
         cancellables = nil
         sut = nil
+        service = nil
+        scheduler = nil
+        provider = nil
         dependency = nil
     }
     

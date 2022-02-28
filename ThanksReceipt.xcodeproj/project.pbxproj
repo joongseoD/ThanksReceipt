@@ -71,6 +71,9 @@
 		25BC48A527B69EBF0031E0D2 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC48A427B69EBE0031E0D2 /* Color+Extensions.swift */; };
 		25BC48A727B6A0960031E0D2 /* ZigZag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BC48A627B6A0960031E0D2 /* ZigZag.swift */; };
 		25D0AEF327CCA5BF00249739 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D0AEF227CCA5BF00249739 /* EnvironmentValues+Extensions.swift */; };
+		25D0AEF527CCC53100249739 /* SectionModelServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D0AEF427CCC53100249739 /* SectionModelServiceTests.swift */; };
+		25D0AEF827CCC58900249739 /* TestMockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D0AEF727CCC58900249739 /* TestMockDataProvider.swift */; };
+		25D0AEFA27CCC59F00249739 /* TestMockRootComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D0AEF927CCC59F00249739 /* TestMockRootComponents.swift */; };
 		25DC31ED27C513FF003D24EB /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC31EC27C513FF003D24EB /* ImageManager.swift */; };
 		25DC31EF27C5C6D9003D24EB /* MockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC31EE27C5C6D9003D24EB /* MockDataProvider.swift */; };
 		25DC31F127C5CA9E003D24EB /* UserDefaultsWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC31F027C5CA9E003D24EB /* UserDefaultsWrapper.swift */; };
@@ -157,6 +160,9 @@
 		25BC48A427B69EBE0031E0D2 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		25BC48A627B6A0960031E0D2 /* ZigZag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZigZag.swift; sourceTree = "<group>"; };
 		25D0AEF227CCA5BF00249739 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
+		25D0AEF427CCC53100249739 /* SectionModelServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModelServiceTests.swift; sourceTree = "<group>"; };
+		25D0AEF727CCC58900249739 /* TestMockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMockDataProvider.swift; sourceTree = "<group>"; };
+		25D0AEF927CCC59F00249739 /* TestMockRootComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMockRootComponents.swift; sourceTree = "<group>"; };
 		25DC31EC27C513FF003D24EB /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		25DC31EE27C5C6D9003D24EB /* MockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataProvider.swift; sourceTree = "<group>"; };
 		25DC31F027C5CA9E003D24EB /* UserDefaultsWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsWrapper.swift; sourceTree = "<group>"; };
@@ -288,8 +294,10 @@
 		25935A1127B24B0D00BD6A98 /* ThanksReceiptTests */ = {
 			isa = PBXGroup;
 			children = (
+				25D0AEF627CCC56400249739 /* Mock */,
 				25935A1227B24B0D00BD6A98 /* ThanksReceiptTests.swift */,
 				2542498827C6342F00F9B35D /* ReceiptModelTests.swift */,
+				25D0AEF427CCC53100249739 /* SectionModelServiceTests.swift */,
 			);
 			path = ThanksReceiptTests;
 			sourceTree = "<group>";
@@ -449,6 +457,15 @@
 				25D0AEF227CCA5BF00249739 /* EnvironmentValues+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		25D0AEF627CCC56400249739 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				25D0AEF727CCC58900249739 /* TestMockDataProvider.swift */,
+				25D0AEF927CCC59F00249739 /* TestMockRootComponents.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		718F2274F4FA50C30F3F2F75 /* Frameworks */ = {
@@ -773,7 +790,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25D0AEF827CCC58900249739 /* TestMockDataProvider.swift in Sources */,
+				25D0AEF527CCC53100249739 /* SectionModelServiceTests.swift in Sources */,
 				2542498927C6342F00F9B35D /* ReceiptModelTests.swift in Sources */,
+				25D0AEFA27CCC59F00249739 /* TestMockRootComponents.swift in Sources */,
 				25935A1327B24B0D00BD6A98 /* ThanksReceiptTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
