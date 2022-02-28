@@ -10,25 +10,39 @@ import Combine
 import CombineSchedulers
 @testable import ThanksReceipt
 
-final class MockRootComponents: ReceiptModelDependency {
+final class MockRootComponents: ReceiptModelDependency, ReceiptModelServiceDependency {
     var mock: Bool = false
     var mainScheduler: AnySchedulerOf<DispatchQueue>
     var provider: DataProviding
-    var pageSize: Int
+    var deletionDate: PassthroughSubject<Date, Never>
+    var reload: CurrentValueSubject<Void, Never>
+    var backgroundScheduler: AnySchedulerOf<DispatchQueue>
+    var selectedDate: CurrentValueSubject<Date, Never>
     
-    init(provider: DataProviding, mainScheduler: AnySchedulerOf<DispatchQueue>, pageSize: Int) {
+    init(
+        provider: DataProviding,
+        mainScheduler: AnySchedulerOf<DispatchQueue>,
+        backgroundScheduler: AnySchedulerOf<DispatchQueue>,
+        deletionDate: PassthroughSubject<Date, Never> = .init(),
+        reload: CurrentValueSubject<Void, Never> = .init(()),
+        selectedDate: CurrentValueSubject<Date, Never> = .init(Date())
+    ) {
         self.provider = provider
         self.mainScheduler = mainScheduler
-        self.pageSize = pageSize
+        self.backgroundScheduler = backgroundScheduler
+        self.deletionDate = deletionDate
+        self.reload = reload
+        self.selectedDate = selectedDate
     }
 }
 
 final class TestMockDataProvider: DataProviding {
-    
     let receiptItems = CurrentValueSubject<[ReceiptItem], Error>([])
     var createCallCount = 0
     var receiptItemListCallCount = 0
     var updateCallCount = 0
+    var deleteIdCallCount = 0
+    var deleteDateCallCount = 0
     
     func create(receiptItem: ReceiptItem) throws -> String? {
         createCallCount += 1
@@ -48,20 +62,27 @@ final class TestMockDataProvider: DataProviding {
     
     func update(_ item: ReceiptItem) throws {
         updateCallCount += 1
+        guard let index = receiptItems.value.firstIndex(where: { $0.id == item.id }) else { throw DataError.custom("not supported") }
+        var newList = receiptItems.value
+        newList[index] = item
+        receiptItems.send(newList)
     }
     
     func delete(id: String) throws {
-     
+        deleteIdCallCount += 1
+        receiptItems.send(receiptItems.value.filter { $0.id != id })
     }
     
     func delete(date: Date) throws {
-     
+        deleteDateCallCount += 1
+        receiptItems.send(receiptItems.value.filter { $0.date != date })
     }
 }
 
 final class ReceiptModelTests: XCTestCase {
     private var provider: TestMockDataProvider!
     private var dependency: MockRootComponents!
+    private var service: ReceiptModelService!
     private var sut: ReceiptModel!
     private var scheduler: AnySchedulerOf<DispatchQueue>!
     private var cancellables: Set<AnyCancellable>!
@@ -74,9 +95,13 @@ final class ReceiptModelTests: XCTestCase {
         dependency = MockRootComponents(
             provider: provider,
             mainScheduler: scheduler,
-            pageSize: 100
+            backgroundScheduler: scheduler
         )
-        sut = ReceiptModel(dependency: dependency)
+        service = ReceiptModelService(dependency: dependency)
+        sut = ReceiptModel(
+            dependency: dependency,
+            service: service
+        )
         cancellables = .init()
     }
     
@@ -88,10 +113,11 @@ final class ReceiptModelTests: XCTestCase {
         dependency = nil
     }
     
-    func testReceiptSectionModelsWhenGivenReceiptItems() {
+    func testReceiptSectionModelsWhenGivingReceiptItems() {
         // given
+        let item = ReceiptItem(id: "1", text: "", date: Date())
         provider.receiptItems.send([
-            ReceiptItem(id: "1", text: "", date: Date()),
+            item,
             ReceiptItem(id: "2", text: "", date: Date()),
             ReceiptItem(id: "3", text: "", date: Date())
         ])
@@ -102,12 +128,12 @@ final class ReceiptModelTests: XCTestCase {
         // then
         XCTAssertEqual(sectionModels.count, 1)
         XCTAssertEqual(sectionModels.itemsCount, 3)
+        XCTAssertEqual(sectionModels.first!.header, ReceiptRowModel(model: item))
+        XCTAssertEqual(sectionModels.first?.items.count, 2)
         XCTAssertEqual(sut.totalCount, sectionModels.totalCount)
         XCTAssertEqual(provider.receiptItemListCallCount, 1)
-//        XCTAssertEqual(sut.scrollToId, "1")
     }
     
-    // update month with listener
     func testUpdateReceiptDate() {
         // Given
         let monthPickerModel = MonthPickerModel(
@@ -130,9 +156,6 @@ final class ReceiptModelTests: XCTestCase {
         XCTAssertEqual(provider.receiptItemListCallCount, 2)
     }
     
-    // message & alert
-    
-    // input did save / update / delete
     func testProcessOfAfterSaving() {
         // Given
         let inputModel = ReceiptInputModel(
@@ -151,8 +174,29 @@ final class ReceiptModelTests: XCTestCase {
         
         // Then
         XCTAssertEqual(sut.scrollToId, nil)
-        XCTAssertEqual(sut.message, "감사합니다 :)")
+        XCTAssertEqual(sut.message, "감사가 기록됐어요.")
         XCTAssertEqual(provider.receiptItemListCallCount, 2)
+    }
+    
+    func testEditViewStateWhenRowTapped() {
+        // Given
+        let findingItem = ReceiptItem(id: "id2", text: "", date: Date())
+        provider.receiptItems.send([
+            ReceiptItem(id: "id1", text: "", date: Date()),
+            findingItem,
+            ReceiptItem(id: "id3", text: "", date: Date())
+        ])
+        
+        let inputComponent = ReceiptInputModelComponents(
+            dependency: dependency,
+            mode: .edit(findingItem)
+        )
+        
+        // When
+        sut.didTapRow("id2")
+        
+        // Then
+        XCTAssertEqual(sut.viewState, .input(inputComponent))
     }
     
     func testProcessOfAfterEditing() {
@@ -162,6 +206,12 @@ final class ReceiptModelTests: XCTestCase {
             text: "text",
             date: Date()
         )
+        
+        provider.receiptItems.send([
+            editingReceipt,
+            ReceiptItem(id: "1", text: "", date: Date())
+        ])
+        
         let selectedDate = Date()
         let inputModel = ReceiptInputModel(
             dependency: ReceiptInputModelComponents(
@@ -176,49 +226,98 @@ final class ReceiptModelTests: XCTestCase {
         let dateFormatter = DateFormatter(format: .yearMonthDay)
         
         // When
-        inputModel.saveReceipt()
         inputModel.text = "new text"
         inputModel.date = dateFormatter.date(from: "2022.02.24")!
+        inputModel.saveReceipt()
         
         // Then
-        XCTAssertEqual(sut.message, "감사합니다 :)")
+        XCTAssertEqual(sut.message, "감사가 기록됐어요.")
         XCTAssertEqual(provider.receiptItemListCallCount, 2)
         XCTAssertEqual(provider.updateCallCount, 1)
         XCTAssertEqual(dateFormatter.string(from: sut.selectedMonth), dateFormatter.string(from: selectedDate))
+        XCTAssertEqual(sut.receiptItems.first?.header.text, "new text")
     }
     
-    // service
-    
-    // deletingdate
     func testDeleteReceiptsOfDay() {
         // Given
-        let deletingDate = PassthroughSubject<Date, Never>()
-        let service = ReceiptModelService(
-            dependency: ReceiptModelServiceComponents(
-                provider: provider,
-                pageSize: dependency.pageSize,
-                scheduler: dependency.mainScheduler,
-                selectedDate: Empty().eraseToAnyPublisher(),
-                deletingDate: deletingDate,
-                reload: Empty().eraseToAnyPublisher())
-        )
+        let dateFormatter = DateFormatter(format: .yearMonthDay)
+        let date = dateFormatter.date(from: "2022.01.01")!
         
         provider.receiptItems.send([
             ReceiptItem(id: "1", text: "", date: Date()),
-            ReceiptItem(id: "2", text: "", date: Date()),
-            ReceiptItem(id: "3", text: "", date: Date())
+            ReceiptItem(id: "2", text: "", date: date),
+            ReceiptItem(id: "3", text: "", date: date)
         ])
         
-        
         // When
+        dependency.deletionDate.send(date)
+        sut.alert?.confirmButton.action?()
         
         // Then
+        XCTAssertNotNil(sut.alert)
+        XCTAssertEqual(provider.deleteDateCallCount, 1)
+        XCTAssertEqual(provider.receiptItemListCallCount, 2)
+        XCTAssertEqual(sut.receiptItems.itemsCount, 1)
     }
     
-    
-    func testViewStateWhen() {
-        sut.didTapSave()
+    func testProcessOfAfterDeleting() {
+        // Given
+        let deletingReceipt = ReceiptItem(
+            id: "id",
+            text: "text",
+            date: Date()
+        )
+        provider.receiptItems.send([
+            deletingReceipt,
+            ReceiptItem(id: "1", text: "", date: Date())
+        ])
         
-//        XCTAssertEqual(sut.viewState, .snapshotPreview)
+        let inputModel = ReceiptInputModel(
+            dependency: ReceiptInputModelComponents(
+                dependency: dependency,
+                mode: .edit(
+                    deletingReceipt
+                ),
+                date: Date()
+            ),
+            listener: sut
+        )
+        
+        // When
+        inputModel.deleteReceipt()
+        inputModel.alert?.confirmButton.action?()
+        
+        // Then
+        XCTAssertNotNil(inputModel.alert)
+        XCTAssertEqual(provider.receiptItemListCallCount, 2)
+        XCTAssertEqual(provider.deleteIdCallCount, 1)
+        XCTAssertEqual(sut.receiptItems.first?.header.id, "1")
+    }
+    
+    func testNilViewStateWhenBackgroundTapped() {
+        // Given
+        sut.viewState = .monthPicker(
+            MonthPickerModelComponents(currentDate: Date())
+        )
+        
+        // When
+        sut.didTapBackgroundView()
+        
+        // Then
+        XCTAssertNil(sut.viewState)
+    }
+    
+    func testSelectedMonthWhenDateSelected() {
+        // Given
+        let dateFormatter = DateFormatter(format: .longMonth)
+        let selectingDate = dateFormatter.date(from: "February")!
+        
+        // When
+        sut.didSelectDate(selectingDate)
+        
+        // Then
+        XCTAssertEqual(sut.monthText, "February")
+        XCTAssert(sut.message!.hasPrefix("Hello,"))
+        XCTAssertEqual(provider.receiptItemListCallCount, 2)
     }
 }

@@ -238,10 +238,23 @@ extension ReceiptModel: MonthPickerModelListener {
 }
 
 extension ReceiptModel {
-    enum ViewState {
+    enum ViewState: Equatable {
         case monthPicker(_: MonthPickerModelDependency)
         case input(_: ReceiptInputModelDependency)
         case snapshotPreview(_: ReceiptSnapshotPreviewModelDependency)
+        
+        static func == (lhs: ReceiptModel.ViewState, rhs: ReceiptModel.ViewState) -> Bool {
+            switch (lhs, rhs) {
+            case let (.monthPicker(lItem), .monthPicker(rItem)):
+                return lItem.currentDate == rItem.currentDate
+            case let (.input(lItem), .input(rItem)):
+                return lItem.mode == rItem.mode
+            case let (.snapshotPreview(lItem), .snapshotPreview(rItem)):
+                return lItem.receiptItems == rItem.receiptItems
+            default:
+                return false
+            }
+        }
     }
 }
 

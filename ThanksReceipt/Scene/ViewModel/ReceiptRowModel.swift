@@ -67,8 +67,6 @@ struct ReceiptRowModel: Equatable {
     var date: Date
     var text: String
     
-    private let dateFormatter = DateFormatter(format: .shortMonthDayWeek)
-    
     init(id: String, dateString: String, date: Date, text: String) {
         self.id = id
         self.dateString = dateString
@@ -80,7 +78,7 @@ struct ReceiptRowModel: Equatable {
         guard let id = model.id else { fatalError("there's no id.") }
         self.id = id
         self.text = model.text
-        self.dateString = dateFormatter.string(from: model.date)
+        self.dateString = DateFormatter(format: .shortMonthDayWeek).string(from: model.date)
         self.date = model.date
     }
 }
