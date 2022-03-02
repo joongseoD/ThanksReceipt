@@ -128,7 +128,7 @@ struct MonthPicker: View {
 struct MonthPicker_Previews: PreviewProvider {
     static var previews: some View {
         MonthPicker(
-            dependency: MonthPickerModelComponents(currentDate: Date()),
+            dependency: MonthPickerModelComponents(currentDate: .init(Date())),
             listener: nil
         )
     }

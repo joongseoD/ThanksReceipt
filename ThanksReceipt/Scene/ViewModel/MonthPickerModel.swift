@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 protocol MonthPickerModelListener: AnyObject {
     func didSelectDate(_ date: Date)
 }
 
 protocol MonthPickerModelDependency {
-    var currentDate: Date { get }
+    var currentDate: CurrentValueSubject<Date, Never> { get }
 }
 
 final class MonthPickerModel: ObservableObject {
@@ -22,20 +23,27 @@ final class MonthPickerModel: ObservableObject {
     @Published var selectedYear: String = ""
     @Published var years: [String] = []
     
-    private var currentDate: Date {
-        didSet {
-            changeSelectedDate()
-        }
-    }
-    
+    private let currentDate: CurrentValueSubject<Date, Never>
     private let yearFormatter = DateFormatter(format: .year)
     private let monthFormatter = DateFormatter(format: .shortMonth)
-        
+    private var cancellables = Set<AnyCancellable>()
+    
     private weak var listener: MonthPickerModelListener?
     
     init(dependency: MonthPickerModelDependency, listener: MonthPickerModelListener?) {
         self.currentDate = dependency.currentDate
         self.listener = listener
+        
+        currentDate
+            .compactMap { [weak self] currentDate -> (year: String, month: String)? in
+                guard let self = self else { return nil }
+                return (self.yearFormatter.string(from: currentDate), self.monthFormatter.string(from: currentDate))
+            }
+            .sink { [weak self] in
+                self?.selectedYear = $0.year
+                self?.selectedMonth = $0.month
+            }
+            .store(in: &cancellables)
     }
     
     deinit {
@@ -43,13 +51,13 @@ final class MonthPickerModel: ObservableObject {
     }
     
     func didSelectMonth(_ month: String) {
-        monthFormatter.defaultDate = currentDate
-        currentDate = monthFormatter.date(from: month) ?? Date()
+        monthFormatter.defaultDate = currentDate.value
+        currentDate.send(monthFormatter.date(from: month) ?? Date())
     }
     
     func didSelectYear(_ year: String) {
-        yearFormatter.defaultDate = currentDate
-        currentDate = yearFormatter.date(from: year) ?? Date()
+        yearFormatter.defaultDate = currentDate.value
+        currentDate.send(yearFormatter.date(from: year) ?? Date())
     }
     
     func reset() {
@@ -57,7 +65,7 @@ final class MonthPickerModel: ObservableObject {
     }
     
     func didTapComplete() {
-        listener?.didSelectDate(currentDate)
+        listener?.didSelectDate(currentDate.value)
     }
     
     func toggleViewState() {
@@ -67,12 +75,6 @@ final class MonthPickerModel: ObservableObject {
     func didAppear() {
         setupMonth()
         setupYear()
-        changeSelectedDate()
-    }
-    
-    private func changeSelectedDate() {
-        selectedYear = yearFormatter.string(from: currentDate)
-        selectedMonth = monthFormatter.string(from: currentDate)
     }
     
     private func setupMonth() {

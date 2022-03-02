@@ -153,7 +153,7 @@ final class ReceiptModel: ObservableObject {
             ReceiptInputModelComponents(
                 dependency: dependency,
                 mode: .create,
-                date: selectedMonth
+                date: Date()
             )
         )
     }
@@ -172,7 +172,7 @@ final class ReceiptModel: ObservableObject {
     func didTapMonth() {
         viewState = .monthPicker(
             MonthPickerModelComponents(
-                currentDate: selectedMonth
+                currentDate: CurrentValueSubject<Date, Never>(selectedMonth)
             )
         )
     }
@@ -246,7 +246,7 @@ extension ReceiptModel {
         static func == (lhs: ReceiptModel.ViewState, rhs: ReceiptModel.ViewState) -> Bool {
             switch (lhs, rhs) {
             case let (.monthPicker(lItem), .monthPicker(rItem)):
-                return lItem.currentDate == rItem.currentDate
+                return lItem.currentDate.value == rItem.currentDate.value
             case let (.input(lItem), .input(rItem)):
                 return lItem.mode == rItem.mode
             case let (.snapshotPreview(lItem), .snapshotPreview(rItem)):
@@ -277,5 +277,5 @@ struct ReceiptSnapshotPreviewModelComponent: ReceiptSnapshotPreviewModelDependen
 }
 
 struct MonthPickerModelComponents: MonthPickerModelDependency {
-    var currentDate: Date
+    var currentDate: CurrentValueSubject<Date, Never>
 }

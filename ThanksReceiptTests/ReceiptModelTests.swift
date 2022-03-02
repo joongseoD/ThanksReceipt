@@ -71,7 +71,7 @@ final class ReceiptModelTests: XCTestCase {
     func testUpdateReceiptDate() {
         // Given
         let monthPickerModel = MonthPickerModel(
-            dependency: MonthPickerModelComponents(currentDate: Date()),
+            dependency: MonthPickerModelComponents(currentDate: .init(Date())),
             listener: sut
         )
         monthPickerModel.didSelectYear("2020")
@@ -231,7 +231,7 @@ final class ReceiptModelTests: XCTestCase {
     func testNilViewStateWhenBackgroundTapped() {
         // Given
         sut.viewState = .monthPicker(
-            MonthPickerModelComponents(currentDate: Date())
+            MonthPickerModelComponents(currentDate: .init(Date()))
         )
         
         // When
