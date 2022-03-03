@@ -33,7 +33,7 @@ final class MonthPickerModel: ObservableObject {
     init(dependency: MonthPickerModelDependency, listener: MonthPickerModelListener?) {
         self.currentDate = dependency.currentDate
         self.listener = listener
-        
+        didAppear()
         currentDate
             .compactMap { [weak self] currentDate -> (year: String, month: String)? in
                 guard let self = self else { return nil }

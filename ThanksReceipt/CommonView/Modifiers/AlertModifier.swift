@@ -80,6 +80,7 @@ struct AlertView: View {
                     Button(action: {
                         cancelButton.action?()
                         didTapCancel?()
+                        Haptic.trigger()
                     }) {
                         Text(cancelButton.title)
                     }
@@ -91,6 +92,7 @@ struct AlertView: View {
                 Button(action: {
                     model.confirmButton.action?()
                     didTapConfirm?()
+                    Haptic.trigger()
                 }) {
                     Text(model.confirmButton.title)
                 }
@@ -107,6 +109,7 @@ struct AlertView: View {
         .clipShape(ZigZag())
         .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
         .padding(25)
+        .onAppear { Haptic.trigger() }
     }
 }
 

@@ -17,36 +17,7 @@ struct MonthPicker: View {
     
     var body: some View {
         VStack(spacing: 15) {
-            HStack {
-                Button(action: model.didTapAll) {
-                    HStack(spacing: 2) {
-                        Text("all")
-                            .customFont(.DungGeunMo, size: 18)
-                        
-                        Image(symbol: .next)
-                            .font(.system(size: 10))
-                            .offset(y: 1.5)
-                    }
-                }
-                .padding(.leading, 5)
-                
-                Spacer()
-                
-                Button(action: model.reset) {
-                    HStack(spacing: 2) {
-                        Text("today")
-                            .customFont(.DungGeunMo, size: 18)
-                        
-                        Image(symbol: .next)
-                            .font(.system(size: 10))
-                            .offset(y: 1.5)
-                    }
-                }
-                .padding(.trailing, 5)
-            }
-            .background(Color.white.opacity(0.01))
-            .padding(.top, 15)
-            .foregroundColor(.black)
+            toolBar()
             
             Group {
                 switch model.state {
@@ -85,8 +56,40 @@ struct MonthPicker: View {
         .onAppear {
             Haptic.trigger()
             scale = 1
-            model.didAppear()
         }
+    }
+    
+    private func toolBar() -> some View {
+        HStack {
+            Button(action: model.didTapAll) {
+                HStack(spacing: 2) {
+                    Text("all")
+                        .customFont(.DungGeunMo, size: 18)
+                    
+                    Image(symbol: .next)
+                        .font(.system(size: 10))
+                        .offset(y: 1.5)
+                }
+            }
+            .padding(.leading, 5)
+            
+            Spacer()
+            
+            Button(action: model.reset) {
+                HStack(spacing: 2) {
+                    Text("today")
+                        .customFont(.DungGeunMo, size: 18)
+                    
+                    Image(symbol: .next)
+                        .font(.system(size: 10))
+                        .offset(y: 1.5)
+                }
+            }
+            .padding(.trailing, 5)
+        }
+        .background(Color.white.opacity(0.01))
+        .padding(.top, 15)
+        .foregroundColor(.black)
     }
     
     private func yearPicker() -> some View {

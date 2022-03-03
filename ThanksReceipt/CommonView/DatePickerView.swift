@@ -20,7 +20,11 @@ struct DatePickerView<Style: DatePickerStyle>: View {
             .labelsHidden()
             .accentColor(.black)
             .frame(maxHeight: 300)
-            .onChange(of: selection, perform: { onChange?($0) })
+            .onChange(of: selection) {
+                onChange?($0)
+                Haptic.trigger()
+            }
+            .onAppear { Haptic.trigger() }
     }
 }
 
