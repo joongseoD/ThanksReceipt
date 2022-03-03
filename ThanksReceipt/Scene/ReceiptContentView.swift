@@ -22,7 +22,7 @@ struct ReceiptContentView: View {
                 didTapMonth: model.didTapMonth
             )
             .padding(.horizontal, 20)
-            .onLongPressGesture(minimumDuration: 2.0, maximumDistance: 2.0, perform: model.didLongPressHeader)
+            .onLongPressGesture(perform: model.didLongPressHeader)
             
             ReceiptList(
                 items: model.receiptItems,

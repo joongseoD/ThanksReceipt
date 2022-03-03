@@ -50,7 +50,7 @@ final class DataProvider: DataProviding {
     
     func create(receiptItem: ReceiptItem) throws -> String? {
         let realm = try Realm()
-        let dataModel = Receipt(text: receiptItem.text, date: receiptItem.date, createdDate: Date())
+        let dataModel = Receipt(text: receiptItem.text, date: receiptItem.date.startOfDay, createdDate: Date())
         try realm.write {
             realm.add(dataModel)
         }
@@ -90,7 +90,7 @@ final class DataProvider: DataProviding {
         
         try realm.write {
             updatingModel.text = item.text
-            updatingModel.date = item.date
+            updatingModel.date = item.date.startOfDay
         }
     }
     

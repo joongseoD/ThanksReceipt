@@ -80,6 +80,8 @@ struct ReceiptInputView: View {
                 InputBottomToolBar(isEditMode: model.inputMode != .create,
                                    didTapDelete: model.deleteReceipt,
                                    didTapSave: model.saveReceipt)
+                    .background(Color.white.opacity(0.01))
+                    .padding(.top, 20)
                     .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .toast(message: $model.message, anchor: .center)
