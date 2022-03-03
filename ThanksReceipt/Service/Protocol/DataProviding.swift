@@ -11,7 +11,7 @@ import Combine
 protocol DataProviding {
     func create(receiptItem: ReceiptItem) throws -> String?
     
-    func receiptItemList(in date: Date) -> AnyPublisher<[ReceiptItem], Error>
+    func receiptItemList(in date: Date?) -> AnyPublisher<[ReceiptItem], Error>
     
     func update(_ item: ReceiptItem) throws
     

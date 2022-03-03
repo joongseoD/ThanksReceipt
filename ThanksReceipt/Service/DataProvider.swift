@@ -57,16 +57,19 @@ final class DataProvider: DataProviding {
         return dataModel.id
     }
     
-    func receiptItemList(in date: Date) -> AnyPublisher<[ReceiptItem], Error> {
+    func receiptItemList(in date: Date?) -> AnyPublisher<[ReceiptItem], Error> {
         return AnyPublisher<[ReceiptItem], Error>.create { subscriber in
             do {
                 let realm = try Realm()
                 let sortProperties = [SortDescriptor(keyPath: "date", ascending: true),
                                       SortDescriptor(keyPath: "createdDate", ascending: true)]
                 
-                let items = Array(realm.objects(Receipt.self)
-                                    .filter("date BETWEEN {%@, %@}", date.startOfMonth, date.endOfMonth)
-                                    .sorted(by: sortProperties))
+                var objects = realm.objects(Receipt.self)
+                if let date = date {
+                    objects = objects.filter("date BETWEEN {%@, %@}", date.startOfMonth, date.endOfMonth)
+                }
+                
+                let items = Array(objects.sorted(by: sortProperties))
                     .compactMap { receipt -> ReceiptItem? in
                         return ReceiptItem(dataModel: receipt)
                     }

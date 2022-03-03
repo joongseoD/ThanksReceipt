@@ -79,11 +79,11 @@ final class ReceiptModelTests: XCTestCase {
         monthPickerModel.didTapComplete()
         
         // When
-        let resultYear = DateFormatter(format: .year).string(from: sut.selectedMonth)
-        let resultMonth = DateFormatter(format: .shortMonth).string(from: sut.selectedMonth)
+        let resultYear = DateFormatter(format: .year).string(from: sut.selectedMonth!)
+        let resultMonth = DateFormatter(format: .shortMonth).string(from: sut.selectedMonth!)
         
         // Then
-        let expect = DateFormatter(format: .longMonth).string(from: sut.selectedMonth)
+        let expect = DateFormatter(format: .longMonth).string(from: sut.selectedMonth!)
         XCTAssertEqual(resultYear, "2020")
         XCTAssertEqual(resultMonth, "Jan")
         XCTAssertEqual(sut.message, "Hello, \(expect).")
@@ -168,7 +168,7 @@ final class ReceiptModelTests: XCTestCase {
         XCTAssertEqual(sut.message, "감사가 기록됐어요.")
         XCTAssertEqual(provider.receiptItemListCallCount, 2)
         XCTAssertEqual(provider.updateCallCount, 1)
-        XCTAssertEqual(dateFormatter.string(from: sut.selectedMonth), dateFormatter.string(from: selectedDate))
+        XCTAssertEqual(dateFormatter.string(from: sut.selectedMonth!), dateFormatter.string(from: selectedDate))
         XCTAssertEqual(sut.receiptItems.first?.header.text, "new text")
     }
     
@@ -251,6 +251,16 @@ final class ReceiptModelTests: XCTestCase {
         
         // Then
         XCTAssertEqual(sut.monthText, "February")
+        XCTAssert(sut.message!.hasPrefix("Hello,"))
+        XCTAssertEqual(provider.receiptItemListCallCount, 2)
+    }
+    
+    func testSelectedMonthWhenAllSelected() {
+        // When
+        sut.didSelectDate(nil)
+        
+        // Then
+        XCTAssertEqual(sut.monthText, "All")
         XCTAssert(sut.message!.hasPrefix("Hello,"))
         XCTAssertEqual(provider.receiptItemListCallCount, 2)
     }

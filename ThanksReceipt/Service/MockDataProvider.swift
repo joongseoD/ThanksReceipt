@@ -52,7 +52,7 @@ final class MockDataProvider: DataProviding {
         return item.id
     }
     
-    func receiptItemList(in date: Date) -> AnyPublisher<[ReceiptItem], Error> {
+    func receiptItemList(in date: Date?) -> AnyPublisher<[ReceiptItem], Error> {
         return receiptList.share(replay: 1).eraseToAnyPublisher()
     }
     

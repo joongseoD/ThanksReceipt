@@ -14,7 +14,7 @@ protocol ReceiptModelServiceDependency {
     var backgroundScheduler: AnySchedulerOf<DispatchQueue> { get }
     var deletionDate: PassthroughSubject<Date, Never> { get }
     var reload: CurrentValueSubject<Void, Never> { get }
-    var selectedDate: CurrentValueSubject<Date, Never> { get }
+    var selectedDate: CurrentValueSubject<Date?, Never> { get }
 }
 
 protocol ReceiptModelServicing: AnyObject {
@@ -24,7 +24,7 @@ protocol ReceiptModelServicing: AnyObject {
     
     func findReceiptItem(by id: String)
     func reload()
-    func didChangedDate(_ date: Date)
+    func didChangedDate(_ date: Date?)
     func delete(_ date: Date) throws
 }
 
@@ -47,7 +47,7 @@ final class ReceiptModelService: ReceiptModelServicing {
             .eraseToAnyPublisher()
     }()
     
-    private var selectedDate: CurrentValueSubject<Date, Never> { dependency.selectedDate }
+    private var selectedDate: CurrentValueSubject<Date?, Never> { dependency.selectedDate }
     
     private var reloadSubject: CurrentValueSubject<Void, Never> { dependency.reload }
     
@@ -106,7 +106,7 @@ final class ReceiptModelService: ReceiptModelServicing {
         reloadSubject.send(())
     }
     
-    func didChangedDate(_ date: Date) {
+    func didChangedDate(_ date: Date?) {
         selectedDate.send(date)
     }
     

@@ -21,10 +21,10 @@ final class ReceiptModel: ObservableObject {
     @Published private(set) var receiptItems: [ReceiptSectionModel] = []
     @Published private(set) var totalCount: String = "0.00"
     @Published private(set) var monthText: String = ""
+    @Published private(set) var selectedMonth: Date? = Date()
     @Published var message: String?
     @Published var alert: AlertModel?
     @Published var scrollToId: String?
-    @Published var selectedMonth: Date = Date()
     @Published var viewState: ViewState?
     
     private let scrollFocusId = PassthroughSubject<String?, Never>()
@@ -90,7 +90,10 @@ final class ReceiptModel: ObservableObject {
             .store(in: &cancellables)
         
         $selectedMonth
-            .compactMap { DateFormatter(format: .longMonth).string(from: $0) }
+            .map { selectedMonth -> String in
+                guard let date = selectedMonth else { return "All" }
+                return DateFormatter(format: .longMonth).string(from: date)
+            }
             .sink { [weak self] date in
                 self?.monthText = date
                 self?.message = "Hello, \(date)."
@@ -143,7 +146,7 @@ final class ReceiptModel: ObservableObject {
             ReceiptInputModelComponents(
                 dependency: dependency,
                 mode: .edit(item),
-                date: selectedMonth
+                date: Date()
             )
         )
     }
@@ -172,7 +175,7 @@ final class ReceiptModel: ObservableObject {
     func didTapMonth() {
         viewState = .monthPicker(
             MonthPickerModelComponents(
-                currentDate: CurrentValueSubject<Date, Never>(selectedMonth)
+                currentDate: CurrentValueSubject<Date, Never>(selectedMonth ?? Date())
             )
         )
     }
@@ -229,7 +232,7 @@ extension ReceiptModel: ReceiptInputModelListener {
 }
 
 extension ReceiptModel: MonthPickerModelListener {
-    func didSelectDate(_ date: Date) {
+    func didSelectDate(_ date: Date?) {
         selectedMonth = date
         service.didChangedDate(date)
         service.reload()

@@ -17,7 +17,7 @@ final class TestMockRootComponents: ReceiptModelDependency, ReceiptModelServiceD
     var deletionDate: PassthroughSubject<Date, Never>
     var reload: CurrentValueSubject<Void, Never>
     var backgroundScheduler: AnySchedulerOf<DispatchQueue>
-    var selectedDate: CurrentValueSubject<Date, Never>
+    var selectedDate: CurrentValueSubject<Date?, Never>
     
     init(
         provider: DataProviding,
@@ -25,7 +25,7 @@ final class TestMockRootComponents: ReceiptModelDependency, ReceiptModelServiceD
         backgroundScheduler: AnySchedulerOf<DispatchQueue>,
         deletionDate: PassthroughSubject<Date, Never> = .init(),
         reload: CurrentValueSubject<Void, Never> = .init(()),
-        selectedDate: CurrentValueSubject<Date, Never> = .init(Date())
+        selectedDate: CurrentValueSubject<Date?, Never> = .init(Date())
     ) {
         self.provider = provider
         self.mainScheduler = mainScheduler

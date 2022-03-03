@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 protocol MonthPickerModelListener: AnyObject {
-    func didSelectDate(_ date: Date)
+    func didSelectDate(_ date: Date?)
 }
 
 protocol MonthPickerModelDependency {
@@ -40,6 +40,7 @@ final class MonthPickerModel: ObservableObject {
                 return (self.yearFormatter.string(from: currentDate), self.monthFormatter.string(from: currentDate))
             }
             .sink { [weak self] in
+                Haptic.trigger()
                 self?.selectedYear = $0.year
                 self?.selectedMonth = $0.month
             }
@@ -61,14 +62,22 @@ final class MonthPickerModel: ObservableObject {
     }
     
     func reset() {
+        Haptic.trigger()
         listener?.didSelectDate(Date())
     }
     
+    func didTapAll() {
+        Haptic.trigger()
+        listener?.didSelectDate(nil)
+    }
+    
     func didTapComplete() {
+        Haptic.trigger()
         listener?.didSelectDate(currentDate.value)
     }
     
     func toggleViewState() {
+        Haptic.trigger()
         state = state == .month ? .year : .month
     }
     

@@ -29,7 +29,7 @@ final class TestMockDataProvider: DataProviding {
         return try mockProvider.create(receiptItem: receiptItem)
     }
     
-    func receiptItemList(in date: Date) -> AnyPublisher<[ReceiptItem], Error> {
+    func receiptItemList(in date: Date?) -> AnyPublisher<[ReceiptItem], Error> {
         receiptItemListCallCount += 1
         receiptItemListDate = date
         return mockProvider.receiptItemList(in: date).eraseToAnyPublisher()

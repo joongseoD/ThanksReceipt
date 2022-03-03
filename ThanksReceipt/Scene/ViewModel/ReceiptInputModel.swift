@@ -28,7 +28,7 @@ final class ReceiptInputModel: ObservableObject {
     @Published var alert: AlertModel?
     @Published var date: Date {
         didSet {
-            dateString = dateFormatter.string(from: date)
+            updateDateString()
         }
     }
     @Published var text: String = "" {
@@ -39,10 +39,10 @@ final class ReceiptInputModel: ObservableObject {
                 }
                 Haptic.trigger(.medium)
             } else {
-                Haptic.trigger(.soft)
+                Haptic.trigger()
             }
 
-            textCount = "\(text.count)/\(maxCount)"
+            updateTextCount()
         }
     }
     
@@ -60,8 +60,8 @@ final class ReceiptInputModel: ObservableObject {
         self.date = dependency.date
         self.listener = listener
         
-        textCount = "\(text.count)/\(maxCount)"
-        dateString = dateFormatter.string(from: date)
+        updateTextCount()
+        updateDateString()
         
         $inputMode
             .compactMap { mode -> ReceiptItem? in
@@ -77,6 +77,14 @@ final class ReceiptInputModel: ObservableObject {
                 self?.date = item.date
             }
             .store(in: &cancellables)
+    }
+    
+    private func updateTextCount() {
+        textCount = "\(text.count)/\(maxCount)"
+    }
+    
+    private func updateDateString() {
+        dateString = dateFormatter.string(from: date)
     }
     
     deinit {

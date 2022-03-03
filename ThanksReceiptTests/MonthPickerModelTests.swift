@@ -16,7 +16,7 @@ final class TestMonthPickerModelComponents: MonthPickerModelDependency {
 
 final class TestMonthPickerModelListener: MonthPickerModelListener {
     var selectedDate: Date?
-    func didSelectDate(_ date: Date) {
+    func didSelectDate(_ date: Date?) {
         selectedDate = date
     }
 }
