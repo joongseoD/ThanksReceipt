@@ -11,7 +11,7 @@ extension View {
     func takeScreenshot(size: CGSize) -> UIImage? {
         let viewController = UIHostingController(rootView: self)
         let ratio = viewController.view.intrinsicContentSize.height / size.width
-        let backgroundWidth = size.width * ratio
+        let backgroundWidth = max(size.width * ratio, Constants.screenWidth + 10)
         let backgroundSize = CGSize(width: backgroundWidth, height: backgroundWidth)
         
         guard let view = viewController.view else { return nil }

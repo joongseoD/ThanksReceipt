@@ -164,12 +164,14 @@ struct ReceiptSnapshotPreview: View {
     
     private func selectBackgroundView(_ image: UIImage) -> some View {
         Group {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .clipped()
-                .scaleEffect(model.receiptScale)
+            GeometryReader { proxy in
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: proxy.size.width, height: proxy.size.width, alignment: .center)
+                    .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
+                    .scaleEffect(model.receiptScale)
+            }
                    
             ColorPalette(selection: $model.selectedColor,
                          colorList: model.colorList)
