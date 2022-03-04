@@ -16,6 +16,10 @@ final class SectionModelServiceTests: XCTestCase {
     private var sut: ReceiptModelService!
     private var scheduler: AnySchedulerOf<DispatchQueue>!
     private var cancellables: Set<AnyCancellable>!
+    private var formatter: DateFormatter!
+    private var date1: Date!
+    private var date2: Date!
+    private var date3: Date!
     
     override func setUp() {
         super.setUp()
@@ -29,6 +33,11 @@ final class SectionModelServiceTests: XCTestCase {
         )
         sut = ReceiptModelService(dependency: dependency)
         cancellables = .init()
+        
+        formatter = DateFormatter(format: .yearMonthDay)
+        date1 = formatter.date(from: "2022.01.01")!
+        date2 = formatter.date(from: "2022.01.02")!
+        date3 = formatter.date(from: "2022.01.03")!
     }
     
     override func tearDown() {
@@ -39,6 +48,10 @@ final class SectionModelServiceTests: XCTestCase {
         scheduler = nil
         provider = nil
         dependency = nil
+        formatter = nil
+        date1 = nil
+        date2 = nil
+        date3 = nil
     }
     
     func testSectionModelsWhenGivingModels() {
@@ -49,11 +62,6 @@ final class SectionModelServiceTests: XCTestCase {
             .store(in: &cancellables)
         
         // When
-        let formatter = DateFormatter(format: .yearMonthDay)
-        let date1 = formatter.date(from: "2022.01.01")!
-        let date2 = formatter.date(from: "2022.01.02")!
-        let date3 = formatter.date(from: "2022.01.03")!
-        
         provider.receiptItems.send([
             ReceiptItem(id: "1", text: "1", date: date1),
             ReceiptItem(id: "2", text: "2", date: date1),
@@ -75,11 +83,6 @@ final class SectionModelServiceTests: XCTestCase {
     
     func testFindReceiptItemById() {
         // Given
-        let formatter = DateFormatter(format: .yearMonthDay)
-        let date1 = formatter.date(from: "2022.01.01")!
-        let date2 = formatter.date(from: "2022.01.02")!
-        let date3 = formatter.date(from: "2022.01.03")!
-        
         var expectedItem: ReceiptItem?
         sut.foundReceiptItem
             .sink { expectedItem = $0 }
@@ -110,11 +113,6 @@ final class SectionModelServiceTests: XCTestCase {
             .store(in: &cancellables)
         
         // When
-        let formatter = DateFormatter(format: .yearMonthDay)
-        let date1 = formatter.date(from: "2022.01.01")!
-        let date2 = formatter.date(from: "2022.01.02")!
-        let date3 = formatter.date(from: "2022.01.03")!
-        
         provider.receiptItems.send([
             ReceiptItem(id: "1", text: "1", date: date1),
             ReceiptItem(id: "2", text: "2", date: date1),
@@ -138,11 +136,6 @@ final class SectionModelServiceTests: XCTestCase {
         sut.sectionModels
             .sink(receiveValue: { sectionModels = $0 })
             .store(in: &cancellables)
-       
-        let formatter = DateFormatter(format: .yearMonthDay)
-        let date1 = formatter.date(from: "2022.01.01")!
-        let date2 = formatter.date(from: "2022.01.02")!
-        let date3 = formatter.date(from: "2022.01.03")!
         
         provider.receiptItems.send([
             ReceiptItem(id: "1", text: "1", date: date1),
