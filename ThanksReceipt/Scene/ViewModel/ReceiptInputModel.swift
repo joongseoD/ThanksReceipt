@@ -7,9 +7,11 @@
 
 import SwiftUI
 import Combine
+import CombineSchedulers
 
 protocol ReceiptInputModelDependency {
     var provider: DataProviding { get }
+    var mainScheduler: AnySchedulerOf<DispatchQueue> { get }
     var mode: ReceiptInputModel.InputMode { get }
     var date: Date { get }
 }
@@ -26,43 +28,27 @@ final class ReceiptInputModel: ObservableObject {
     @Published var inputMode: InputMode?
     @Published var message: String?
     @Published var alert: AlertModel?
-    @Published var date: Date {
-        didSet {
-            updateDateString()
-        }
-    }
-    @Published var text: String = "" {
-        didSet {
-            if text.count > maxCount {
-                DispatchQueue.main.async {
-                    self.text = String(self.text.prefix(self.maxCount))
-                }
-                Haptic.trigger(.medium)
-            } else {
-                Haptic.trigger()
-            }
-
-            updateTextCount()
-        }
-    }
-    
-    private var provider: DataProviding
+    @Published var date: Date
+    @Published var text: String = ""
+    private let provider: DataProviding
+    private let mainScheduler: AnySchedulerOf<DispatchQueue>
     private let maxCount: Int = Constants.inputMaxLength
     private var cancellables = Set<AnyCancellable>()
-    
     private let dateFormatter = DateFormatter(format: .longMonthDayWeek)
     
     private weak var listener: ReceiptInputModelListener?
     
     init(dependency: ReceiptInputModelDependency, listener: ReceiptInputModelListener?) {
         self.provider = dependency.provider
+        self.mainScheduler = dependency.mainScheduler
         self.inputMode = dependency.mode
         self.date = dependency.date
         self.listener = listener
         
-        updateTextCount()
-        updateDateString()
-        
+        setup()
+    }
+    
+    private func setup() {
         $inputMode
             .compactMap { mode -> ReceiptItem? in
                 switch mode {
@@ -77,14 +63,30 @@ final class ReceiptInputModel: ObservableObject {
                 self?.date = item.date
             }
             .store(in: &cancellables)
-    }
-    
-    private func updateTextCount() {
-        textCount = "\(text.count)/\(maxCount)"
-    }
-    
-    private func updateDateString() {
-        dateString = dateFormatter.string(from: date)
+        
+        $text
+            .map { $0.count }
+            .receive(on: mainScheduler)
+            .sink { [weak self] textCount in
+                guard let self = self else { return }
+                if textCount > self.maxCount {
+                    self.text = String(self.text.prefix(self.maxCount))
+                    Haptic.trigger(.heavy)
+                } else {
+                    Haptic.trigger()
+                }
+                self.textCount = "\(textCount)/\(self.maxCount)"
+            }
+            .store(in: &cancellables)
+        
+        $date
+            .compactMap { [weak self] date in
+                return self?.dateFormatter.string(from: date)
+            }
+            .sink { [weak self] dateString in
+                self?.dateString = dateString
+            }
+            .store(in: &cancellables)
     }
     
     deinit {
