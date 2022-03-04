@@ -36,7 +36,7 @@ struct Constants {
     static let standardWidth: CGFloat = 375.0
     static var ratio: CGFloat { screenWidth / standardWidth }
     static let emptyMessage: String = "하루 한 가지, 감사한 마음을 기록해 보아요."
-    static let inputMaxLength: Int = 20
+    static let inputMaxLength: Int = 30
 }
 
 enum Palette: Identifiable, Equatable {
