@@ -27,7 +27,6 @@ struct ReceiptSnapshotPreview: View {
             ZStack {
                 Color.white
                     .ignoresSafeArea()
-                
 
                 ColorBuilderView(palette: model.selectedColor)
                     .ignoresSafeArea()
