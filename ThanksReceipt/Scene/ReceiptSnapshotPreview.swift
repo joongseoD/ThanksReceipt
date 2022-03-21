@@ -28,6 +28,7 @@ struct ReceiptSnapshotPreview: View {
                 Color.white
                     .ignoresSafeArea()
                 
+
                 ColorBuilderView(palette: model.selectedColor)
                     .ignoresSafeArea()
                     .animation(.easeInOut, value: model.selectedColor)
