@@ -3,7 +3,6 @@
 //  ThanksReceipt
 //
 //  Created by Damor on 2022/02/15.
-//
 
 import SwiftUI
 
