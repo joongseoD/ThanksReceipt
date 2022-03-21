@@ -22,7 +22,6 @@ struct ReceiptSnapshotPreview: View {
         self.closeSnapshotPreview = closeSnapshotPreview
     }
     
-    
     var body: some View {
         GeometryReader { proxy in
             ZStack {
