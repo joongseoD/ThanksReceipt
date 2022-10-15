@@ -31,7 +31,7 @@ struct ReceiptItemRow: View {
                 Text(date)
                     .customFont(.DungGeunMo, size: 13 * contentsScale)
             }
-            .frame(maxWidth: 55 * contentsScale, alignment: .leading)
+            .frame(maxWidth: 60 * contentsScale, alignment: .leading)
             
             Text(text)
                 .lineSpacing(2)
