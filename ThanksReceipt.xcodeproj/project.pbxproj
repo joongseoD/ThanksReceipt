@@ -77,19 +77,11 @@
 		25DC31EF27C5C6D9003D24EB /* MockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC31EE27C5C6D9003D24EB /* MockDataProvider.swift */; };
 		25DC31F127C5CA9E003D24EB /* UserDefaultsWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DC31F027C5CA9E003D24EB /* UserDefaultsWrapper.swift */; };
 		711AA35CFACCAE8042336750 /* Pods_ThanksReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB26A82CE44CC4D1D95902A8 /* Pods_ThanksReceipt.framework */; };
-		A50A90776502B4F8D58AD388 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30161CA9D1F807C6C5674087 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework */; };
 		D6A0CCE215229ED14CF4D4D5 /* Pods_ThanksReceiptTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E76E38ADD6D2A15681FD8C23 /* Pods_ThanksReceiptTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		25935A0F27B24B0D00BD6A98 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 259359F627B24B0B00BD6A98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 259359FD27B24B0B00BD6A98;
-			remoteInfo = ThanksReceipt;
-		};
-		25935A1927B24B0D00BD6A98 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 259359F627B24B0B00BD6A98 /* Project object */;
 			proxyType = 1;
@@ -118,7 +110,6 @@
 		25935A0527B24B0D00BD6A98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25935A0827B24B0D00BD6A98 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		25935A0E27B24B0D00BD6A98 /* ThanksReceiptTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThanksReceiptTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		25935A1827B24B0D00BD6A98 /* ThanksReceiptUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThanksReceiptUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25935A2C27B24D7100BD6A98 /* ReceiptItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptItem.swift; sourceTree = "<group>"; };
 		25935A2F27B25A8500BD6A98 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		25935A3227B25A9900BD6A98 /* DataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProviding.swift; sourceTree = "<group>"; };
@@ -200,14 +191,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		25935A1527B24B0D00BD6A98 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A50A90776502B4F8D58AD388 /* Pods_ThanksReceipt_ThanksReceiptUITests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -258,7 +241,6 @@
 			children = (
 				259359FE27B24B0B00BD6A98 /* ThanksReceipt.app */,
 				25935A0E27B24B0D00BD6A98 /* ThanksReceiptTests.xctest */,
-				25935A1827B24B0D00BD6A98 /* ThanksReceiptUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -526,26 +508,6 @@
 			productReference = 25935A0E27B24B0D00BD6A98 /* ThanksReceiptTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		25935A1727B24B0D00BD6A98 /* ThanksReceiptUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 25935A2827B24B0D00BD6A98 /* Build configuration list for PBXNativeTarget "ThanksReceiptUITests" */;
-			buildPhases = (
-				5065FB1E0BEC82F21718DEF9 /* [CP] Check Pods Manifest.lock */,
-				25935A1427B24B0D00BD6A98 /* Sources */,
-				25935A1527B24B0D00BD6A98 /* Frameworks */,
-				25935A1627B24B0D00BD6A98 /* Resources */,
-				4654543980F86C2EC4F158ED /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				25935A1A27B24B0D00BD6A98 /* PBXTargetDependency */,
-			);
-			name = ThanksReceiptUITests;
-			productName = ThanksReceiptUITests;
-			productReference = 25935A1827B24B0D00BD6A98 /* ThanksReceiptUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -560,10 +522,6 @@
 						CreatedOnToolsVersion = 13.2.1;
 					};
 					25935A0D27B24B0D00BD6A98 = {
-						CreatedOnToolsVersion = 13.2.1;
-						TestTargetID = 259359FD27B24B0B00BD6A98;
-					};
-					25935A1727B24B0D00BD6A98 = {
 						CreatedOnToolsVersion = 13.2.1;
 						TestTargetID = 259359FD27B24B0B00BD6A98;
 					};
@@ -588,7 +546,6 @@
 			targets = (
 				259359FD27B24B0B00BD6A98 /* ThanksReceipt */,
 				25935A0D27B24B0D00BD6A98 /* ThanksReceiptTests */,
-				25935A1727B24B0D00BD6A98 /* ThanksReceiptUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -606,13 +563,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		25935A0C27B24B0D00BD6A98 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		25935A1627B24B0D00BD6A98 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -655,45 +605,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-ThanksReceiptTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4654543980F86C2EC4F158ED /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ThanksReceipt-ThanksReceiptUITests/Pods-ThanksReceipt-ThanksReceiptUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ThanksReceipt-ThanksReceiptUITests/Pods-ThanksReceipt-ThanksReceiptUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ThanksReceipt-ThanksReceiptUITests/Pods-ThanksReceipt-ThanksReceiptUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5065FB1E0BEC82F21718DEF9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ThanksReceipt-ThanksReceiptUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -796,13 +707,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		25935A1427B24B0D00BD6A98 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -810,11 +714,6 @@
 			isa = PBXTargetDependency;
 			target = 259359FD27B24B0B00BD6A98 /* ThanksReceipt */;
 			targetProxy = 25935A0F27B24B0D00BD6A98 /* PBXContainerItemProxy */;
-		};
-		25935A1A27B24B0D00BD6A98 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 259359FD27B24B0B00BD6A98 /* ThanksReceipt */;
-			targetProxy = 25935A1927B24B0D00BD6A98 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1049,44 +948,6 @@
 			};
 			name = Release;
 		};
-		25935A2927B24B0D00BD6A98 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2B2262D4D8D880605038ECA /* Pods-ThanksReceipt-ThanksReceiptUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3TH3PN3T66;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jsdong.ThanksReceiptUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ThanksReceipt;
-			};
-			name = Debug;
-		};
-		25935A2A27B24B0D00BD6A98 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5CD36389612653F00AD71BFC /* Pods-ThanksReceipt-ThanksReceiptUITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3TH3PN3T66;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jsdong.ThanksReceiptUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ThanksReceipt;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1113,15 +974,6 @@
 			buildConfigurations = (
 				25935A2627B24B0D00BD6A98 /* Debug */,
 				25935A2727B24B0D00BD6A98 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		25935A2827B24B0D00BD6A98 /* Build configuration list for PBXNativeTarget "ThanksReceiptUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				25935A2927B24B0D00BD6A98 /* Debug */,
-				25935A2A27B24B0D00BD6A98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
